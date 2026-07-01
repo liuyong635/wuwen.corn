@@ -88,6 +88,11 @@ namespace SeedCut.Framework.Services.Handlers
 
         #region 执行逻辑
 
+        private string smallTrayCode = "";
+        private string largeTrayCode = "";
+
+        private DateTime smallTrayCodeScanTime = DateTime.Now;
+        private DateTime largeTrayCodeScanTime = DateTime.Now;
         protected override async Task<ValueTuple<bool, string>> ExecuteAsync(
             IHandlerContext ctx,
             CancellationToken ct)
@@ -219,7 +224,8 @@ namespace SeedCut.Framework.Services.Handlers
 
                     FlagCondition.SetFlag("SmallTray_BarcodeReady", true);
                     LogInfo("小料盘扫码完成: {0}", barcode);
-
+                    smallTrayCode = barcode;
+                    smallTrayCodeScanTime=DateTime.Now;
                 }
                 else if (isLargeTray)
                 {
@@ -228,7 +234,8 @@ namespace SeedCut.Framework.Services.Handlers
 
                     ctx.SetFlag("LargeTray_ScanTime", DateTime.Now);
                     FlagCondition.SetFlag("LargeTray_BarcodeReady", true);
-
+                    largeTrayCode = barcode;
+                    largeTrayCodeScanTime=DateTime.Now;
                     LogInfo("大料盘扫码完成: {0}", barcode);
                 }
 
@@ -306,10 +313,10 @@ namespace SeedCut.Framework.Services.Handlers
             try
             {
                 // 获取两个料盘的信息
-                var smallBarcode = ctx.GetFlag<string>("SmallTray_Barcode");
-                var largeBarcode = ctx.GetFlag<string>("LargeTray_Barcode");
-                var smallScanTime = ctx.GetFlag<DateTime>("SmallTray_ScanTime", DateTime.Now);
-                var largeScanTime = ctx.GetFlag<DateTime>("LargeTray_ScanTime", DateTime.Now);
+                var smallBarcode = smallTrayCode;
+                var largeBarcode = largeTrayCode;
+                var smallScanTime = smallTrayCodeScanTime;
+                var largeScanTime = largeTrayCodeScanTime;
 
                 if (string.IsNullOrWhiteSpace(smallBarcode) || string.IsNullOrWhiteSpace(largeBarcode))
                 {

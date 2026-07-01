@@ -458,7 +458,7 @@ namespace SeedCut.Framework.Services.Handlers
         private async Task<bool> CheckSeedCutDown(IVisionDevice vision, IHandlerContext ctx, CancellationToken ct)
         {
             this.LogDebug("小料盘掉落");
-            await Task.Delay(1500);
+            await Task.Delay(1000);
             if (ct.IsCancellationRequested)
             {
                 return true;
