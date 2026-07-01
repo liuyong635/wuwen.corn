@@ -127,7 +127,10 @@
         </Style>
 
         <!--  下拉框样式  -->
-        <Style x:Key="ConfigComboBoxStyle" TargetType="ComboBox">
+        <Style
+            x:Key="ConfigComboBoxStyle"
+            BasedOn="{StaticResource {x:Type ComboBox}}"
+            TargetType="ComboBox">
             <Setter Property="Height" Value="45" />
             <Setter Property="Padding" Value="15,0" />
             <Setter Property="FontSize" Value="14" />
@@ -164,7 +167,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid x:Name="mainWindow">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="130" />
             <ColumnDefinition Width="*" />
@@ -234,7 +237,7 @@
                 <Button
                     Command="{Binding NavigateCommand}"
                     CommandParameter="追溯"
-                    Style="{StaticResource NavButton_Trace}">       
+                    Style="{StaticResource NavButton_Trace}">
                     <StackPanel>
                         <TextBlock FontSize="24" Text="📋" />
                         <TextBlock
@@ -290,7 +293,8 @@
                     <StackPanel
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Orientation="Horizontal" Cursor="">
+                        Cursor=""
+                        Orientation="Horizontal">
                         <Grid
                             Width="40"
                             Height="40"
@@ -312,35 +316,35 @@
                             Text="农高智造" />
 
                         <Border
-    x:Name="DeviceStatusTrigger"
-    Padding="12,6"
-    VerticalAlignment="Center"
-    Background="{Binding ConnectionStatusBackground}"
-    CornerRadius="15"
-    Cursor="Hand"
-    MouseEnter="DeviceStatusTrigger_MouseEnter"
-    MouseLeave="DeviceStatusTrigger_MouseLeave">
+                            x:Name="DeviceStatusTrigger"
+                            Padding="12,6"
+                            VerticalAlignment="Center"
+                            Background="{Binding ConnectionStatusBackground}"
+                            CornerRadius="15"
+                            Cursor="Hand"
+                            MouseEnter="DeviceStatusTrigger_MouseEnter"
+                            MouseLeave="DeviceStatusTrigger_MouseLeave">
 
                             <StackPanel Orientation="Horizontal">
                                 <!--  动态状态灯  -->
                                 <Ellipse
-            Width="10"
-            Height="10"
-            Margin="0,0,8,0"
-            Fill="{Binding OverallConnectionBrush}" />
+                                    Width="10"
+                                    Height="10"
+                                    Margin="0,0,8,0"
+                                    Fill="{Binding OverallConnectionBrush}" />
 
                                 <!--  动态连接状态文本  -->
                                 <TextBlock
-            FontSize="14"
-            Foreground="{Binding ConnectionStatusForeground}"
-            Text="{Binding ConnectionStatus}" />
+                                    FontSize="14"
+                                    Foreground="{Binding ConnectionStatusForeground}"
+                                    Text="{Binding ConnectionStatus}" />
 
                                 <!--  可选：显示设备数量  -->
                                 <TextBlock
-            Margin="5,0,0,0"
-            FontSize="12"
-            Foreground="{Binding ConnectionStatusForeground}"
-            Opacity="0.7">
+                                    Margin="5,0,0,0"
+                                    FontSize="12"
+                                    Foreground="{Binding ConnectionStatusForeground}"
+                                    Opacity="0.7">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="({0}/{1})">
                                             <Binding Path="ConnectedDeviceCount" />
@@ -461,7 +465,7 @@
                                     <Setter.Value>
                                         <DataTemplate>
                                             <!--  主页内容（任务配置和效率统计）  -->
-                                            <Grid Margin="30,20,30,20">
+                                            <Grid Margin="30,20,30,20" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="1*" />
                                                     <ColumnDefinition Width="1.3*" />
@@ -528,15 +532,9 @@
                                                                 Foreground="#666"
                                                                 Text="种子代号" />
                                                             <ComboBox
+                                                                Height="40"
                                                                 ItemsSource="{Binding SeedCodes}"
-                                                                SelectedItem="{Binding SelectedSeedCode}"
-                                                                Style="{StaticResource ConfigComboBoxStyle}">
-                                                                <ComboBox.ItemTemplate>
-                                                                    <DataTemplate>
-                                                                        <TextBlock Text="{Binding}" />
-                                                                    </DataTemplate>
-                                                                </ComboBox.ItemTemplate>
-                                                            </ComboBox>
+                                                                SelectedItem="{Binding SelectedSeedCode, Mode=TwoWay}" />
                                                         </StackPanel>
 
                                                         <!--  切割面积  -->
@@ -548,15 +546,9 @@
                                                                 Text="切割面积" />
                                                             <Grid>
                                                                 <ComboBox
+                                                                    Height="40"
                                                                     ItemsSource="{Binding CutAreas}"
-                                                                    SelectedItem="{Binding SelectedCutArea}"
-                                                                    Style="{StaticResource ConfigComboBoxStyle}">
-                                                                    <ComboBox.ItemTemplate>
-                                                                        <DataTemplate>
-                                                                            <TextBlock Text="{Binding}" />
-                                                                        </DataTemplate>
-                                                                    </ComboBox.ItemTemplate>
-                                                                </ComboBox>
+                                                                    SelectedItem="{Binding SelectedCutArea}" />
                                                                 <TextBlock
                                                                     Margin="0,0,35,0"
                                                                     HorizontalAlignment="Right"
@@ -988,7 +980,8 @@
                         </StackPanel>
                     </Button>
 
-                    <!--  暂停  --><!--
+                    <!--  暂停  -->
+                    <!--
                     <Button
                         Background="#FF9800"
                         Command="{Binding PauseCommand}"

@@ -44,9 +44,9 @@ namespace SeedCut.ViewModels
         private object _currentPageContent;
 
         // 任务配置
-        private string _taskQuantity = "";
-        private string _selectedSeedCode = "";
-        private string _selectedCutArea = "";
+        private uint _taskQuantity = 1000;
+        private string _selectedSeedCode = "玉米";
+        private string _selectedCutArea = "区域A";
 
         // 效率统计
         private string _runningTime = "";
@@ -141,7 +141,7 @@ namespace SeedCut.ViewModels
         }
 
         // 任务配置属性
-        public string TaskQuantity
+        public uint TaskQuantity
         {
             get => _taskQuantity;
             set
@@ -180,8 +180,22 @@ namespace SeedCut.ViewModels
             }
         }
 
-        public ObservableCollection<string> SeedCodes { get; set; }
-        public ObservableCollection<string> CutAreas { get; set; }
+        public ObservableCollection<string> SeedCodes
+        {
+            get => seedCodes;
+            set
+            {
+                seedCodes = value;
+                OnPropertyChanged(nameof(SeedCodes));
+            }
+        }
+        public ObservableCollection<string> CutAreas { get => cutAreas; 
+            set
+            {
+                cutAreas = value;
+                OnPropertyChanged(nameof(CutAreas));
+            }
+        }
 
         // 效率统计属性
         public string RunningTime
@@ -444,7 +458,7 @@ namespace SeedCut.ViewModels
             IServiceProvider serviceProvider,
             IDeviceManager deviceManager,
             DeviceInitializationService deviceInitService,
-            AlarmViewModel alarmViewModel,IPLCService plcService)
+            AlarmViewModel alarmViewModel, IPLCService plcService)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _deviceManager = deviceManager ?? throw new ArgumentNullException(nameof(deviceManager));
@@ -497,6 +511,9 @@ namespace SeedCut.ViewModels
         private bool CanStart() => !IsDeviceOperating;
 
         private HandlerSequence handlerSequence;
+        private ObservableCollection<string> seedCodes;
+        private ObservableCollection<string> cutAreas;
+
         private async Task OnStartAsync()
         {
             // 如果设备未全部连接，先连接设备
@@ -556,7 +573,7 @@ namespace SeedCut.ViewModels
 
             handlerDebug.CancelSequenceCommand?.Execute(this);
             await Task.Delay(1000);
-           
+
             MessageBox.Show("系统停止", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -1114,7 +1131,7 @@ namespace SeedCut.ViewModels
 
         private bool CanSaveConfig()
         {
-            return !string.IsNullOrWhiteSpace(TaskQuantity);
+            return TaskQuantity > 0;
         }
 
         private void OnSaveConfig()
@@ -1160,7 +1177,7 @@ namespace SeedCut.ViewModels
             this._plcService?.WriteBit(addressItem.DBNumber, addressItem.StartAddress, addressItem.BitPosition, false);
             await Task.Delay(2000);
             this._plcService?.WriteBit(addressItem.DBNumber, addressItem.StartAddress, addressItem.BitPosition, true);
-          
+
             // TODO: 实现初始化逻辑
             MessageBox.Show("系统初始化", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
         }
