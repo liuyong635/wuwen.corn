@@ -1,0 +1,149 @@
+﻿<UserControl
+    x:Class="SeedCut.Views.PLCModule.DynamicPLCModuleView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:SeedCut.Views.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SeedCut.Views.PLCModule"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="800"
+    d:DesignWidth="1200"
+    Background="#F5F5F5"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <!--  转换器  -->
+        <converters:ZeroToVisibilityConverter x:Key="ZeroToVisibilityConverter" />
+
+        <!--  区域标题样式  -->
+        <Style x:Key="SectionTitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#424242" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+        </Style>
+
+        <!--  区域容器样式  -->
+        <Style x:Key="SectionContainerStyle" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#E0E0E0" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,0,0,20" />
+        </Style>
+
+        <!--  按钮样式基础  -->
+        <Style x:Key="BaseButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="MinWidth" Value="110" />
+            <Setter Property="MinHeight" Value="38" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            x:Name="border"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.9" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="#BDBDBD" />
+                                <Setter Property="Cursor" Value="Arrow" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--  点动按钮样式  -->
+        <Style
+            x:Key="JogButtonStyle"
+            BasedOn="{StaticResource BaseButtonStyle}"
+            TargetType="Button">
+            <Setter Property="Background" Value="#2196F3" />
+        </Style>
+
+        <!--  使能按钮样式  -->
+        <Style
+            x:Key="EnableButtonStyle"
+            BasedOn="{StaticResource BaseButtonStyle}"
+            TargetType="Button">
+            <Setter Property="Background" Value="#FF9800" />
+        </Style>
+
+        <!--  回原点按钮样式  -->
+        <Style
+            x:Key="HomeButtonStyle"
+            BasedOn="{StaticResource BaseButtonStyle}"
+            TargetType="Button">
+            <Setter Property="Background" Value="#9C27B0" />
+        </Style>
+
+        <!--  启动按钮样式  -->
+        <Style
+            x:Key="StartButtonStyle"
+            BasedOn="{StaticResource BaseButtonStyle}"
+            TargetType="Button">
+            <Setter Property="Background" Value="#4CAF50" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+            <!--  模块标题  -->
+            <TextBlock
+                Margin="0,0,0,10"
+                FontSize="24"
+                FontWeight="Bold"
+                Foreground="#212121"
+                Text="{Binding DisplayName}" />
+
+            <TextBlock
+                Margin="0,0,0,30"
+                FontSize="14"
+                Foreground="#757575"
+                Text="{Binding Description}" />
+
+            <!--  动态生成的控制区域  -->
+            <ItemsControl ItemsSource="{Binding ControlSections}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource SectionContainerStyle}">
+                            <StackPanel>
+                                <!--  区域标题  -->
+                                <TextBlock Style="{StaticResource SectionTitleStyle}" Text="{Binding Title}" />
+
+                                <!--  区域内容 - 这里需要后端代码动态生成  -->
+                                <ContentPresenter x:Name="SectionContent" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!--  如果没有模块数据时的提示  -->
+            <TextBlock
+                Margin="0,50,0,0"
+                HorizontalAlignment="Center"
+                FontSize="16"
+                Foreground="#9E9E9E"
+                Text="暂无数据"
+                Visibility="{Binding ControlSections.Count, Converter={StaticResource ZeroToVisibilityConverter}}" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

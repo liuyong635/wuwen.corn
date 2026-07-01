@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RobotConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" DeviceName="EPSON Robot">
+  <IPAddress>192.168.0.123</IPAddress>
+  <Port>502</Port>
+  <ConnectTimeout>3000</ConnectTimeout>
+  <ReadWriteTimeout>1000</ReadWriteTimeout>
+  <Enabled>true</Enabled>
+  <StationId>1</StationId>
+  <Addresses>
+    <Address Name="Out" Type="HoldingRegister" Address="516" DataType="UInt16" Length="1" Description="输出寄存器" ByteOrder="LittleEndian" />
+    <Address Name="SetAR" Type="HoldingRegister" Address="532" DataType="UInt16" Length="1" Description="设置 AR（运行/暂停/停止/复位）" ByteOrder="LittleEndian" />
+    <Address Name="CartesianCoordinates" Type="HoldingRegister" Address="533" DataType="Float" Length="10" Description="笛卡尔坐标（X, Y, Z, C）" ByteOrder="LittleEndian" />
+    <Address Name="ServoEnable" Type="HoldingRegister" Address="565" DataType="UInt16" Length="1" Description="伺服使能" ByteOrder="LittleEndian" />
+    <Address Name="JogXYZC" Type="HoldingRegister" Address="568" DataType="UInt16" Length="1" Description="JOG 运动控制（X, Y, Z, C 轴）" ByteOrder="LittleEndian" />
+  </Addresses>
+  <RobotModel>EPSON</RobotModel>
+  <JogSpeed>10</JogSpeed>
+  <AutoSpeed>50</AutoSpeed>
+  <PositionAccuracy>0.01</PositionAccuracy>
+</RobotConfig>

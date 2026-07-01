@@ -1,0 +1,613 @@
+{
+  "recipeName": "玉米",
+  "description": "",
+  "createdTime": "2026-01-28T16:19:44.168709+08:00",
+  "modifiedTime": "2026-06-10T14:51:53.3313036+08:00",
+  "groups": [
+    {
+      "groupId": "Vision",
+      "groupName": "Vision",
+      "sortOrder": 1,
+      "parameters": [
+        {
+          "key": "MinBlobCount",
+          "name": "最小种子数量",
+          "valueType": "int",
+          "value": "10",
+          "unit": "个",
+          "description": "低于此数量触发进料"
+        },
+        {
+          "key": "AngleOffset",
+          "name": "角度补偿",
+          "valueType": "double",
+          "value": "0",
+          "unit": "°",
+          "description": "视觉角度全局补偿值"
+        },
+        {
+          "key": "AngleThreshold",
+          "name": "角度归范围阈值",
+          "valueType": "double",
+          "value": "300",
+          "unit": "°",
+          "description": "360°归范围判断阈值"
+        }
+      ]
+    },
+    {
+      "groupId": "Vibrator",
+      "groupName": "Vibrator",
+      "sortOrder": 2,
+      "parameters": [
+        {
+          "key": "FeedDuration",
+          "name": "抖料时间",
+          "valueType": "int",
+          "value": "250",
+          "unit": "ms",
+          "description": "进料抖动持续时间"
+        },
+        {
+          "key": "VibrationDuration",
+          "name": "振动时间",
+          "valueType": "int",
+          "value": "2000",
+          "unit": "ms",
+          "description": "振动持续时间"
+        },
+        {
+          "key": "PostFeedDelay",
+          "name": "进料后等待",
+          "valueType": "int",
+          "value": "1000",
+          "unit": "ms",
+          "description": "进料后等待稳定时间"
+        },
+        {
+          "key": "StabilizeDelay",
+          "name": "稳定等待",
+          "valueType": "int",
+          "value": "1000",
+          "unit": "ms",
+          "description": "停止振动后等待时间"
+        }
+      ]
+    },
+    {
+      "groupId": "VibrationTray",
+      "groupName": "VibrationTray",
+      "sortOrder": 3,
+      "parameters": [
+        {
+          "key": "WhiteAreaThreshold",
+          "name": "白色占比阈值",
+          "valueType": "double",
+          "value": "10",
+          "unit": "%",
+          "description": "超过此值判定为堆积（0-100）"
+        },
+        {
+          "key": "EmptyVibrateCount",
+          "name": "空振次数阈值",
+          "valueType": "int",
+          "value": "3",
+          "unit": "次",
+          "description": "连续空振达到此次数触发排料判断"
+        },
+        {
+          "key": "DrainDuration",
+          "name": "排料持续时间",
+          "valueType": "double",
+          "value": "5",
+          "unit": "秒",
+          "description": "排料振动2运行时间"
+        },
+        {
+          "key": "BaffleOpenDelay",
+          "name": "挡料板打开延迟",
+          "valueType": "double",
+          "value": "0.5",
+          "unit": "秒",
+          "description": "挡料板打开后等待时间"
+        },
+        {
+          "key": "BaffleCloseDelay",
+          "name": "挡料板关闭延迟",
+          "valueType": "double",
+          "value": "0.5",
+          "unit": "秒",
+          "description": "挡料板关闭后等待时间"
+        },
+        {
+          "key": "MaxTotalRetry",
+          "name": "最大总重试次数",
+          "valueType": "int",
+          "value": "20",
+          "unit": "次",
+          "description": "连续无料总重试上限，达到后停机报警（0=不限制）"
+        },
+        {
+          "key": "WhiteForceFeedThreshold",
+          "name": "白色占比强制抖料阈值",
+          "valueType": "double",
+          "value": "2",
+          "unit": "%",
+          "description": "白色占比低于此值时，强制执行振动+抖料（0=禁用）"
+        }
+      ]
+    },
+    {
+      "groupId": "VisionLimit",
+      "groupName": "VisionLimit",
+      "sortOrder": 4,
+      "parameters": [
+        {
+          "key": "SafeMinX",
+          "name": "X坐标下限",
+          "valueType": "double",
+          "value": "101",
+          "unit": "mm",
+          "description": "视觉坐标X轴安全范围下限"
+        },
+        {
+          "key": "SafeMaxX",
+          "name": "X坐标上限",
+          "valueType": "double",
+          "value": "366.3",
+          "unit": "mm",
+          "description": "视觉坐标X轴安全范围上限"
+        },
+        {
+          "key": "SafeMinY",
+          "name": "Y坐标下限",
+          "valueType": "double",
+          "value": "0.7",
+          "unit": "mm",
+          "description": "视觉坐标Y轴安全范围下限"
+        },
+        {
+          "key": "SafeMaxY",
+          "name": "Y坐标上限",
+          "valueType": "double",
+          "value": "241",
+          "unit": "mm",
+          "description": "视觉坐标Y轴安全范围上限"
+        }
+      ]
+    },
+    {
+      "groupId": "Robot",
+      "groupName": "Robot",
+      "sortOrder": 5,
+      "parameters": [
+        {
+          "key": "CatchZ",
+          "name": "抓取高度",
+          "valueType": "double",
+          "value": "-139.5",
+          "unit": "mm",
+          "description": "抓取下降高度"
+        },
+        {
+          "key": "DropX",
+          "name": "放料基准X",
+          "valueType": "double",
+          "value": "235.127",
+          "unit": "mm",
+          "description": ""
+        },
+        {
+          "key": "DropY",
+          "name": "放料基准Y",
+          "valueType": "double",
+          "value": "238.403",
+          "unit": "mm",
+          "description": ""
+        },
+        {
+          "key": "DropZ",
+          "name": "放料高度",
+          "valueType": "double",
+          "value": "-13.565",
+          "unit": "mm",
+          "description": ""
+        },
+        {
+          "key": "DropC",
+          "name": "放料基准角度",
+          "valueType": "double",
+          "value": "-0.57",
+          "unit": "°",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "groupId": "FlyCapture",
+      "groupName": "FlyCapture",
+      "sortOrder": 6,
+      "parameters": [
+        {
+          "key": "MaxOffsetX",
+          "name": "X偏差上限",
+          "valueType": "double",
+          "value": "5",
+          "unit": "mm",
+          "description": "X轴最大允许偏差"
+        },
+        {
+          "key": "MaxOffsetY",
+          "name": "Y偏差上限",
+          "valueType": "double",
+          "value": "5",
+          "unit": "mm",
+          "description": "Y轴最大允许偏差"
+        },
+        {
+          "key": "MaxOffsetC",
+          "name": "C偏差上限",
+          "valueType": "double",
+          "value": "10",
+          "unit": "°",
+          "description": "C轴最大允许偏差"
+        },
+        {
+          "key": "OffsetWaitTimeoutMs",
+          "name": "偏差等待超时",
+          "valueType": "int",
+          "value": "3000",
+          "unit": "ms",
+          "description": "等待VM飞拍结果的超时时间"
+        },
+        {
+          "key": "OffsetPollIntervalMs",
+          "name": "偏差轮询间隔",
+          "valueType": "int",
+          "value": "50",
+          "unit": "ms",
+          "description": "轮询VM全局变量的间隔"
+        }
+      ]
+    },
+    {
+      "groupId": "DataCollection",
+      "groupName": "DataCollection",
+      "sortOrder": 7,
+      "parameters": [
+        {
+          "key": "Enabled",
+          "name": "数据采集开关",
+          "valueType": "bool",
+          "value": "True",
+          "unit": "",
+          "description": "开启后VM流程会自动保存图像到本地"
+        },
+        {
+          "key": "SavePath",
+          "name": "采集存储路径",
+          "valueType": "string",
+          "value": "D:\\CollectedData",
+          "unit": "",
+          "description": "图像保存根路径"
+        }
+      ]
+    },
+    {
+      "groupId": "LaserROI",
+      "groupName": "LaserROI",
+      "sortOrder": 8,
+      "parameters": [
+        {
+          "key": "RoiWidth",
+          "name": "ROI宽度",
+          "valueType": "double",
+          "value": "800",
+          "unit": "px",
+          "description": "玉米检测区域矩形宽度"
+        },
+        {
+          "key": "RoiYMargin",
+          "name": "Y边距",
+          "valueType": "double",
+          "value": "0",
+          "unit": "px",
+          "description": "ROI上下方向内缩边距"
+        }
+      ]
+    },
+    {
+      "groupId": "LaserCut",
+      "groupName": "LaserCut",
+      "sortOrder": 9,
+      "parameters": [
+        {
+          "key": "CutAngleX",
+          "name": "射线C角度",
+          "valueType": "double",
+          "value": "-10",
+          "unit": "°",
+          "description": "第一条射线的起始角度"
+        },
+        {
+          "key": "CutAngleY",
+          "name": "C-D夹角",
+          "valueType": "double",
+          "value": "25",
+          "unit": "°",
+          "description": "两条射线之间的夹角"
+        },
+        {
+          "key": "CutInsetMM",
+          "name": "内缩距离",
+          "valueType": "double",
+          "value": "3",
+          "unit": "mm",
+          "description": "从轮廓边缘向内收缩的距离"
+        },
+        {
+          "key": "CutExtendMM",
+          "name": "外延距离",
+          "valueType": "double",
+          "value": "3",
+          "unit": "mm",
+          "description": "从轮廓边缘向外延伸的距离"
+        },
+        {
+          "key": "PixelSize",
+          "name": "像素尺寸",
+          "valueType": "double",
+          "value": "0.05",
+          "unit": "mm/px",
+          "description": "相机标定的像素物理尺寸"
+        },
+        {
+          "key": "CutRepeatCount",
+          "name": "重复切割次数",
+          "valueType": "int",
+          "value": "4",
+          "unit": "",
+          "description": "每个路径重复切割的次数"
+        },
+        {
+          "key": "CutIntervalMs",
+          "name": "切割间隔",
+          "valueType": "int",
+          "value": "100",
+          "unit": "ms",
+          "description": "两次切割之间的间隔时间"
+        },
+        {
+          "key": "CompleteDelayMs",
+          "name": "完成延迟",
+          "valueType": "int",
+          "value": "200",
+          "unit": "ms",
+          "description": "发送完成信号后的等待时间"
+        },
+        {
+          "key": "PulseDurationMs",
+          "name": "脉冲宽度",
+          "valueType": "int",
+          "value": "50",
+          "unit": "ms",
+          "description": "完成信号脉冲持续时间"
+        },
+        {
+          "key": "LaserCutSlot",
+          "name": "切割工位号",
+          "valueType": "int",
+          "value": "5",
+          "unit": "",
+          "description": "激光切割对应的转盘工位号"
+        },
+        {
+          "key": "VisionToCutGap",
+          "name": "视觉到切割间距",
+          "valueType": "int",
+          "value": "2",
+          "unit": "",
+          "description": "视觉工位到切割工位的工位间距"
+        },
+        {
+          "key": "CutPassCount",
+          "name": "切割次数",
+          "valueType": "int",
+          "value": "4",
+          "unit": "",
+          "description": "激光切割Pass数(1~5)"
+        },
+        {
+          "key": "Pass1_MarkSpeed",
+          "name": "第1次速度",
+          "valueType": "int",
+          "value": "72",
+          "unit": "mm/s",
+          "description": "第1次切割的打标速度"
+        },
+        {
+          "key": "Pass1_Frequency",
+          "name": "第1次频率",
+          "valueType": "float",
+          "value": "30",
+          "unit": "kHz",
+          "description": "第1次切割的激光频率"
+        },
+        {
+          "key": "Pass1_LaserPower",
+          "name": "第1次能量",
+          "valueType": "float",
+          "value": "10",
+          "unit": "%",
+          "description": "第1次切割的激光能量"
+        },
+        {
+          "key": "Pass2_MarkSpeed",
+          "name": "第2次速度",
+          "valueType": "int",
+          "value": "72",
+          "unit": "mm/s",
+          "description": "第2次切割的打标速度"
+        },
+        {
+          "key": "Pass2_Frequency",
+          "name": "第2次频率",
+          "valueType": "float",
+          "value": "30",
+          "unit": "kHz",
+          "description": "第2次切割的激光频率"
+        },
+        {
+          "key": "Pass2_LaserPower",
+          "name": "第2次能量",
+          "valueType": "float",
+          "value": "10",
+          "unit": "%",
+          "description": "第2次切割的激光能量"
+        },
+        {
+          "key": "Pass3_MarkSpeed",
+          "name": "第3次速度",
+          "valueType": "int",
+          "value": "72",
+          "unit": "mm/s",
+          "description": "第3次切割的打标速度"
+        },
+        {
+          "key": "Pass3_Frequency",
+          "name": "第3次频率",
+          "valueType": "float",
+          "value": "25",
+          "unit": "kHz",
+          "description": "第3次切割的激光频率"
+        },
+        {
+          "key": "Pass3_LaserPower",
+          "name": "第3次能量",
+          "valueType": "float",
+          "value": "10",
+          "unit": "%",
+          "description": "第3次切割的激光能量"
+        },
+        {
+          "key": "Pass4_MarkSpeed",
+          "name": "第4次速度",
+          "valueType": "int",
+          "value": "72",
+          "unit": "mm/s",
+          "description": "第4次切割的打标速度"
+        },
+        {
+          "key": "Pass4_Frequency",
+          "name": "第4次频率",
+          "valueType": "float",
+          "value": "25",
+          "unit": "kHz",
+          "description": "第4次切割的激光频率"
+        },
+        {
+          "key": "Pass4_LaserPower",
+          "name": "第4次能量",
+          "valueType": "float",
+          "value": "10",
+          "unit": "%",
+          "description": "第4次切割的激光能量"
+        }
+      ]
+    },
+    {
+      "groupId": "BlobFilter",
+      "groupName": "BlobFilter",
+      "sortOrder": 10,
+      "parameters": [
+        {
+          "key": "AreaMin",
+          "name": "面积下限",
+          "valueType": "double",
+          "value": "18000",
+          "unit": "px²",
+          "description": "Blob面积筛选下限"
+        },
+        {
+          "key": "AreaMax",
+          "name": "面积上限",
+          "valueType": "double",
+          "value": "65000",
+          "unit": "px²",
+          "description": "Blob面积筛选上限"
+        },
+        {
+          "key": "CompactnessMax",
+          "name": "紧凑度上限",
+          "valueType": "double",
+          "value": "2.0",
+          "unit": "",
+          "description": "圆形度阈值，越大越容许不规则形状"
+        },
+        {
+          "key": "AspectRatioMax",
+          "name": "长短比上限",
+          "valueType": "double",
+          "value": "2.5",
+          "unit": "",
+          "description": "矩形长短边比阈值"
+        }
+      ]
+    },
+    {
+      "groupId": "Gripper",
+      "groupName": "Gripper",
+      "sortOrder": 11,
+      "parameters": [
+        {
+          "key": "GripperLength",
+          "name": "夹爪长度",
+          "valueType": "double",
+          "value": "600",
+          "unit": "px",
+          "description": "夹爪模拟矩形长度"
+        },
+        {
+          "key": "GripperWidth",
+          "name": "夹爪宽度",
+          "valueType": "double",
+          "value": "700",
+          "unit": "px",
+          "description": "夹爪模拟矩形宽度"
+        },
+        {
+          "key": "CollisionSampleStep",
+          "name": "采样步长",
+          "valueType": "int",
+          "value": "3",
+          "unit": "px",
+          "description": "碰撞检测像素采样间隔，越小越精确但越慢"
+        },
+        {
+          "key": "WhiteThreshold",
+          "name": "白色阈值",
+          "valueType": "int",
+          "value": "200",
+          "unit": "",
+          "description": "二值图白色像素判定阈值(0-255)"
+        },
+        {
+          "key": "BoxExpandPixel",
+          "name": "排除框外扩",
+          "valueType": "int",
+          "value": "30",
+          "unit": "px",
+          "description": "自身Blob排除框向外扩展像素数"
+        },
+        {
+          "key": "TipAreaRatioMax",
+          "name": "小头框占比上限",
+          "valueType": "double",
+          "value": "0.667",
+          "unit": "",
+          "description": "DL小头框面积/玉米Blob面积的比值上限，超过则认为DL框了整颗玉米而非小头"
+        }
+      ]
+    }
+  ]
+}

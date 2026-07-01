@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HM_LaserConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <IpAddress>192.168.0.227</IpAddress>
+  <ConnectionTimeoutMs>5000</ConnectionTimeoutMs>
+  <DownloadTimeoutMs>10000</DownloadTimeoutMs>
+  <MarkTimeoutMs>120000</MarkTimeoutMs>
+  <MarkSpeed>72</MarkSpeed>
+  <JumpSpeed>2000</JumpSpeed>
+  <MarkDelay>0</MarkDelay>
+  <JumpDelay>0</JumpDelay>
+  <PolygonDelay>0</PolygonDelay>
+  <MarkCount>3</MarkCount>
+  <LaserOnDelay>500</LaserOnDelay>
+  <LaserOffDelay>110</LaserOffDelay>
+  <FPKDelay>0</FPKDelay>
+  <FPKLength>0</FPKLength>
+  <Frequency>5</Frequency>
+  <DutyCycle>0.5</DutyCycle>
+  <LaserPower>5</LaserPower>
+  <StandbyFrequency>0</StandbyFrequency>
+  <StandbyDutyCycle>0</StandbyDutyCycle>
+  <WorkAreaMinX>-100</WorkAreaMinX>
+  <WorkAreaMaxX>100</WorkAreaMaxX>
+  <WorkAreaMinY>-100</WorkAreaMinY>
+  <WorkAreaMaxY>100</WorkAreaMaxY>
+  <EnableCoordinateCheck>true</EnableCoordinateCheck>
+  <Protocol>1</Protocol>
+  <Dimensional>0</Dimensional>
+  <JumpToZeroAfterMark>true</JumpToZeroAfterMark>
+  <UseAnalogPower>false</UseAnalogPower>
+  <Waveform>0</Waveform>
+  <EnableMOPA>false</EnableMOPA>
+  <MOPAPulseWidth>0</MOPAPulseWidth>
+</HM_LaserConfig>

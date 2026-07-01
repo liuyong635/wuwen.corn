@@ -1,0 +1,16 @@
+﻿<Application
+    x:Class="SeedCut.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:SeedCut.Views.Converters"
+    xmlns:local="clr-namespace:SeedCut"
+    xmlns:vm="clr-namespace:SeedCut.Views">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!--  其他全局资源  -->
+
+            <!--  ✅ 添加全局Converter  -->
+            <vm:LogLevelToBrushConverter x:Key="LogLevelToBrushConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

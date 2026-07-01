@@ -1,0 +1,208 @@
+﻿<UserControl
+    x:Class="SeedCut.Views.DeviceStatusPopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="280">
+
+    <UserControl.Resources>
+        <Style x:Key="DeviceItemStyle" TargetType="Border">
+            <Setter Property="Padding" Value="10,8" />
+            <Setter Property="Margin" Value="0,2" />
+            <Setter Property="Background" Value="#FAFAFA" />
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
+    </UserControl.Resources>
+
+    <Border
+        Background="White"
+        BorderBrush="#E0E0E0"
+        BorderThickness="1"
+        CornerRadius="10">
+        <Border.Effect>
+            <DropShadowEffect
+                BlurRadius="15"
+                Opacity="0.2"
+                ShadowDepth="3" />
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  标题栏  -->
+            <Border
+                Grid.Row="0"
+                Padding="15,12"
+                Background="#F5F5F5"
+                CornerRadius="10,10,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Column="0"
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="#333"
+                        Text="设备连接状态" />
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="#666"
+                            Text="{Binding ConnectedDeviceCount, StringFormat={}{0}}" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="#666"
+                            Text="/" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="#666"
+                            Text="{Binding TotalDeviceCount}" />
+                        <TextBlock
+                            Margin="3,0,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="#666"
+                            Text="已连接" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!--  分隔线  -->
+            <Rectangle
+                Grid.Row="1"
+                Height="1"
+                Fill="#E0E0E0" />
+
+            <!--  设备列表  -->
+            <ScrollViewer
+                Grid.Row="2"
+                MaxHeight="300"
+                Padding="10"
+                VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding DeviceStatusList}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource DeviceItemStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!--  状态指示灯  -->
+                                    <Ellipse
+                                        Grid.Column="0"
+                                        Width="10"
+                                        Height="10"
+                                        Margin="0,0,10,0"
+                                        Fill="{Binding StatusBrush}" />
+
+                                    <!--  设备名称  -->
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        FontSize="13"
+                                        Foreground="#333"
+                                        Text="{Binding DeviceName}"
+                                        TextTrimming="CharacterEllipsis" />
+
+                                    <!--  状态文本  -->
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        Text="{Binding StatusIcon}"
+                                        ToolTip="{Binding StatusText}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="#9E9E9E" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                                                        <Setter Property="Foreground" Value="#4CAF50" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsReconnecting}" Value="True">
+                                                        <Setter Property="Foreground" Value="#FF9800" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <!--  底部操作栏  -->
+            <Border
+                Grid.Row="3"
+                Padding="10"
+                Background="#F5F5F5"
+                CornerRadius="0,0,10,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  连接全部按钮  -->
+                    <Button
+                        Grid.Column="0"
+                        Height="32"
+                        Background="#4CAF50"
+                        BorderThickness="0"
+                        Command="{Binding ConnectAllDevicesCommand}"
+                        Cursor="Hand"
+                        Foreground="White" Grid.ColumnSpan="3" Margin="67,0,67,0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="5"
+                                    Cursor="{TemplateBinding Cursor}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#4CAF50" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#43A047" />
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Background" Value="#A5D6A7" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,5,0"
+                                FontSize="12"
+                                Text="🔌" />
+                            <TextBlock FontSize="12" Text="连接全部" />
+                        </StackPanel>
+                    </Button>
+
+                    
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

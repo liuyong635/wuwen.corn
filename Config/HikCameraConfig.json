@@ -1,0 +1,68 @@
+{
+  "Cameras": [
+    {
+      "CameraId": "Camera_Disk",
+      "DisplayName": "\u632F\u52A8\u76D8\u76F8\u673A",
+      "SerialNumber": "DA4841544",
+      "UserDefinedName": "DiskCamera",
+      "Purpose": "\u632F\u52A8\u76D8\u79CD\u5B50\u68C0\u6D4B\u5B9A\u4F4D",
+      "DefaultExposure": 10000,
+      "DefaultGain": 0,
+      "DefaultFrameRate": 30,
+      "PixelFormat": "Mono8",
+      "EnableAutoReconnect": true,
+      "AutoConnectOnStartup": true,
+      "HeartbeatIntervalMs": 1000,
+      "MaxReconnectCount": 10
+    },
+    {
+      "CameraId": "Camera_Laser",
+      "DisplayName": "\u6FC0\u5149\u89C6\u89C9\u76F8\u673A",
+      "SerialNumber": "DA7147198",
+      "UserDefinedName": "LaserCamera",
+      "Purpose": "\u6FC0\u5149\u5207\u5272\u5B9A\u4F4D\u68C0\u6D4B",
+      "DefaultExposure": 8000,
+      "DefaultGain": 0,
+      "DefaultFrameRate": 30,
+      "PixelFormat": "Mono8",
+      "EnableAutoReconnect": true,
+      "AutoConnectOnStartup": true,
+      "HeartbeatIntervalMs": 1000,
+      "MaxReconnectCount": 10
+    },
+    {
+      "CameraId": "Camera_Small",
+      "DisplayName": "\u5C0F\u6599\u76D8\u76F8\u673A",
+      "SerialNumber": "DA7147332",
+      "UserDefinedName": "SmallCamera",
+      "Purpose": "\u5C0F\u6599\u76D8\u89C6\u89C9\u68C0\u6D4B\u53CA\u65B9\u5411\u68C0\u6D4B",
+      "DefaultExposure": 10000,
+      "DefaultGain": 0,
+      "DefaultFrameRate": 30,
+      "PixelFormat": "Mono8",
+      "EnableAutoReconnect": true,
+      "AutoConnectOnStartup": true,
+      "HeartbeatIntervalMs": 1000,
+      "MaxReconnectCount": 10
+    },
+    {
+      "CameraId": "Camera_Large",
+      "DisplayName": "\u5927\u6599\u76D8\u76F8\u673A",
+      "SerialNumber": "DA7147304",
+      "UserDefinedName": "LargeCamera",
+      "Purpose": "\u5927\u6599\u76D8\u89C6\u89C9\u68C0\u6D4B\u53CA\u65B9\u5411\u68C0\u6D4B",
+      "DefaultExposure": 10000,
+      "DefaultGain": 0,
+      "DefaultFrameRate": 30,
+      "PixelFormat": "Mono8",
+      "EnableAutoReconnect": true,
+      "AutoConnectOnStartup": true,
+      "HeartbeatIntervalMs": 1000,
+      "MaxReconnectCount": 10
+    }
+  ],
+  "DefaultHeartbeatIntervalMs": 1000,
+  "DefaultMaxReconnectCount": 10,
+  "InitialReconnectDelayMs": 3000,
+  "MaxReconnectDelayMs": 30000
+}

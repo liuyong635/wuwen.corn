@@ -1,0 +1,62 @@
+{
+  "recipeName": "Default",
+  "description": "",
+  "createdTime": "2026-01-28T16:16:54.2496915+08:00",
+  "modifiedTime": "2026-01-28T16:19:15.5360435+08:00",
+  "groups": [
+    {
+      "groupId": "Vision",
+      "groupName": "Vision",
+      "sortOrder": 1,
+      "parameters": [
+        {
+          "key": "MinBlobCount",
+          "name": "最小种子数量",
+          "valueType": "int",
+          "value": "10",
+          "unit": "个",
+          "description": "低于此数量触发进料"
+        }
+      ]
+    },
+    {
+      "groupId": "Vibrator",
+      "groupName": "Vibrator",
+      "sortOrder": 2,
+      "parameters": [
+        {
+          "key": "FeedDuration",
+          "name": "抖料时间",
+          "valueType": "int",
+          "value": "500",
+          "unit": "ms",
+          "description": "进料抖动持续时间"
+        },
+        {
+          "key": "VibrationDuration",
+          "name": "振动时间",
+          "valueType": "int",
+          "value": "3000",
+          "unit": "ms",
+          "description": "振动持续时间"
+        },
+        {
+          "key": "PostFeedDelay",
+          "name": "进料后等待",
+          "valueType": "int",
+          "value": "1000",
+          "unit": "ms",
+          "description": "进料后等待稳定时间"
+        },
+        {
+          "key": "StabilizeDelay",
+          "name": "稳定等待",
+          "valueType": "int",
+          "value": "500",
+          "unit": "ms",
+          "description": "停止振动后等待时间"
+        }
+      ]
+    }
+  ]
+}

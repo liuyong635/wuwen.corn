@@ -1,0 +1,470 @@
+﻿<UserControl
+    x:Class="SeedCut.Views.VisionView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="800"
+    d:DesignWidth="1400"
+    Background="Transparent"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <!--  按钮样式  -->
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="MinWidth" Value="100" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--  输入框样式  -->
+        <Style x:Key="PathTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="35" />
+            <Setter Property="Padding" Value="10,0" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#CED4DA" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--  左侧控制面板  -->
+        <Border
+            Grid.Column="0"
+            Margin="0,0,15,0"
+            Padding="20"
+            Background="White"
+            CornerRadius="10">
+            <Border.Effect>
+                <DropShadowEffect
+                    BlurRadius="15"
+                    Opacity="0.1"
+                    ShadowDepth="0" />
+            </Border.Effect>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <!--  标题  -->
+                    <Border
+                        Margin="0,0,0,20"
+                        Padding="12"
+                        Background="#E3F2FD"
+                        CornerRadius="8">
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                FontSize="18"
+                                Text="🔍" />
+                            <TextBlock
+                                FontSize="16"
+                                FontWeight="Bold"
+                                Foreground="#1976D2"
+                                Text="Vision Master 控制台" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--  方案配置  -->
+                    <GroupBox
+                        Margin="0,0,0,15"
+                        FontSize="13"
+                        FontWeight="SemiBold"
+                        Header="方案配置">
+                        <StackPanel Margin="0,12,0,0">
+                            <!--  方案路径  -->
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                FontSize="11"
+                                Foreground="#666"
+                                Text="方案路径:" />
+                            <TextBox
+                                Margin="0,0,0,10"
+                                IsReadOnly="True"
+                                Style="{StaticResource PathTextBoxStyle}"
+                                Text="{Binding SolutionPath, Mode=OneWay}" />
+
+                            <!--  方案密码  -->
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                FontSize="11"
+                                Foreground="#666"
+                                Text="方案密码:" />
+                            <PasswordBox
+                                x:Name="PasswordBox"
+                                Height="35"
+                                Margin="0,0,0,10"
+                                PasswordChanged="PasswordBox_PasswordChanged" />
+
+                            <!--  操作按钮  -->
+                            <UniformGrid Columns="2" Rows="3">
+                                <Button Command="{Binding SelectFileCommand}" Content="选择方案">
+                                    <Button.Style>
+                                        <Style BasedOn="{StaticResource ActionButtonStyle}" TargetType="Button">
+                                            <Setter Property="Background" Value="#6C757D" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#5A6268" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <Button Command="{Binding LoadCommand}" Content="加载方案">
+                                    <Button.Style>
+                                        <Style BasedOn="{StaticResource ActionButtonStyle}" TargetType="Button">
+                                            <Setter Property="Background" Value="#2196F3" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#1976D2" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Background" Value="#BDBDBD" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <Button Command="{Binding SaveCommand}" Content="保存方案">
+                                    <Button.Style>
+                                        <Style BasedOn="{StaticResource ActionButtonStyle}" TargetType="Button">
+                                            <Setter Property="Background" Value="#4CAF50" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#388E3C" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Background" Value="#BDBDBD" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <Button Command="{Binding CloseCommand}" Content="关闭方案">
+                                    <Button.Style>
+                                        <Style BasedOn="{StaticResource ActionButtonStyle}" TargetType="Button">
+                                            <Setter Property="Background" Value="#F44336" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#D32F2F" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Background" Value="#BDBDBD" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <Button Command="{Binding GetVersionCommand}" Content="获取版本">
+                                    <Button.Style>
+                                        <Style BasedOn="{StaticResource ActionButtonStyle}" TargetType="Button">
+                                            <Setter Property="Background" Value="#9C27B0" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#7B1FA2" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Background" Value="#BDBDBD" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <Button Command="{Binding GetPathCommand}" Content="获取路径">
+                                    <Button.Style>
+                                        <Style BasedOn="{StaticResource ActionButtonStyle}" TargetType="Button">
+                                            <Setter Property="Background" Value="#00BCD4" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#0097A7" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Background" Value="#BDBDBD" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </UniformGrid>
+
+                            <Button
+                                Margin="3,3,3,10"
+                                Command="{Binding CheckPasswordCommand}"
+                                Content="检查密码">
+                                <Button.Style>
+                                    <Style BasedOn="{StaticResource ActionButtonStyle}" TargetType="Button">
+                                        <Setter Property="Background" Value="#FF9800" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#F57C00" />
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Background" Value="#BDBDBD" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+
+                            <!--  状态指示器  -->
+                            <Border
+                                Height="45"
+                                Margin="0,10,0,0"
+                                CornerRadius="6">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{Binding StatusColor}" />
+                                </Border.Background>
+                                <StackPanel
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <Ellipse
+                                        Width="12"
+                                        Height="12"
+                                        Margin="0,0,8,0">
+                                        <Ellipse.Fill>
+                                            <SolidColorBrush Color="White" />
+                                        </Ellipse.Fill>
+                                        <Ellipse.Effect>
+                                            <DropShadowEffect
+                                                BlurRadius="3"
+                                                Opacity="0.5"
+                                                ShadowDepth="0" />
+                                        </Ellipse.Effect>
+                                    </Ellipse>
+                                    <TextBlock
+                                        FontSize="12"
+                                        FontWeight="SemiBold"
+                                        Foreground="White"
+                                        Text="{Binding StatusText}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!--  执行测试  -->
+                    <GroupBox
+                        Margin="0,0,0,15"
+                        FontSize="13"
+                        FontWeight="SemiBold"
+                        Header="执行测试">
+                        <Button
+                            Height="50"
+                            Margin="0,12,0,0"
+                            Command="{Binding RunTestCommand}">
+                            <Button.Style>
+                                <Style BasedOn="{StaticResource ActionButtonStyle}" TargetType="Button">
+                                    <Setter Property="Background" Value="#4CAF50" />
+                                    <Setter Property="Margin" Value="0,12,0,0" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#388E3C" />
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Background" Value="#BDBDBD" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,6,0"
+                                    FontSize="16"
+                                    Text="▶" />
+                                <TextBlock FontSize="14" Text="运行视觉流程" />
+                            </StackPanel>
+                        </Button>
+                    </GroupBox>
+
+                    <!--  执行结果  -->
+                    <GroupBox
+                        FontSize="13"
+                        FontWeight="SemiBold"
+                        Header="执行结果">
+                        <StackPanel Margin="0,12,0,0">
+                            <!--  统计数据  -->
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Margin="0,0,3,0">
+                                    <TextBlock
+                                        Margin="0,0,0,3"
+                                        FontSize="10"
+                                        Foreground="#666"
+                                        Text="执行" />
+                                    <Border
+                                        Height="30"
+                                        Background="#F5F5F5"
+                                        BorderBrush="#E0E0E0"
+                                        BorderThickness="1"
+                                        CornerRadius="3">
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="14"
+                                            FontWeight="Bold"
+                                            Text="{Binding ExecuteCount}" />
+                                    </Border>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Margin="3,0,3,0">
+                                    <TextBlock
+                                        Margin="0,0,0,3"
+                                        FontSize="10"
+                                        Foreground="#666"
+                                        Text="成功" />
+                                    <Border
+                                        Height="30"
+                                        Background="#E8F5E9"
+                                        BorderBrush="#4CAF50"
+                                        BorderThickness="1"
+                                        CornerRadius="3">
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="14"
+                                            FontWeight="Bold"
+                                            Foreground="#28A745"
+                                            Text="{Binding SuccessCount}" />
+                                    </Border>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" Margin="3,0,0,0">
+                                    <TextBlock
+                                        Margin="0,0,0,3"
+                                        FontSize="10"
+                                        Foreground="#666"
+                                        Text="失败" />
+                                    <Border
+                                        Height="30"
+                                        Background="#FFEBEE"
+                                        BorderBrush="#F44336"
+                                        BorderThickness="1"
+                                        CornerRadius="3">
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="14"
+                                            FontWeight="Bold"
+                                            Foreground="#DC3545"
+                                            Text="{Binding FailCount}" />
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+
+                            <!--  日志区域  -->
+                            <Border
+                                Height="200"
+                                Background="White"
+                                BorderBrush="#CED4DA"
+                                BorderThickness="1"
+                                CornerRadius="4">
+                                <ScrollViewer Padding="8" VerticalScrollBarVisibility="Auto">
+                                    <TextBlock
+                                        FontFamily="Consolas"
+                                        FontSize="10"
+                                        Foreground="#333"
+                                        Text="{Binding LogText}"
+                                        TextWrapping="Wrap" />
+                                </ScrollViewer>
+                            </Border>
+
+                            <!--  清除按钮  -->
+                            <Button
+                                Height="35"
+                                Margin="0,12,0,0"
+                                Command="{Binding ClearCommand}"
+                                Content="清除日志">
+                                <Button.Style>
+                                    <Style BasedOn="{StaticResource ActionButtonStyle}" TargetType="Button">
+                                        <Setter Property="Background" Value="#FF9800" />
+                                        <Setter Property="Margin" Value="0,12,0,0" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#F57C00" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!--  右侧显示区域  -->
+        <Border
+            Grid.Column="1"
+            Background="#2C2C2C"
+            CornerRadius="10">
+            <Border.Effect>
+                <DropShadowEffect
+                    BlurRadius="15"
+                    Opacity="0.1"
+                    ShadowDepth="0" />
+            </Border.Effect>
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock
+                    Margin="0,0,0,15"
+                    HorizontalAlignment="Center"
+                    FontSize="60"
+                    Foreground="#666666"
+                    Text="🔍" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="18"
+                    Foreground="#999999"
+                    Text="Vision Master 状态监控" />
+                <TextBlock
+                    Margin="0,8,0,0"
+                    HorizontalAlignment="Center"
+                    FontSize="13"
+                    Foreground="#777777"
+                    Text="暂无可视化内容" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

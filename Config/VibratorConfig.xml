@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VibratorConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" DeviceName="Vibrator Disk">
+  <IPAddress>192.168.0.20</IPAddress>
+  <Port>502</Port>
+  <ConnectTimeout>3000</ConnectTimeout>
+  <ReadWriteTimeout>1000</ReadWriteTimeout>
+  <Enabled>true</Enabled>
+  <StationId>2</StationId>
+  <Addresses>
+    <Address Name="State" Type="HoldingRegister" Address="1" DataType="UInt16" Length="1" Description="设备状态（只读）" ByteOrder="BigEndian" />
+    <Address Name="BoxFeed" Type="HoldingRegister" Address="5" DataType="UInt16" Length="1" Description="送料仓运动" ByteOrder="BigEndian" />
+    <Address Name="LightA" Type="HoldingRegister" Address="6" DataType="UInt16" Length="1" Description="光源A" ByteOrder="BigEndian" />
+    <Address Name="LightB" Type="HoldingRegister" Address="7" DataType="UInt16" Length="1" Description="光源B" ByteOrder="BigEndian" />
+    <Address Name="PourDoor" Type="HoldingRegister" Address="10" DataType="UInt16" Length="1" Description="排料仓门" ByteOrder="BigEndian" />
+    <Address Name="Vibration" Type="HoldingRegister" Address="15" DataType="UInt16" Length="1" Description="振动盘运动" ByteOrder="BigEndian" />
+  </Addresses>
+  <VibrationIntensity>50</VibrationIntensity>
+  <FeedDuration>500</FeedDuration>
+  <PostFeedDelay>1000</PostFeedDelay>
+  <VibrateDuringFeed>true</VibrateDuringFeed>
+</VibratorConfig>

@@ -1,0 +1,2795 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HikAlgorithmTool</name>
+    </assembly>
+    <members>
+        <member name="T:HikAlgorithmTool.CalibrationTool">
+            <summary>
+            标定工具类
+            </summary>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.NinePointCalibError(System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Double[],System.Int32,System.Single@,System.Single@)">
+            <summary>
+            计算平移误差(组内方法，仅用于参考。只返回平移方向误差X,平移方向误差Y)
+            </summary>
+            <param name="orinPoints">像素点集</param>
+            <param name="targPoints">物理点集</param>
+            <param name="matrix">映射矩阵</param>
+            <param name="countMove">点个数</param>
+            <param name="xPixelError">平移方向误差X</param>
+            <param name="yPixelError">平移方向误差Y</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.WorldCameraAngleRelaByMat(System.Double[],System.Single@,System.Single@)">
+            <summary>
+            通过标定矩阵求机构坐标轴正方向与像素X轴正方向的夹角
+            </summary>
+            <param name="calibMatrix">标定矩阵</param>
+            <param name="worldX2PixXAngle">机构X轴正方向与像素X轴正方向夹角</param>
+            <param name="worldY2PixXAngle">机构Y轴正方向与像素X轴正方向夹角</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.WorldCameraRotRela(System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Boolean@,System.Boolean@,System.Boolean@)">
+            <summary>
+            根据3个旋转点计算相机与机构之间旋转关系
+            </summary>
+            <param name="orinPoints">像素点集</param>
+            <param name="targPoints">物理点集</param>
+            <param name="isSameRel">相机中角度与机构中角度旋转关系,true为旋转关系一致，false为旋转关系相反</param>
+            <param name="camIsIncrease">相机中旋转是否递增,true为递增，false为递减</param>
+            <param name="worldIsIncrease">机构中旋转是否递增,true为递增，false为递减</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.IsRightCoor(System.Double[],System.Boolean,System.Boolean@)">
+            <summary>
+            计算机构左右手坐标系
+            </summary>
+            <param name="calibMatrix">标定矩阵</param>
+            <param name="isRotDirSame">机构与相机中角度变化趋势是否一致，true表示相同，false表示相反</param>
+            <param name="isRightCoor">是否右手坐标系，true表示是，false表示不是</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.GetSinglePixelPricision(System.Double[],System.Double@,System.Double@)">
+            <summary>
+            由标定矩阵获取单像素精度（XY方向取不同值）
+            </summary>
+            <param name="mat">标定矩阵</param>
+            <param name="sx">X方向单像素精度</param>
+            <param name="sy">Y方向单像素精度</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.GetSinglePixelPricision(System.Double[],System.Double@)">
+            <summary>
+            由标定矩阵获取单像素精度（XY方向取相同值）
+            </summary>
+            <param name="mat">标定矩阵</param>
+            <param name="spix">单像素精度</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.CalOffSetVal(System.Double[],System.Single,System.Single,System.Single@,System.Single@)">
+            <summary>
+            标定转换
+            </summary>
+            <param name="matrix">矩阵</param>
+            <param name="inputx">转换前X</param>
+            <param name="inputy">转换前Y</param>
+            <param name="offx">转换后X</param>
+            <param name="offy">转换后Y</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.KCalibTrans(System.Single,System.Single,System.Single,System.Single@,System.Single@)">
+            <summary>
+            比例系数标定坐标转换
+            </summary>
+            <param name="kCalibFactor">比例系数</param>
+            <param name="inputx">像素X</param>
+            <param name="inputy">像素Y</param>
+            <param name="worldx">物理X</param>
+            <param name="worldy">物理Y</param>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.SaveCalibModel(System.Single[],System.String)">
+            <summary>
+            保存标定文件
+            </summary>
+            <param name="outputInfo">标定数据</param>
+            <param name="modlePath">标定文件路径(后缀为.iwcal)</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.LoadCalibModel(System.String,System.Single[]@)">
+            <summary>
+            加载标定文件
+            </summary>
+            <param name="modlePath">标定文件路径</param>
+            <param name="result">标定文件数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.CalibResultLevel(System.Int32,System.String@)">
+            <summary>
+            标定误差评估状态int类型转文字描述
+            </summary>
+            <param name="calibStatus">int类型标定评级</param>
+            <param name="calibResultLevel">标定评级文字描述</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.MapPointCalibUncommon(System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Double[]@)">
+            <summary>
+            求映射矩阵（非公司方法，可以平移两点求矩阵，大于3个点可以求映射矩阵）
+            </summary>
+            <param name="imagePoints">像素点集</param>
+            <param name="worldPoints">物理点集</param>
+            <param name="caliMatrix">标定矩阵</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.MapPointCalib(System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Double[]@,System.Single@)">
+            <summary>
+            4点映射生成标定矩阵(公司方法)
+            </summary>
+            <param name="imagePoints">像素点集</param>
+            <param name="worldPoints">物理点集</param>
+            <param name="caliMatrix">标定矩阵</param>
+            <param name="err">标定误差</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.MapImageCalib(HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_INPUT_EXTERNAL,Apps.Data.ImageData,Apps.Data.ImageData,HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT@,System.Collections.Generic.List{HikAlgorithmTool.PointF}@,System.Collections.Generic.List{HikAlgorithmTool.PointF}@,System.Collections.Generic.List{HikAlgorithmTool.PointF}@,System.Collections.Generic.List{HikAlgorithmTool.PointF}@)">
+            <summary>
+            标定板图像映射标定
+            </summary>
+            <param name="inputExternal">外部输入参数结构体</param>
+            <param name="tarImage">辅助相机图像</param>
+            <param name="objImage">主相机图像</param>
+            <param name="output">图像映射标定输出结果</param>
+            <param name="assistImagePosList">辅助相机中4组角点</param>
+            <param name="mainImagePosList">主相机中4组角点</param>
+            <param name="tarCornerPointsList">辅助相机图像中所有角点</param>
+            <param name="objCornerPointsList">主相机图像中所有角点</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.MapCalibRotDir(System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Boolean@)">
+            <summary>
+            计算映射标定主相机和辅助相机的旋转方向
+            </summary>
+            <param name="orinPoints">四组点</param>
+            <param name="isClockwise">是否顺时针旋转,true为顺时针，false为逆时针</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.MapCalibAngleXY(System.Double[],System.Single@,System.Single@)">
+            <summary>
+            计算映射标定主相机坐标系与辅助相机坐标系XY方向夹角
+            </summary>
+            <param name="matrix">映射矩阵</param>
+            <param name="subX2MainAngle">辅助相机X与主相机X方向夹角</param>
+            <param name="subY2MainAngle">辅助相机Y与主相机X方向夹角</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.MapCalibRelationship(System.Single,System.Single,System.Boolean@)">
+            <summary>
+            计算映射标定两坐标系之间的旋转关系：true代表主相机角度旋转增大时，辅助相机角度也增大，false则相反
+            </summary>
+            <param name="assistX2MainAngle"> 辅助相机X与主相机X夹角</param>
+            <param name="assistY2MainAngle">辅助相机Y与主相机X夹角</param>
+            <param name="isSamerela">旋转关系</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.NinePointCalib(System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Boolean,HikAlgorithmTool.MVBCALIB_HOMO_EST_OUTPUT@)">
+            <summary>
+            计算9点标定矩阵(公司方法)
+            </summary>
+            <param name="imagePoints">像素点集</param>
+            <param name="worldPoints">物理点集</param>
+            <param name="cameraIsStatic">相机模式，true为相机静止，false为相机运动</param>
+            <param name="nineCalibResult">Homo估计输出数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.NinePointAbsoluteCalib(System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Boolean,HikAlgorithmTool.MVBCALIB_HOMO_EST_OUTPUT@)">
+            <summary>
+            计算绝对9点标定矩阵(公司方法)
+            </summary>
+            <param name="imagePoints">像素点集</param>
+            <param name="worldPoints">物理点集</param>
+            <param name="cameraIsStatic">相机模式，true为相机静止，false为相机运动</param>
+            <param name="nineCalibResult">Homo估计输出数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.NinePointAbsoluteCalibByTeachOnce(System.Double[],System.Single,System.Single,System.Single,System.Single,System.Double[]@)">
+            <summary>
+            (拍9次示教1次)绝对9点标定矩阵生成
+            </summary>
+            <param name="matrix">相对九点矩阵</param>
+            <param name="x">示教像素点X</param>
+            <param name="y">示教像素点Y</param>
+            <param name="worldX">示教物理点X</param>
+            <param name="worldY">示教物理点Y</param>
+            <param name="result">输出矩阵</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.TwelvePointCalib(System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Boolean,HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT@)">
+            <summary>
+            计算12点标定矩阵(公司方法)
+            </summary>
+            <param name="imagePoints">像素点集</param>
+            <param name="worldPoints">物理点集</param>
+            <param name="cameraIsStatic">相机模式，true为相机静止，false为相机运动</param>
+            <param name="downCalibResult">12点标定计算输出数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.NImagesCalib(HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_EXTERNAL,System.Collections.Generic.List{Apps.Data.ImageData},HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT@,HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS[]@)">
+            <summary>
+            N图像标定旧版方法，需要平移距离，移动类型，旋转角度
+            </summary>
+            <param name="input">外部输入结构体</param>
+            <param name="imageDatas">图像数据</param>
+            <param name="output">输出计算结果</param>
+            <param name="outputPointsData">输出角点点集</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.NImagesCalibV2(HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_V2_EXTERNAL,System.Collections.Generic.List{Apps.Data.ImageData},HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT_V2@,HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS[]@)">
+            <summary>
+            V2版本N图像标定方法，只需物理点集和对应的图像
+            </summary>
+            <param name="input">物理点集等信息</param>
+            <param name="imageDatas">图像数据</param>
+            <param name="output">标定结果</param>
+            <param name="outputPointsData">输出角点点集</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.RotCenterCalib(System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Boolean,System.Single[],HikAlgorithmTool.MVBCALIB_ALIGN_AXIS_OUTPUT@)">
+            <summary>
+            旋转三点进行旋转中心标定
+            </summary>
+            <param name="imagePoints">像素点集</param>
+            <param name="worldPoints">物理点集</param>
+            <param name="cameraIsStatic">相机模式，true为相机静止，false位相机运动</param>
+            <param name="matrix">平移矩阵</param>
+            <param name="calibResult">轴标定结果输出</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.RotAndTransCenterCalib(System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Boolean,System.Single[],HikAlgorithmTool.MVBCALIB_ALIGN_AXIS_OUTPUT@)">
+            <summary>
+            旋转后平移到视野内计算旋转中心
+            </summary>
+            <param name="imagePoints">像素点集</param>
+            <param name="worldPoints">物理点集</param>
+            <param name="cameraIsStatic">相机模式，true为相机静止，false位相机运动</param>
+            <param name="matrix">平移矩阵</param>
+            <param name="calibResult">旋转后平移到视野内标定结果输出</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibrationTool.CalNImageRunParam(System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Double@,System.Double@,System.Int32@)">
+            <summary>
+            根据9个、或者12个物理点求解N图像运行参数(第一版N图像标定需要用到参数)
+            </summary>
+            <param name="targPoints">物理点集</param>
+            <param name="moveDis">平移步长</param>
+            <param name="rotateAngle">角度间隔</param>
+            <param name="moveFirstType">移动类型,1为X优先移动,2为Y优先移动</param>
+            <returns></returns>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_MODULES">
+            <summary>
+            模块标记，用来标记算法库能力集
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_PRC_TYPES">
+            <summary>
+            处理类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_KEY">
+            <summary>
+            算法参数KEY-PARAM的索引号，用来设置算法控制参数
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_POS_FIX_MODE">
+            <summary>
+            位置补正模式
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_PLATFORM_TYPE">
+            <summary>
+            平台类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_PLATFORM_MOVE_TYPE">
+            <summary>
+            对位平台移动类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_ABILITY">
+            <summary>
+            能力集参数
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_POINT_FIX_INPUT">
+            <summary>
+            像素点位置修正输入  
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_POINT_FIX_OUTPUT">
+            <summary>
+            像素点位置修正输出
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_BOX_FIX_INPUT">
+            <summary>
+            box位置修正输入
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_BOX_FIX_OUTPUT">
+            <summary>
+            box位置修正输出
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_ARC_FIX_INPUT">
+            <summary>
+            圆弧位置修正输入
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_ARC_FIX_OUTPUT">
+            <summary>
+            box位置修正输出
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_RECT_FIX_INPUT">
+            <summary>
+            矩形框位置修正输入
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_RECT_FIX_OUTPUT">
+            <summary>
+            矩形框位置修正输出
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_ANNULUS_FIX_INPUT">
+            <summary>
+            圆环位置修正输入
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_ANNULUS_FIX_OUTPUT">
+            <summary>
+            圆环位置修正输出
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_IMAGE_FIX_INPUT">
+            <summary>
+            图像修正输入
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_IMAGE_FIX_OUTPUT">
+            <summary>
+            图像修正输出
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_PLATFORM_ALIGN_INPUT">
+            <summary>
+            对位输入数据
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.MVBALIGN_PLATFORM_ALIGN_OUTPUT">
+            <summary>
+            对位输出数据
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.BCVAL_INPUT_INFO">
+            <summary>
+            对齐输入参数信息
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.CallAlgorithm.AlignManager.m_stAlignProcessMemTab">
+            <summary>
+            内存分配页
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.CallAlgorithm.AlignManager.m_hAlignProcess">
+            <summary>
+            算法句柄
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.CallAlgorithm.AlignManager.bInitDone">
+            <summary>
+            初始化标志
+            </summary>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.AlignManager.Init">
+            <summary>
+            初始化
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.AlignManager.Close">
+            <summary>
+            关闭
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.AlignManager.AlignObject(HikAlgorithmTool.CallAlgorithm.BCVAL_INPUT_INFO,HikAlgorithmTool.CallAlgorithm.MVBALIGN_PLATFORM_ALIGN_OUTPUT@)">
+            <summary>
+            计算目标与对象之间应调整的位置
+            </summary>
+            <param name="alignInput"></param>
+            <param name="alignOut"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.coorTransformMatrixCal(System.Collections.Generic.List{System.Double},System.Collections.Generic.List{System.Double},System.Collections.Generic.List{System.Double},System.Collections.Generic.List{System.Double},System.Double[0:,0:]@)">
+            <summary>
+            坐标转换关系计算(3行2列的矩阵)
+            </summary>
+            <param name="imageXLst">A坐标X</param>
+            <param name="imagey">A坐标Y</param>
+            <param name="worldx">B坐标X</param>
+            <param name="worldYLst">B坐标Y</param>
+            <param name="tranformMatrix">转换矩阵</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.coorTransformMapCal(System.Double,System.Double,System.Double[0:,0:],System.Double@,System.Double@)">
+            <summary>
+            坐标转换映射(由像素坐标计算物理坐标)
+            </summary>
+            <param name="imageXLst">A坐标X</param>
+            <param name="imagey">A坐标Y</param>
+            <param name="tranformMatrix">A坐标系到B坐标系的转换矩阵</param>
+            <param name="worldx">B坐标系X</param>
+            <param name="worldYLst">B坐标系Y</param>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.coorTransformUnMapCal(System.Double,System.Double,System.Double[0:,0:],System.Double@,System.Double@)">
+            <summary>
+            坐标转换反映射(由物理坐标计算像素坐标)
+            </summary>
+            <param name="imageXLst">B坐标X</param>
+            <param name="imagey">B坐标Y</param>
+            <param name="tranformMatrix">A坐标系到B坐标系的转换矩阵</param>
+            <param name="worldx">A坐标系X</param>
+            <param name="worldYLst">A坐标系Y</param>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.coorTransformOffCal(System.Double,System.Double,System.Double[0:,0:],System.Double@,System.Double@)">
+            <summary>
+            坐标转换偏差计算(只计算偏差值不考虑平移值)
+            </summary>
+            <param name="imageXLst">A坐标X</param>
+            <param name="imagey">A坐标Y</param>
+            <param name="tranformMatrix">A坐标系到B坐标系的转换矩阵</param>
+            <param name="offWorldx">B坐标X偏差</param>
+            <param name="offworldYLst">B坐标Y偏差</param>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.coorAlign(HikAlgorithmTool.CallAlgorithm.UnionAlignInput,System.Double@,System.Double@,System.Double@)">
+            <summary>
+            两个坐标系对齐(联合标定对齐)
+            </summary>
+            <param name="srcDestAlignInput">对齐输入数据</param>
+            <param name="offValX">补偿量X</param>
+            <param name="offValY">补偿量Y</param>
+            <param name="offValAngle">补偿量角度</param>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.coorAlign(HikAlgorithmTool.CallAlgorithm.AloneAlignInput,System.Double@,System.Double@,System.Double@)">
+            <summary>
+            两个坐标系对齐(分别标定对齐)
+            </summary>
+            <param name="srcDestAlignInput">对齐输入数据</param>
+            <param name="offValX">补偿量X</param>
+            <param name="offValY">补偿量Y</param>
+            <param name="offValAngle">补偿量角度</param>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Vector_Angle_Affine(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double@,System.Double@,System.Double@)">
+            <summary>
+            根据两点计算刚性仿射变换, 再计算输入点变换后点位
+            </summary>
+            <param name="initx">基准点x</param>
+            <param name="inity">基准点y</param>
+            <param name="inita">基准点角度</param>
+            <param name="runx">运行点x</param>
+            <param name="runy">运行点y</param>
+            <param name="runa">运行点角度</param>
+            <param name="pointx">输入计算点x</param>
+            <param name="pointy">输入计算点y</param>
+            <param name="pointa">输入计算点角度</param>
+            <param name="calPointx">输出变换点x</param>
+            <param name="calPointy">输出变换点y</param>
+            <param name="calPointa">输出变换点角度</param>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Vector_Affine(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double@,System.Double@,System.Double@)">
+            <summary>
+            根据两点计算刚性仿射变换, 再计算输入点变换后点位
+            </summary>
+            <param name="initx">基准点x</param>
+            <param name="inity">基准点y</param>
+            <param name="inita">基准点角度</param>
+            <param name="runx">运行点x</param>
+            <param name="runy">运行点y</param>
+            <param name="runa">运行点角度</param>
+            <param name="pointx">输入计算点x</param>
+            <param name="pointy">输入计算点y</param>
+            <param name="pointa">输入计算点角度</param>
+            <param name="calPointx">输出变换点x</param>
+            <param name="calPointy">输出变换点y</param>
+            <param name="calPointa">输出变换点角度</param>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Vector_Mul(HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            向量相乘
+            </summary>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <param name="b1"></param>
+            <param name="b2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Two_Middle_Point(HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            两个点--计算中点
+            </summary>
+            <param name="p1"></param>
+            <param name="p2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Two_Dis(HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            两个点--计算间距
+            </summary>
+            <param name="p1"></param>
+            <param name="p2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Two_Dis_Pow2(HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            两个点--计算间距平方
+            </summary>
+            <param name="p1"></param>
+            <param name="p2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Two_Angle(HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            两个点--计算与X轴正方向的角度
+            </summary>
+            <param name="t"></param>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Triangle_Angle(HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            三个点--计算 ∠b2.a.b1 的大小
+            </summary>
+            <param name="a"></param>
+            <param name="b1"></param>
+            <param name="b2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Triangle_Center_Point(HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            三个点--计算圆心
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <param name="c"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Segment_Cross_Point(HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            四个点--计算交叉点
+            </summary>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <param name="b1"></param>
+            <param name="b2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Cmp_angle(HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            比较角度
+            </summary>
+            <param name="p1"></param>
+            <param name="p2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Creat_Convex_Hull(System.Collections.Generic.List{HikAlgorithmTool.CallAlgorithm.VectorPoint},System.Int32)">
+            <summary>
+            创建凸包点集 
+            </summary>
+            <param name="p"></param>
+            <param name="n"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Is_In_Circle(HikAlgorithmTool.CallAlgorithm.VectorPoint,System.Double,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            判断点是否在圆内
+            </summary>
+            <param name="center"></param>
+            <param name="rad"></param>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Is_In_Seg(HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            判断点是否在线上
+            </summary>
+            <param name="m"></param>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Is_In_Parallel(HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            判断两条直线是否平行
+            </summary>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <param name="b1"></param>
+            <param name="b2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Is_Cross_Without_Point(HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            判断两条直线是否无交点 
+            </summary>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <param name="b1"></param>
+            <param name="b2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Is_Acute_Triangle(HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint,HikAlgorithmTool.CallAlgorithm.VectorPoint)">
+            <summary>
+            判断三点是否是可形成三角形
+            </summary>
+            <param name="p1"></param>
+            <param name="p2"></param>
+            <param name="p3"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_MultiFit_Circle(System.Int32,System.Collections.Generic.List{System.Double},System.Collections.Generic.List{System.Double},System.Double@,System.Double@,System.Double@)">
+            <summary>
+            多点拟合--圆拟合
+            </summary>
+            <param name="ptNum"></param>
+            <param name="??"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_MultiFit_MinCircle(System.Collections.Generic.List{HikAlgorithmTool.CallAlgorithm.VectorPoint},System.Int32)">
+            <summary>
+            多点拟合--最小外接圆拟合
+            </summary>
+            <param name="p"></param>
+            <param name="n"></param>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_MultiFit_Linear(HikAlgorithmTool.CallAlgorithm.VectorPoint[],System.Int32,System.Double@,System.Double@)">
+            <summary>
+            多点拟合--线性拟合
+            </summary>
+            <param name="array"></param>
+            <param name="size"></param>
+            <param name="slope"></param>
+            <param name="intercept"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Points_Multi_Center_Point(HikAlgorithmTool.CallAlgorithm.VectorPoint[],System.Int32)">
+            <summary>
+            根据输入点位计算中心
+            </summary>
+            <param name="array"></param>
+            <param name="size"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CallAlgorithm.MathAnalysisHelper.Array_1DCalMeanVal(System.Double[],System.Int32,System.Int32,System.Int32,System.Double@)">
+            <summary> 
+            求均值
+            </summary>
+            <param name="input_array"></param>
+            <param name="total_num"></param>
+            <param name="delete_max_num"></param>
+            <param name="delete_min_num"></param>
+            <param name="mean_val"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.UnionAlignInput">
+            <summary>
+            联合标定对齐输入
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.AloneAlignInput">
+            <summary>
+            分别标定对齐输入
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.CallAlgorithm.VectorPoint">
+            <summary>
+            向量点
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.CallAlgorithm.VectorLine.slope">
+            <summary>
+            斜率
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.CallAlgorithm.VectorLine.intercept">
+            <summary>
+            截距
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_MODULES">
+            <summary>
+            模块标记，用来标记算法库能力集
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_PRC_TYPES">
+            <summary>
+            处理类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_PARAM_KEY">
+            <summary>
+            算法参数KEY-PARAM的索引号，用来设置算法控制参数
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_ABILITY">
+            <summary>
+            能力集参数
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_HOMO_EST_OUTPUT">
+            <summary>
+            Homograph估计(N点法相机标定)输出数据
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_HOMO_EST_OUTPUT.homo_mat">
+            <summary>
+            homo矩阵
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_HOMO_EST_OUTPUT.err">
+            <summary>
+            估计误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_HOMO_EST_OUTPUT.est_status">
+            <summary>
+            估计状态
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_NIMG_TRANS_ERR">
+            <summary>
+            N图像标定平移误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_TRANS_ERR.err_trans_avg">
+            <summary>
+            平移估计像素平均误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_TRANS_ERR.err_trans_max">
+            <summary>
+            平移估计像素最大误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_TRANS_ERR.err_trans_max_i">
+            <summary>
+            平移估计像素最大误差对应点数
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_TRANS_ERR.err_trans_world_avg">
+            <summary>
+            平移估计真实平均误差，单位和输入的平台移动量单位相同
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_TRANS_ERR.err_trans_world_max">
+            <summary>
+            平移估计真实最大误差，单位和输入的平台移动量单位相同
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_NIMG_ROT_ERR">
+            <summary>
+            N图像标定旋转误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_ROT_ERR.err_rot_avg">
+            <summary>
+            旋转估计像素平均误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_ROT_ERR.err_rot_max">
+            <summary>
+            旋转估计像素最大误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_ROT_ERR.err_rot_max_i">
+            <summary>
+            旋转估计像素最大误差对应点数
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_ROT_ERR.err_rot_world_avg">
+            <summary>
+            旋转估计真实平均误差，单位和输入的平台移动量单位相同
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_ROT_ERR.err_rot_world_max">
+            <summary>
+            旋转估计真实最大误差，单位和输入的平台移动量单位相同
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_ALIGN_AXIS_OUTPUT">
+            <summary>
+            自动对位标定初始矩阵计算中轴标定输出
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_AXIS_OUTPUT.axis_org_world">
+            <summary>
+            轴心的物理坐标
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_AXIS_OUTPUT.axis_org_img">
+            <summary>
+            轴心的图像坐标
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_AXIS_OUTPUT.H_out_img2world">
+            <summary>
+            输出的homo矩阵(img_2_world)
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_AXIS_OUTPUT.rotate_ems">
+            <summary>
+            旧版本旋转误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_AXIS_OUTPUT.rot_direct_state">
+            <summary>
+            1表示旋转计算角度与输入角度方向相同，-1表示旋转计算角度与输入角度相反
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_AXIS_OUTPUT.rot_err">
+            <summary>
+            旋转误差
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT">
+            <summary>
+            自动对位标定初始矩阵计算输出数据
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT.homo_mat">
+            <summary>
+            初始映射矩阵
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT.rot_center_world">
+            <summary>
+            轴心的物理坐标
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT.rot_center_img">
+            <summary>
+            轴心的图像坐标
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT.rot_direct_state">
+            <summary>
+            角度旋转方向一致性状态，1表示计算角度与输入角度旋转方向相同，-1表示计算角度与输入角度旋转方向相反
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT.err_trans">
+            <summary>
+            平移估计像素误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT.err_rot">
+            <summary>
+            旋转估计像素误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT.err_trans_world">
+            <summary>
+            平移估计真实误差，单位和输入的平台移动量单位相同
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT.err_rot_world">
+            <summary>
+            旋转估计真实误差，单位和输入的平台移动量单位相同
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT.err_trans_set">
+            <summary>
+            平移误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT.err_rot_set">
+            <summary>
+            旋转误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT.status">
+            <summary>
+            评估表情状态，1表示正常，0表示异常，会弹出警告信息
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_INPUT_EXTERNAL">
+            <summary>
+            两张标定图像之间标定位置转换关系输入——计算从当前图片到目标图片的坐标转换矩阵
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_INPUT_EXTERNAL.board_type">
+            <summary>
+            标定板类型,外部按照1为I型标定板，2为II型标定板
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_INPUT_EXTERNAL.subpixelWin">
+            <summary>
+            亚像素窗口大小
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_INPUT_EXTERNAL.grayValue">
+            <summary>
+            灰度值
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_INPUT_EXTERNAL.subPixelAuto">
+            <summary>
+            是否自适应亚像素窗口
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_INPUT_EXTERNAL.filter">
+            <summary>
+            是否滤波
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_INPUT_EXTERNAL.subpixelWin2">
+            <summary>
+            亚像素窗口大小
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_INPUT_EXTERNAL.grayValue2">
+            <summary>
+            灰度值
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_INPUT_EXTERNAL.subPixelAuto2">
+            <summary>
+            是否自适应亚像素窗口
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_INPUT_EXTERNAL.filter2">
+            <summary>
+            是否滤波
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT">
+            <summary>
+            两张标定图像之间标定位置转换关系输出
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.mat">
+            <summary>
+            输出目标位置求取矩阵
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.calib_status">
+            <summary>
+            两张图像的标定状态（小于0表示失败，方便调试单张图像）
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.scale">
+            <summary>
+            两张图像的单像素精度
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.kx">
+            <summary>
+            输出x方向比例
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.ky">
+            <summary>
+            输出y方向比例
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.map_error">
+            <summary>
+            映射误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.error_status">
+            <summary>
+            评估标定状态，0表示正常，其他表示异常，会弹出警告信息
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.img_corners_cur">
+            <summary>
+            当前图像的角点集图像坐标
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.world_corner_cur">
+            <summary>
+            当前图像的角点集物理坐标
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.corners_num_cur">
+            <summary>
+            当前图像的角点数量
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.img_corners_obj">
+            <summary>
+            目标图像的角点集图像坐标   外部分配内存，与img_corners_cur大小相同
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.world_corners_obj">
+            <summary>
+            目标图像的角点集物理坐标   外部分配内存，与img_corners_cur大小相同
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.corners_num_obj">
+            <summary>
+            目标图像的角点数量
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.img_corners_projection">
+            <summary>
+            当前图像角点映射到目标图像内点的坐标   外部分配内存，与img_corners_cur大小相同
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.world_corners_projection">
+            <summary>
+            当前图像角点映射到目标图像内点的物理坐标   外部分配内存，与img_corners_cur大小相同
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT.corners_num_projection">
+            <summary>
+            当前图像角点映射到目标图像内点的数量
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_MECHANISM_TRANS_ERROR">
+            <summary>
+            图像之间的变化关系
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_MECHANISM_TRANS_ERROR.trans">
+            <summary>
+            平移过程中图像移动量与机够移动量之间的偏差(x,y两个方向)
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_MECHANISM_TRANS_ERROR.scale">
+            <summary>
+            平移过程中的图像尺度变化
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_MECHANISM_TRANS_ERROR.rotate">
+            <summary>
+            平移过程中的图像之间旋转变化量
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_MECHANISM_TRANS_ERROR_V2">
+            <summary>
+            V2版本图像之间的变化关系
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_MECHANISM_TRANS_ERROR_V2.trans">
+            <summary>
+            平移过程中图像移动量与机够移动量之间的偏差(距离误差)
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_MECHANISM_TRANS_ERROR_V2.scale">
+            <summary>
+            平移过程中的图像尺度变化
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_MECHANISM_TRANS_ERROR_V2.rotate">
+            <summary>
+            平移过程中的图像之间旋转变化量
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_NIMG_TRANS_MOTION_ERR">
+            <summary>
+            机构平移运动误差，图像的尺度变化、 角度变化以及移动距离
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_NIMG_ROT_MOTION_ERR">
+            <summary>
+            机构旋转运动误差
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_NIMG_CALIB_ERR_V2">
+            <summary>
+            V2版本N图像标定误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_CALIB_ERR_V2.trans_est_err">
+            <summary>
+            平移估计误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_CALIB_ERR_V2.rot_est_err">
+            <summary>
+            旋转估计误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_CALIB_ERR_V2.trans_motion_err">
+            <summary>
+            机构平移误差（相对误差，百分比）
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_NIMG_CALIB_ERR_V2.rot_motion_err">
+            <summary>
+            机构旋转误差（相对误差，百分比）
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_EXTERNAL">
+            <summary>
+            N图像标定外部输入
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_EXTERNAL.img_num_tran">
+            <summary>
+            平移图像数目
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_EXTERNAL.img_num_rot">
+            <summary>
+            输入旋转的图像数目
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_EXTERNAL.board_type">
+            <summary>
+            标定板类型,外部按照1为I型标定板，2为II型标定板
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_EXTERNAL.move_type">
+            <summary>
+            机构运动方向(1为先X后Y，2为先Y后X，机构均向正向移动)
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_EXTERNAL.move_dis">
+            <summary>
+            机构每次移动的偏移量，单位mm
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_EXTERNAL.rotate_angle">
+            <summary>
+            机构每次旋转的角度绝对值
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_EXTERNAL.subpixelWin">
+            <summary>
+            亚像素窗口大小
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_EXTERNAL.grayValue">
+            <summary>
+            灰度值
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_EXTERNAL.subPixelAuto">
+            <summary>
+            是否自适应亚像素窗口
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_EXTERNAL.filter">
+            <summary>
+            是否滤波
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_EXTERNAL.cameraIsStatic">
+            <summary>
+            相机模式：true相机静止，false相机运动
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS">
+            <summary>
+            N图标定中输出对应点集,每个棋盘格物理角点在N张图中的图像位置
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS.corners_img">
+            <summary>
+            期望标定板位姿角点
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS.corners_world">
+            <summary>
+            当前角点物理坐标
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS.corners_num">
+            <summary>
+            角点数量
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT">
+            <summary>
+            输入标定板图片实现N点标定功能输出
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT.img_calib_sts">
+            <summary>
+            每张图像的标定状态
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT.homo_mat">
+            <summary>
+            homo矩阵
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT.rot_center_img">
+            <summary>
+            轴心在旋转图像中的图像坐标
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT.rot_direct_state">
+            <summary>
+            角度旋转方向一致性状态，1表示计算角度与输入角度旋转方向相同，-1表示计算角度与输入角度旋转方向相反
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT.trans_motion_err">
+            <summary>
+            机构平移运动误差，图像的尺度变化、角度变化以及移动距离
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT.err_trans">
+            <summary>
+            平移估计时的像素误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT.err_trans_world">
+            <summary>
+            平移估计时的真实误差，单位mm
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT.err_rot">
+            <summary>
+            旋转估计像素误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT.err_rot_world">
+            <summary>
+            旋转估计真实误差，单位mm
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT.rot_angle_err">
+            <summary>
+            机构输入旋转角度与图像旋转角度之差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT.corner_pairs_info">
+            <summary>
+            每个棋盘格物理角点在N张输入图像中的位置
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT.corner_pairs_num">
+            <summary>
+            输出的位置信息数量
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_CALIBBOARD_DIRECTION">
+            <summary>
+            机构移动方向信息
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_DIRECTION.Xvector">
+            <summary>
+            机构坐标系x方向向量
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_DIRECTION.Yvector">
+            <summary>
+            机构坐标系y方向向量
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_DIRECTION.move_direc">
+            <summary>
+            y方向和x方向移动比
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_V2_EXTERNAL">
+            <summary>
+            V2-N图像标定外部输入
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_V2_EXTERNAL.img_num_tran">
+            <summary>
+            平移图像数目
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_V2_EXTERNAL.img_num_rot">
+            <summary>
+            旋转图像数目
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_V2_EXTERNAL.board_type">
+            <summary>
+            标定板类型
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_V2_EXTERNAL.world">
+            <summary>
+            标定物理点集
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_V2_EXTERNAL.subpixelWin">
+            <summary>
+            亚像素窗口大小
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_V2_EXTERNAL.grayValue">
+            <summary>
+            灰度值
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_V2_EXTERNAL.subPixelAuto">
+            <summary>
+            是否自适应亚像素窗口
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_V2_EXTERNAL.filter">
+            <summary>
+            是否滤波
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_V2_EXTERNAL.cameraIsStatic">
+            <summary>
+            相机模式：true相机静止，false相机运动
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT_V2">
+            <summary>
+            V2-N图像标定输出
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT_V2.img_calib_sts">
+            <summary>
+            每张图像的标定状态，可反馈具体某张图像标定失败
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT_V2.rot_direct_state">
+            <summary>
+             此参数辅助计算正确的旋转中心，1表示输入角度方向正确，-1表示输入角度应取反
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT_V2.homo">
+            <summary>
+            homo矩阵
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT_V2.rot_center_img">
+            <summary>
+            轴心在旋转图像中的图像坐标
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT_V2.calib_err">
+            <summary>
+            标定误差
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT_V2.corner_pairs_info">
+            <summary>
+            每个棋盘格物理角点在N张输入图像中的位置
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT_V2.corner_pairs_num">
+            <summary>
+            输出的位置信息数量
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT_V2.direction">
+            <summary>
+            机构移动方向信息
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT_V2.status">
+            <summary>
+            评估标定误差状态，MVBCALIB_ERR_CHECK_STATUS为结果类型，正常为MVALG_STS_OK(0)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.NPOINT_CALIB_INPUT_INFO">
+            <summary>
+            N点标定输入参数信息
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.ALIGNPOINT_CALIB_INPUT_INFO">
+            <summary>
+            对位标定输入参数信息
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.CalibManager.calibProcessMemTab">
+            <summary>
+            20201010标定库V2.7版本内存分配改为MVB_MEM_TAB_V3
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.CalibManager.m_hCalibProcess">
+            <summary>
+            算法句柄
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.CalibManager.bInitDone">
+            <summary>
+            初始化标志
+            </summary>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibManager.Init">
+            <summary>
+            初始化
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibManager.Close">
+            <summary>
+            关闭
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibManager.NinePointsCalib(HikAlgorithmTool.NPOINT_CALIB_INPUT_INFO,HikAlgorithmTool.MVBCALIB_HOMO_EST_OUTPUT@)">
+            <summary>
+            9点标定
+            </summary>
+            <param name="CalibInput"></param>
+            <param name="CalibOut"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibManager.NPointsCalib(HikAlgorithmTool.ALIGNPOINT_CALIB_INPUT_INFO,HikAlgorithmTool.MVBCALIB_ALIGN_INIT_OUTPUT@)">
+            <summary>
+            12点标定
+            </summary>
+            <param name="CalibInput"></param>
+            <param name="CalibOut"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibManager.ScaleCalib(HikAlgorithmTool.SCALE_CALIB_INPUT_INFO,HikAlgorithmTool.MVBCALIB_ALIGN_SCALE_MAT_OUTPUT@)">
+            <summary>
+            尺度标定
+            </summary>
+            <param name="CalibInput"></param>
+            <param name="CalibOut"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibManager.CalibTrans(HikAlgorithmTool.MVBCALIB_HOMO_TRANS_INPUT,HikAlgorithmTool.MVBCALIB_HOMO_TRANS_OUTPUT@)">
+            <summary>
+            标定转换
+            </summary>
+            <param name="CalibTransInput"></param>
+            <param name="CalibTransOut"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibManager.SaveCalibModel(System.Single[],System.String)">
+            <summary>
+            保存标定文件
+            </summary>
+            <param name="outputInfo">标定数据</param>
+            <param name="modlePath">标定文件路径(后缀为.iwcal)</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibManager.LoadCalibModel(System.String)">
+            <summary>
+            加载标定文件
+            </summary>
+            <param name="modlePath">标定文件路径</param>
+            <returns>标定文件数据</returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibManager.ZiYanCalibMap(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,HikAlgorithmTool.HKA_SIZE_I,HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_INPUT,HikAlgorithmTool.MVBCALIB_TWO_IMG_CALIB_OUTPUT@,System.Collections.Generic.List{HikAlgorithmTool.PointF}@,System.Collections.Generic.List{HikAlgorithmTool.PointF}@,System.Collections.Generic.List{HikAlgorithmTool.PointF}@,System.Collections.Generic.List{HikAlgorithmTool.PointF}@)">
+            <summary>
+            图像映射标定
+            </summary>
+            <param name="imageSize">图像的尺寸</param>
+            <param name="input">输入</param>
+            <param name="output">输出</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibManager.ZiYanNPointCalib(System.Int32,System.Int32,System.Int32,System.Int32,HikAlgorithmTool.HKA_SIZE_I,HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT,HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT@,HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS[]@)">
+            <summary>
+            N图像标定
+            </summary>
+            <param name="imageSize">图像的尺寸</param>
+            <param name="input">输入</param>
+            <param name="output">输出</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibManager.ZiYanNPointCalib_V2(System.Int32,System.Int32,System.Int32,System.Int32,HikAlgorithmTool.HKA_SIZE_I,HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_INPUT_V2,HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS_HOMO_EST_OUTPUT_V2@,HikAlgorithmTool.MVBCALIB_CALIBBOARD_N_POINTS[]@)">
+            <summary>
+            V2版本N图像标定
+            </summary>
+            <param name="subpixelWin"></param>
+            <param name="grayValue"></param>
+            <param name="subPixelAuto"></param>
+            <param name="filter"></param>
+            <param name="imageSize"></param>
+            <param name="input"></param>
+            <param name="output"></param>
+            <param name="outputPointsData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CalibManager.RotCenter(HikAlgorithmTool.MVBCALIB_ALIGN_AXIS_INPUT,HikAlgorithmTool.MVBCALIB_ALIGN_AXIS_OUTPUT@)">
+            <summary>
+            旋转中心标定
+            </summary>
+            <param name="CalibInput"></param>
+            <param name="CalibOut"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.GetObjectSize(System.Object)">
+            <summary>
+            获取对象的大小
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.GetObjectSize(System.Type)">
+            <summary>
+            获取类型的大小
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.AllocIntPtr(System.Int32)">
+            <summary>
+            分配指定大小的指针
+            </summary>
+            <param name="size"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.FreeAllocIntPtr(System.IntPtr)">
+            <summary>
+            释放AllocIntPtr分配的指针
+            </summary>
+            <param name="ptr"></param>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.Object2IntPtr(System.Object,System.Runtime.InteropServices.GCHandle@)">
+            <summary>
+            对象转指针
+            </summary>
+            <param name="bytes"></param>
+            <param name="hObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.FreeGCHandle(System.Runtime.InteropServices.GCHandle)">
+            <summary>
+            释放对象转指针分配的内存
+            </summary>
+            <param name="hObject"></param>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.IntPtr2Ts``1(System.IntPtr,System.Int32)">
+            <summary>
+            IntPtr转数组
+            </summary>
+            <param name="ptr"></param>
+            <param name="size"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.PtrToStructurs``1(System.IntPtr,System.Int32)">
+            <summary>
+            Ptr转结构体数组
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pt"></param>
+            <param name="lenth"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.Bytes2IntPtr(System.Byte[])">
+            <summary>
+            Bytes转IntPtr
+            </summary>
+            <param name="bytes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.IntPtr2Bytes(System.IntPtr,System.Int32)">
+            <summary>
+            IntPtr转Bytes
+            </summary>
+            <param name="ptr"></param>
+            <param name="size"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.FreeBytesIntPtr(System.IntPtr)">
+            <summary>
+            释放Bytes转换的指针
+            </summary>
+            <param name="ptr"></param>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.IntPtr2Structure``1(System.IntPtr,``0@)">
+            <summary>
+            IntPtr转Structure
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="ptr"></param>
+            <param name="structure"></param>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.Structure2IntPtr(System.Object,System.IntPtr@)">
+            <summary>
+            Structure转IntPtr
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="ptr"></param>
+            <param name="structure"></param>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.Structure2IntPtr(System.Object)">
+            <summary>
+            Structure转IntPtr
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="ptr"></param>
+            <param name="structure"></param>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.StructureArray2IntPtr(System.Object)">
+            <summary>
+            Structure数组转IntPtr
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="ptr"></param>
+            <param name="structure"></param>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.FreeStructureIntPtr(System.IntPtr)">
+            <summary>
+            释放结构体转换的指针
+            </summary>
+            <param name="ptr"></param>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.Structure2Bytes(System.Object,System.Int32)">
+            <summary>
+            将struct类型转换为byte[]
+            </summary>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.Structure2Bytes(System.Object)">
+            <summary>
+            结构体转byte数组
+            </summary>
+            <param name="structObj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.Bytes2Structure``1(System.Byte[])">
+            <summary>
+            byte数组转结构体
+            </summary>
+            <typeparam name="StructType"></typeparam>
+            <param name="bytesBuffer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.ExternalCallHelper.Bytes2Structure(System.Byte[],System.Type)">
+            <summary>
+            byte数组转结构体
+            </summary>
+            <param name="bytes">byte数组</param>
+            <param name="type">结构体类型</param>
+            <returns>转换后的结构体</returns>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_POINT_S">
+            <summary>
+            点(短整型）
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_POINT_F">
+            <summary>
+            点(浮点型) 
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_RECT_S">
+            <summary>
+            矩形(短整型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_RECT_I">
+            <summary>
+            矩形(整型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_RECT_F">
+            <summary>
+            矩形(浮点型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_BOX_S">
+            <summary>
+            包围盒(短整型),宽度为(right - left + 1), 高度为(bottom - top + 1)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_BOX_I">
+            <summary>
+            包围盒(整型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_BOX_F">
+            <summary>
+            包围盒(浮点型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_POLYGON_S">
+            <summary>
+            多边形(短整型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_POLYGON_I">
+            <summary>
+            多边形(整型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_POLYGON_F">
+            <summary>
+            多边形(浮点型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_VECTOR_S">
+            <summary>
+            矢量（短整型）
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_VECTOR_I">
+            <summary>
+            矢量（整型）
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_VECTOR_F">
+            <summary>
+            矢量(浮点型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_SIZE_S">
+            <summary>
+            尺寸(短整型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_SIZE_I">
+            <summary>
+            尺寸(整型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_SIZE_F">
+            <summary>
+            尺寸(浮点型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_MEM_ALIGNMENT">
+            <summary>
+            内存对齐属性
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_MEM_TAB">
+            <summary>
+            内存分配结构体 
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_MEM_TAB_V3">
+            <summary>
+            Calib内存分配结构体 
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_MEM_TAB_TYPE">
+            <summary>
+            内存表的个数
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_IMAGE_FORMAT">
+            <summary>
+            图像格式（新的类型添加在最后面，保持前向兼容，每种格式按段长度100划分）
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_IMAGE">
+            <summary>
+            图像格式表示结构体
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_KEY_PARAM">
+            <summary>
+            算法库接口设置、获取单个参数结构体，算法库内、库外都使用，公共模块不使用
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_KEY_PARAM_LIST">
+            <summary>
+            算法库接口设置、获取多个参数结构体。算法库内、库外都使用，公共模块不使用
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_SET_CFG_TYPE">
+            <summary>
+            设置配置参数类型（cfg_type），HKAXXX_SetConfig函数使用
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HKA_GET_CFG_TYPE">
+            <summary>
+            获取配置参数类型（cfg_type），HKAXXX_GetConfig函数使用
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_ALG_ENC_TYPE">
+            <summary>
+            算法组件加密能力集
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_INTER_TYPE">
+            <summary>
+            插值算法种类 (interpolation)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_NORM_TYPE">
+            <summary>
+            范数类型 (normalizeType)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_BAYER_TYPE">
+            <summary>
+            bayer数据类型 (bayerType)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_DIFFUSION_TYPE">
+            <summary>
+            扩散方程 (diffusionMode)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_DIRECT_TYPE">
+            <summary>
+            方向类型 (directionType)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_MASKTYPE_TYPE">
+            <summary>
+            加权中值滤波Mask类型 (maskType)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_REPLACEMENT_TYPE">
+            <summary>
+            在空域内平滑图像来抑制噪声函数像素值替换类型 (replacementMode)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_CONNECTIVITY">
+            <summary>
+            连通类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_REG_DOMAIN_ARRAY_SORT_TYPE">
+            <summary>
+            连通域集排序类型：_MVBI_SortDomainArray函数使用
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_DIST_TYPE">
+            <summary>
+            距离类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_MORPH_STRUCTURE">
+            <summary>
+            结构元素数据类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_EDGE_POLARITY">
+            <summary>
+            边缘极性类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_EDGE_MODE">
+            <summary>
+            边缘模型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_EDGE_SCORE_MODE">
+            <summary>
+            边缘评分模型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_CIRCLE_FIND_MODES">
+            <summary>
+            圆查找类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_CIRCLE_SCAN_TYPES">
+            <summary>
+            圆扫描方向
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_LINE_FIND_MODES">
+            <summary>
+            直线查找类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_EDGE_FIND_MODES">
+            <summary>
+            边缘查找类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_PAIR_FIND_FIND_MODES">
+            <summary>
+            边缘对查找类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_LINE_FIND_ORIENT">
+            <summary>
+            直线查找方向
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_EDGE_FIND_ORIENT">
+            <summary>
+            边缘查找方向
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_CALIPER_SCORE_TYPE">
+            <summary>
+            边缘计分方式为前三种，边缘对计分方式全部可用
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_PAT_MODEL_TYPES">
+            <summary>
+            模板模型类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_BLOBSORT_TYPE">
+            <summary>
+            blob排序方式
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_BLOBSELECT_ENABLES">
+            <summary>
+            使能标记，用来标记筛选因子
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_CIRCLE_TO_CIRCLE_TYPES">
+            <summary>
+            圆与圆的位置关系
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_RGB_TO_GRAY_TYPE">
+            <summary>
+            RGB转灰度处理的类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_POS_FIX_MODE">
+            <summary>
+            位置补正模式
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_LINE_SCAN_SEGMENT_TYPE">
+            <summary>
+            二值化分割类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_LINE_SCAN_MODE_TYPE">
+            <summary>
+            线扫描方式类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_REGRESSION_FUN">
+            <summary>
+            回归函数(regression function)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_GEOFIT_INIT_TYPE">
+            <summary>
+            基于回归估计的几何拟合初始化类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_BOX">
+            <summary>
+            就是MVBI_BOX_F
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_CONTOUR_F">
+            <summary>
+            基于像素点的轮廓
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_CONTOUR_S">
+            <summary>
+            连通域轮廓
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_BLOB_PROP">
+            <summary>
+            团块特征
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_BLOB_PROPS">
+            <summary>
+            单个BLOB信息组成
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_CALIPER_INFO">
+            <summary>
+            卡尺单个边缘检测结果信息
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_CALIPER_EDGE">
+            <summary>
+            卡尺检测边缘信息（边缘对中使用）
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_CALIPER_PAIR_INFO">
+            <summary>
+            卡尺检测边线对信息输出
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_PAT_MATCH_INFO">
+            <summary>
+            模板匹配信息
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_CIRCLE_I">
+            <summary>
+            圆系数(整型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_CIRCLE_F">
+            <summary>
+            圆系数(浮点型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_ARC_F">
+            <summary>
+            圆弧(浮点型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_LINE_COE">
+            <summary>
+            直线的系数
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_LINE_F">
+            <summary>
+            直线系数(整型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_LINE_I">
+            <summary>
+            直线系数(浮点型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_ELLIPSE_F">
+            <summary>
+            椭圆参数(浮点型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_ELLIPSE_COE_F">
+            <summary>
+            椭圆的系数
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_ANNULUS_F">
+            <summary>
+            annulus
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_ARC">
+            <summary>
+            圆弧
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_POLYGON_S">
+            <summary>
+            多边形(短整型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_POLYGON_I">
+            <summary>
+            多边形(整型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_POLYGON_F">
+            <summary>
+            多边形(浮点型)
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_ROI_LET">
+            <summary>
+            ROI基元
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_ROI_PARAM">
+            <summary>
+            ROI参数
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_ROI_TYPE">
+            <summary>
+            ROI类型
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_EDGELET_CHAIN">
+            <summary>
+            EdgeLet Chain（边缘点链）
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_EDGELET_CHAIN_SET">
+            <summary>
+            EdgeLet Chain Set（边缘点链）
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_FEATURELET">
+            <summary>
+            FeatureLet（元特征）
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_FEATURELET_CHAIN">
+            <summary>
+            FeatureLet Chain（元特征链）
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_FEATURELET_CHAIN_SET">
+            <summary>
+            FeatureLet Chain Set（元特征链集合）
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_SHAPE">
+            <summary>
+            形状
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_FIDUCIAL_POSE">
+            <summary>
+            位置修正时的基准点
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_GEOEDGET_STATUS">
+            <summary>
+            几何边缘点状态
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_GEOEDGE_INFO">
+            <summary>
+            几何边缘点信息
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVBI_TRANSFORM_2D_PARAM">
+            <summary>
+            二维变换参数
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.MVB_DEBUG_INFO">
+            <summary>
+            调试信息
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.Mvb_Types">
+            <summary>
+            常量定义
+            </summary>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CreateVerticalLineByAngleAndPoint(System.Single,System.Single,System.Single,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@)">
+            <summary>
+            已知直线L和直线外一点坐标(x,y)，求过该点且垂直于直线L的直线
+            </summary>
+            <param name="x">已知点x</param>
+            <param name="y">已知点y</param>
+            <param name="angle">已知角度(单位为度)</param>
+            <param name="xstart">创建出的直线起始x</param>
+            <param name="ystart">创建出的直线起始y</param>
+            <param name="xend">创建出的直线终止x</param>
+            <param name="yend">创建出的直线终止y</param>
+            <param name="angleVert">创建出的直线角度</param>
+            <param name="kVert">创建出的直线斜率</param>
+            <param name="bVert">创建出的直线截距</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CreateParallelLineByAngleAndPoint(System.Single,System.Single,System.Single,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@)">
+            <summary>
+            已知直线L和直线外一点坐标(x,y)，求过该点且平行于直线L的直线
+            </summary>
+            <param name="x">已知点x</param>
+            <param name="y">已知点y</param>
+            <param name="angle">已知角度(单位为度)</param>
+            <param name="xstart">创建出的直线起始x</param>
+            <param name="ystart">创建出的直线起始y</param>
+            <param name="xend">创建出的直线终止x</param>
+            <param name="yend">创建出的直线终止y</param>
+            <param name="anglePara">创建出的直线角度</param>
+            <param name="kPara">创建出的直线斜率</param>
+            <param name="bPara">创建出的直线截距</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CreateParallelLineByLineAndDis(System.Single,System.Single,System.Single,System.Single,System.Single,System.Single@,System.Single@,System.Single@,System.Single@)">
+            <summary>
+            求与已知直线平行且间距为d的平行线方法，距离的必须为正值，返回两条平行线
+            </summary>
+            <param name="xstart">已知直线起点x</param>
+            <param name="ystart">已知直线起点y</param>
+            <param name="xend">已知直线终点x</param>
+            <param name="yend">已知直线终点y</param>
+            <param name="dis">平行线距直线距离</param>
+            <param name="anglePara">创建出平行线角度(单位为度)</param>
+            <param name="kPara">创建出平行线斜率</param>
+            <param name="bPara1">创建出平行线1截距</param>
+            <param name="bPara2">创建出平行线2截距</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CreateMidpointlineByTwoLines(System.Single[],System.Single[],System.Single[],System.Single[],System.Single[]@,System.Single[]@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@)">
+            <summary>
+            已知两条直线L1和L2，求其中点线(一元线性回归法)
+            </summary>
+            <param name="x1">直线1的坐标x集合</param>
+            <param name="y1">直线1的坐标y集合</param>
+            <param name="x2">直线2的坐标x集合</param>
+            <param name="y2">直线2的坐标y集合</param>
+            <param name="xMid">输出中点线的坐标x集合</param>
+            <param name="yMid">输出中点线的坐标y集合</param>
+            <param name="xstart">输出中点线的起点坐标x</param>
+            <param name="ystart">输出中点线的起点坐标y</param>
+            <param name="xend">输出中点线的终点坐标x</param>
+            <param name="yend">输出中点线的终点坐标y</param>
+            <param name="kMid">输出中点线的斜率k</param>
+            <param name="bMid">输出中点线的截距b</param>
+            <param name="angleMid">输出中点线的角度(单位为度)</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CreateMidpointlineByTwoLinesV2(System.Single[],System.Single[],System.Single[],System.Single[],System.Single[]@,System.Single[]@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@)">
+            <summary>
+            已知两条直线L1和L2，求其中点线V2方法(二元线性回归法)
+            </summary>
+            <param name="x1">直线1的坐标x集合</param>
+            <param name="y1">直线1的坐标y集合</param>
+            <param name="x2">直线2的坐标x集合</param>
+            <param name="y2">直线2的坐标y集合</param>
+            <param name="xMid">输出中点线的坐标x集合</param>
+            <param name="yMid">输出中点线的坐标y集合</param>
+            <param name="xstart">输出中点线的起点坐标x</param>
+            <param name="ystart">输出中点线的起点坐标y</param>
+            <param name="xend">输出中点线的终点坐标x</param>
+            <param name="yend">输出中点线的终点坐标y</param>
+            <param name="kMid">输出中点线的斜率k</param>
+            <param name="bMid">输出中点线的截距b</param>
+            <param name="angleMid">输出中点线的角度(单位为度)</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CreateAngleBisectorByTwoLines(System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@,System.Single@)">
+            <summary>
+            已知两条直线L1和L2，求其角平分线
+            </summary>
+            <param name="x1">直线1的某点坐标x</param>
+            <param name="y1">直线1的某点坐标y</param>
+            <param name="r1">直线1的角度</param>
+            <param name="x2">直线2的某点坐标x</param>
+            <param name="y2">直线2的某点坐标y</param>
+            <param name="r2">直线2的角度</param>
+            <param name="xIntersection">两直线交点x</param>
+            <param name="yIntersection">两直线交点y</param>
+            <param name="xstart">输出角平分线起点x</param>
+            <param name="ystart">输出角平分线起点y</param>
+            <param name="xend">输出角平分线终点x</param>
+            <param name="yend">输出角平分线终点y</param>
+            <param name="kAvg">输出角平分线终斜率</param>
+            <param name="bAvg">输出角平分线截距</param>
+            <param name="angleAvg">输出角平分线角度(单位为度)</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CreateCircleFit(System.Collections.Generic.List{HikAlgorithmTool.PointF},System.Single,System.Double@,System.Double@,System.Double@,System.Double@,System.Double@)">
+            <summary>
+            圆拟合(至少两个点)
+            </summary>
+            <param name="imagePosList">像素点集</param>
+            <param name="pixResolution">单像素精度</param>
+            <param name="centerX">圆心坐标X(单位:像素)</param>
+            <param name="centerY">圆心坐标Y(单位:像素)</param>
+            <param name="radius">圆半径(单位:像素)</param>
+            <param name="err_rot">拟合像素误差</param>
+            <param name="err_rot_world">拟合物理误差</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CreateContourCircle(System.Single,System.Single,System.Single,System.Int32,System.Collections.Generic.List{HikAlgorithmTool.PointF}@)">
+            <summary>
+            圆轮廓点集创建
+            </summary>
+            <param name="centerX">圆心坐标X</param>
+            <param name="centerY">圆心坐标Y</param>
+            <param name="radius">圆半径</param>
+            <param name="pointsNum">需要创建的点集数量</param>
+            <param name="contourCircle">圆轮廓点集结果</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CalDisPointToLine(System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single@)">
+            <summary>
+            计算点到直线的距离
+            </summary>
+            <param name="pointx">点x坐标</param>
+            <param name="pointy">点y坐标</param>
+            <param name="xstart">直线起点x坐标</param>
+            <param name="ystart">直线起点y坐标</param>
+            <param name="xend">直线终点x坐标</param>
+            <param name="yend">直线终点y坐标</param>
+            <param name="dis">点到直线距离</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CalContourBias(HikAlgorithmTool.PointF,System.Single,System.Int32,HikAlgorithmTool.PointF@)">
+            <summary>
+            轮廓点偏移
+            </summary>
+            <param name="srcList">原始轮廓点</param>
+            <param name="bias">偏移量(单位像素)</param>
+            <param name="dir">偏移方向 0:向内 1:向外</param>
+            <param name="resultList">偏移后轮廓点</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CreateLineByTwoPoints(HikAlgorithmTool.PointF,HikAlgorithmTool.PointF,System.Single@,System.Single@,System.Single@)">
+            <summary>
+            已知两点P1和P2，求过两点的直线L(ax + by + c = 0)
+            </summary>
+            <param name="p1">点1</param>
+            <param name="p2">点2</param>
+            <param name="a">直线参数a</param>
+            <param name="b">直线参数b</param>
+            <param name="c">直线参数c</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.IntersectionPointByTwoLines(System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,HikAlgorithmTool.PointF@)">
+            <summary>
+            已知两条直线L1和L2，求两条直线的交点P(直线方程为：ax + by + c = 0)
+            </summary>
+            <param name="a1">直线1参数a</param>
+            <param name="b1">直线1参数b</param>
+            <param name="c1">直线1参数c</param>
+            <param name="a2">直线2参数a</param>
+            <param name="b2">直线2参数b</param>
+            <param name="c2">直线2参数c</param>
+            <param name="point">交点</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CalP2PAngle(System.Double,System.Double,System.Double,System.Double,System.Double@)">
+            <summary>
+            求arctan角度（角度归一化，目前只能防住水平边）
+            </summary>
+            <param name="standX1">点1X</param>
+            <param name="standY1">点1Y</param>
+            <param name="standX2">点2X</param>
+            <param name="standY2">点2Y</param>
+            <param name="angle">角度</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CalP2PAngle2(System.Single,System.Single,System.Single,System.Single,System.Double@)">
+            <summary>
+            求Arctan2角度
+            </summary>
+            <param name="startX">起点1X</param>
+            <param name="startY">起点1Y</param>
+            <param name="endX">终点2X</param>
+            <param name="endY">终点2Y</param>
+            <param name="angle">角度</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.CalP2PWorldAngle2(System.Double[],System.Single,System.Single,System.Single,System.Single,System.Single@)">
+            <summary>
+            用于双12点对位场景的角度计算，已知手眼标定矩阵和两个像素点，求两物理点连线的Arctan2角度
+            </summary>
+            <param name="matrix"></param>
+            <param name="lineStart_x">起始点x</param>
+            <param name="lineStart_y">起始点y</param>
+            <param name="lineEnd_x">终点x</param>
+            <param name="lineEnd_y">终点y</param>
+            <param name="angle">输出角度</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.MatrixRead(System.String,System.Double[]@)">
+            <summary>
+            标定矩阵读取方法
+            </summary>
+            <param name="MatrixFilePath"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.MatrixReverse(System.Double[],System.Double[]@)">
+            <summary> 
+            求逆矩阵
+            </summary>
+            <param name="oriMatrix">原始矩阵</param>
+            <param name="result">逆矩阵</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.MatrixReverse3x3(System.Double[],System.Double[]@)">
+            <summary>
+            求逆矩阵(针对3X3矩阵)
+            </summary>
+            <param name="src_mat">原矩阵</param>
+            <param name="des_mat">逆矩阵</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.MatrixTranspose(System.Double[],System.Int32,System.Int32,System.Double[]@)">
+            <summary>
+            矩阵转置
+            </summary>
+            <param name="src_mat">原矩阵</param>
+            <param name="m">原矩阵行数</param>
+            <param name="n">原矩阵列数</param>
+            <param name="des_mat">转置后矩阵</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.MatrixMultiply(System.Double[],System.Double[],System.Int32,System.Int32,System.Int32,System.Double[]@)">
+            <summary>
+            矩阵乘法
+            </summary>
+            <param name="left_mat">左乘矩阵m*n</param>
+            <param name="rigth_mat">右乘矩阵n*p</param>
+            <param name="m">左乘矩阵行数</param>
+            <param name="n">左乘矩阵列数</param>
+            <param name="p">右乘矩阵列数</param>
+            <param name="des_mat">结果矩阵m*p</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.NPointsCalibLSQ(System.Double[],System.Double[],System.Boolean,System.Double[]@,System.Double@,System.Double@,System.Double@)">
+            <summary>
+            求N点标定矩阵(最小二乘估计)(至少四个点)
+            </summary>
+            <param name="imagePoints">像素点集</param>
+            <param name="worldPoints">物理点集</param>
+            <param name="cameraIsStatic">相机动静态</param>
+            <param name="nPointsCalibResult">N点标定矩阵</param>
+            <param name="spix">单像素精度</param>
+            <param name="err_trans_avg">像素平移误差</param>
+            <param name="err_trans_world_avg">物理平移误差</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.ArrayToMatrix(System.Double[],System.Double[0:,0:]@)">
+            <summary>
+            数组转矩阵
+            </summary>
+            <param name="array">原始数组</param>
+            <param name="result">结果矩阵</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.MatrixToArray(System.Double[0:,0:],System.Double[]@)">
+            <summary>
+            矩阵转数组
+            </summary>
+            <param name="matrix">原始矩阵</param>
+            <param name="result">结果数组</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.PointFToArray(HikAlgorithmTool.PointF,System.Double[]@)">
+            <summary>
+            IR2点转IP2齐次坐标
+            </summary>
+            <param name="point">点坐标</param>
+            <param name="result">点齐次坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.ArrayToPointF(System.Double[],HikAlgorithmTool.PointF@)">
+            <summary>
+            IP2齐次坐标转IR2点
+            </summary>
+            <param name="array">点齐次坐标</param>
+            <param name="point">点坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.IP2MatrixCreate(System.Single,System.Single,System.Single,System.Single,System.Double[]@)">
+            <summary>
+            IP2齐次变换矩阵构造
+            </summary>
+            <param name="angle">旋转角度(角度制)</param>
+            <param name="scale">缩放因子</param>
+            <param name="Tx">X方向平移量</param>
+            <param name="Ty">Y方向平移量</param>
+            <param name="result">输出矩阵</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.IP2MatrixSolvePnP(System.Single,System.Single,System.Double[],System.Double[],System.Double[]@)">
+            <summary>
+            IP2齐次变换矩阵求解(输入为齐次坐标)
+            </summary>
+            <param name="angle">旋转角度(角度制)</param>
+            <param name="scale">缩放因子</param>
+            <param name="markPointArray">基准点齐次坐标</param>
+            <param name="curPointArray">运行点齐次坐标</param>
+            <param name="IP2Matrix">输出矩阵</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.IP2MatrixSolvePnPByPointF(System.Single,System.Single,HikAlgorithmTool.PointF,HikAlgorithmTool.PointF,System.Double[]@)">
+            <summary>
+            IP2齐次变换矩阵求解(输入为点坐标)
+            </summary>
+            <param name="angle">旋转角度(角度制)</param>
+            <param name="scale">缩放因子</param>
+            <param name="markPoint">基准点</param>
+            <param name="curPoint">运行点</param>
+            <param name="IP2Matrix">输出矩阵</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.IP2AbsPosCalculate(System.Int32,System.Int32,System.Single,System.Single,HikAlgorithmTool.PointF,HikAlgorithmTool.PointF,HikAlgorithmTool.PointF,HikAlgorithmTool.PointF,HikAlgorithmTool.PointF@)">
+            <summary>
+            齐次矩阵法计算2D定位坐标
+            </summary>
+            <param name="calibType">标定类型(9点标定为9，12点标定为12)</param>
+            <param name="isRightCoor">机构坐标系手性(左手：-1 右手：1 默认值为1)</param>
+            <param name="angle">基准点到运行点且带补偿值的旋转角度(角度制)</param>
+            <param name="scale">缩放因子(默认值为1)</param>
+            <param name="markPoint">基准点</param>
+            <param name="curPoint">运行点</param>
+            <param name="TeachPos">示教点</param>
+            <param name="CompensationVal">物理补偿值</param>
+            <param name="AbsPos">绝对定位坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonMathTool.VectorCrossProduct(System.Double[],System.Double[],System.Double[]@)">
+            <summary>
+            向量叉乘(针对3维向量)
+            </summary>
+            <param name="left_vector">左乘向量</param>
+            <param name="right_vector">右乘向量</param>
+            <param name="result_vector">叉积向量</param>
+            <returns></returns>
+        </member>
+        <member name="T:HikAlgorithmTool.CommonLocationTool">
+            <summary>
+            定位工具类
+            </summary>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonLocationTool.AlignOffsetVal(System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single@,System.Single@,System.Single@)">
+            <summary>
+            平台对位偏差值计算
+            </summary>
+            <param name="targetX">目标X值</param>
+            <param name="targetY">目标Y值</param>
+            <param name="targetR">目标R值</param>
+            <param name="objX">对象X值</param>
+            <param name="objY">对象Y值</param>
+            <param name="objR">对象R值</param>
+            <param name="moveOffX">偏差X值</param>
+            <param name="moveOffY">偏差Y值</param>
+            <param name="moveOffR">偏差R值</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.CommonLocationTool.RotateAngleCalculate(System.Single,System.Single,System.Single,System.Single,System.Single,System.Single@,System.Single@)">
+            <summary>
+            旋转公式(2D中一点绕另一点旋转)
+            </summary>
+            <param name="angle">旋转角度</param>
+            <param name="inputx">要旋转点的X</param>
+            <param name="inputy">要旋转点的Y</param>
+            <param name="rotateCenterx">旋转中心X</param>
+            <param name="rotateCentery">旋转中心Y</param>
+            <param name="rotatex">旋转后点的X</param>
+            <param name="rotatey">旋转后点的Y</param>
+        </member>
+        <member name="M:HikAlgorithmTool.LocationTool.TransGrasp(System.Double[],System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,HikAlgorithmTool.PointF@,HikAlgorithmTool.PointF@)">
+            <summary>
+            平移标定抓取(相对标定)
+            </summary>
+            <param name="matrix">平移标定矩阵</param>
+            <param name="BaseImagePointX">基准图像像素坐标X</param>
+            <param name="BaseImagePointY">基准图像像素坐标Y</param>
+            <param name="BaseImagePointR">基准图像像素坐标R</param>
+            <param name="CurImagePointX">当前图像像素坐标X</param>
+            <param name="CurImagePointY">当前图像像素坐标Y</param>
+            <param name="CurImagePointR">当前图像像素坐标R</param>
+            <param name="TeachWorldPointX">机构示教位物理坐标X</param>
+            <param name="TeachWorldPointY">机构示教位物理坐标Y</param>
+            <param name="TeachWorldPointR">机构示教位物理坐标R</param>
+            <param name="OffSet">机构相对抓取坐标</param>
+            <param name="AbsSet">机构绝对抓取坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.LocationTool.TransAndRotateGrasp(System.Double[],System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Int32,System.Int32,HikAlgorithmTool.PointF@,HikAlgorithmTool.PointF@)">
+            <summary>
+            平移和旋转标定抓取
+            </summary>
+            <param name="matrix">平移和旋转标定矩阵</param>
+            <param name="BaseImagePointX">基准图像像素坐标X</param>
+            <param name="BaseImagePointY">基准图像像素坐标Y</param>
+            <param name="BaseImagePointR">基准图像像素坐标R</param>
+            <param name="CurImagePointX">当前图像像素坐标X</param>
+            <param name="CurImagePointY">当前图像像素坐标Y</param>
+            <param name="CurImagePointR">当前图像像素坐标R</param>
+            <param name="TeachWorldPointX">机构示教位物理坐标X</param>
+            <param name="TeachWorldPointY">机构示教位物理坐标Y</param>
+            <param name="TeachWorldPointR">机构示教位物理坐标R</param>
+            <param name="BaseSnapWorldPointX">基准拍照位物理坐标X</param>
+            <param name="BaseSnapWorldPointY">基准拍照位物理坐标Y</param>
+            <param name="IsRelationshipSame">旋转一致性参数（物理坐标系与图像坐标系的角度旋转关系),1表示旋转趋势一致，-1表示旋转趋势相反</param>
+            <param name="IsRightCoor">是否是右手坐标系</param>
+            <param name="OffSet">机构相对抓取坐标偏差量</param>
+            <param name="AbsSet">机构绝对抓取坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.LocationTool.TransAbsoluteGrasp(System.Double[],System.Single,System.Single,System.Single,System.Single,HikAlgorithmTool.PointF@)">
+            <summary>
+            绝对平移标定抓取
+            </summary>
+            <param name="matrix">平移标定矩阵</param>
+            <param name="BaseImagePointR">基准图像像素坐标R</param>
+            <param name="CurImagePointX">当前图像像素坐标X</param>
+            <param name="CurImagePointY">当前图像像素坐标Y</param>
+            <param name="CurImagePointR">当前图像像素坐标R</param>
+            <param name="AbsSet">绝对抓取坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.LocationTool.TransRecify(System.Double[],System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Int32,HikAlgorithmTool.PointF@,HikAlgorithmTool.PointF@)">
+            <summary>
+            平移标定纠偏
+            </summary>
+            <param name="matrix">平移标定矩阵</param>
+            <param name="BaseImagePointX">基准图像像素坐标X</param>
+            <param name="BaseImagePointY">基准图像像素坐标Y</param>
+            <param name="BaseImagePointR">基准图像像素坐标R</param>
+            <param name="CurImagePointX">当前图像像素坐标X</param>
+            <param name="CurImagePointY">当前图像像素坐标Y</param>
+            <param name="CurImagePointR">当前图像像素坐标R</param>
+            <param name="TeachWorldPointX">机构示教位物理坐标X</param>
+            <param name="TeachWorldPointY">机构示教位物理坐标Y</param>
+            <param name="TeachWorldPointR">机构示教位物理坐标R</param>
+            <param name="IsRelationshipSame">旋转一致性参数（物理坐标系与图像坐标系的角度旋转关系),1表示旋转趋势一致，-1表示旋转趋势相反</param>
+            <param name="OffSet">机构相对纠偏坐标偏差量</param>
+            <param name="AbsSet">机构绝对纠偏坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.LocationTool.TransAndRotateRecify(System.Double[],System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Int32,System.Int32,HikAlgorithmTool.PointF@,HikAlgorithmTool.PointF@)">
+            <summary>
+            平移和旋转标定纠偏
+            </summary>
+            <param name="matrix">平移和旋转标定矩阵</param>
+            <param name="BaseImagePointX">基准图像像素坐标X</param>
+            <param name="BaseImagePointY">基准图像像素坐标Y</param>
+            <param name="BaseImagePointR">基准图像像素坐标R</param>
+            <param name="CurImagePointX">当前图像像素坐标X</param>
+            <param name="CurImagePointY">当前图像像素坐标Y</param>
+            <param name="CurImagePointR">当前图像像素坐标R</param>
+            <param name="TeachWorldPointX">机构示教位物理坐标X</param>
+            <param name="TeachWorldPointY">机构示教位物理坐标Y</param>
+            <param name="TeachWorldPointR">机构示教位物理坐标R</param>
+            <param name="IsRelationshipSame">旋转一致性参数（物理坐标系与图像坐标系的角度旋转关系)，1表示旋转趋势一致，-1表示旋转趋势相反</param>
+            <param name="IsRightCoor">是否是右手坐标系</param>
+            <param name="OffSet">机构相对纠偏坐标偏差量</param>
+            <param name="AbsSet">机构绝对纠偏坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.LocationTool.KCalibRecify(System.Double[],System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,HikAlgorithmTool.PointF@,HikAlgorithmTool.PointF@)">
+            <summary>
+            比例系数纠偏
+            </summary>
+            <param name="matrix">平移和旋转标定矩阵</param>
+            <param name="BaseImagePointX">基准图像像素坐标X</param>
+            <param name="BaseImagePointY">基准图像像素坐标Y</param>
+            <param name="BaseImagePointR">基准图像像素坐标R</param>
+            <param name="CurImagePointX">当前图像像素坐标X</param>
+            <param name="CurImagePointY">当前图像像素坐标Y</param>
+            <param name="CurImagePointR">当前图像像素坐标R</param>
+            <param name="TeachWorldPointX">机构示教位物理坐标X</param>
+            <param name="TeachWorldPointY">机构示教位物理坐标Y</param>
+            <param name="TeachWorldPointR">机构示教位物理坐标R</param>
+            <param name="OffSet">机构相对纠偏坐标偏差量</param>
+            <param name="AbsSet">机构绝对纠偏坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.LocationTool.Align(System.Double[],System.Double[],System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Int32,System.Int32,HikAlgorithmTool.PointF@,HikAlgorithmTool.PointF@)">
+            <summary>
+            常规映射对位
+            </summary>
+            <param name="matrixCalib">平移旋转标定矩阵</param>
+            <param name="matrixMap">映射标定矩阵</param>
+            <param name="ObjImagePointX">对象图像像素坐标X</param>
+            <param name="ObjImagePointY">对象图像像素坐标Y</param>
+            <param name="ObjImagePointR">对象图像像素坐标R</param>
+            <param name="TarImagePointX">目标图像像素坐标X</param>
+            <param name="TarImagePointY">目标图像像素坐标Y</param>
+            <param name="TarImagePointR">目标图像像素坐标R</param>
+            <param name="TeachWorldPointX">机构吸取示教位物理坐标X</param>
+            <param name="TeachWorldPointY">机构吸取示教位物理坐标Y</param>
+            <param name="TeachWorldPointR">机构吸取示教位物理坐标R</param>
+            <param name="IsRelationshipSame">旋转一致性  一致为1，不一致为-1</param>
+            <param name="IsRightCoor">是否是右手，右手为1，不是为-1</param>
+            <param name="OffSet">机构相对对位坐标</param>
+            <param name="AbsSet">机构绝对对位坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.LocationTool.AlignRecifyTwice(System.Double[],System.Double[],System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Int32,System.Int32,System.Int32,System.Int32,HikAlgorithmTool.PointF@,HikAlgorithmTool.PointF@,HikAlgorithmTool.PointF@,HikAlgorithmTool.PointF@)">
+            <summary>
+            各自基准纠偏对位
+            </summary>
+            <param name="matrixCalibObj">对象处平移旋转标定矩阵</param>
+            <param name="matrixCalibTar">目标处平移旋转标定矩阵</param>
+            <param name="ObjBaseImagePointX">对象基准图像像素坐标X</param>
+            <param name="ObjBaseImagePointY">对象基准图像像素坐标Y</param>
+            <param name="ObjBaseImagePointR">对象基准图像像素坐标R</param>
+            <param name="ObjCurImagePointX">对象当前图像像素坐标X</param>
+            <param name="ObjCurImagePointY">对象当前图像像素坐标Y</param>
+            <param name="ObjCurImagePointR">对象当前图像像素坐标R</param>
+            <param name="TarBaseImagePointX">目标基准图像像素坐标X</param>
+            <param name="TarBaseImagePointY">目标基准图像像素坐标Y</param>
+            <param name="TarBaseImagePointR">目标基准图像像素坐标R</param>
+            <param name="TarCurImagePointX">目标当前图像像素坐标X</param>
+            <param name="TarCurImagePointY">目标当前图像像素坐标Y</param>
+            <param name="TarCurImagePointR">目标当前图像像素坐标R</param>
+            <param name="TeachWorldPointX">机构贴合示教位物理坐标X</param>
+            <param name="TeachWorldPointY">机构贴合示教位物理坐标Y</param>
+            <param name="TeachWorldPointR">机构贴合示教位物理坐标R</param>
+            <param name="BaseSnapWorldPointX">目标基准拍照位物理坐标X</param>
+            <param name="BaseSnapWorldPointY">目标基准拍照位物理坐标Y</param>
+            <param name="IsRelationshipSameObj">对象的旋转一致性  一致为1，不一致为-1</param>
+            <param name="IsRightCoorObj">对象坐标系是否是右手，右手为1，不是为-1</param>
+            <param name="IsRelationshipSameTar">目标的旋转一致性  一致为1，不一致为-1</param>
+            <param name="IsRightCoorTar">目标坐标系是否是右手，右手为1，不是为-1</param>
+            <param name="OffSetObj">对象相对基准物理偏移量</param>
+            <param name="OffSetTar">目标相对基准物理偏移量</param>
+            <param name="OffSet">贴合相对物理坐标</param>
+            <param name="AbsSet">贴合绝对物理坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.LocationTool.TransPlace(System.Double[],System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,HikAlgorithmTool.PointF@,HikAlgorithmTool.PointF@)">
+            <summary>
+            平移标定放置(相对标定)
+            </summary>
+            <param name="matrix">平移标定矩阵</param>
+            <param name="BaseImagePointX">基准图像像素坐标X</param>
+            <param name="BaseImagePointY">基准图像像素坐标Y</param>
+            <param name="BaseImagePointR">基准图像像素坐标R</param>
+            <param name="CurImagePointX">当前图像像素坐标X</param>
+            <param name="CurImagePointY">当前图像像素坐标Y</param>
+            <param name="CurImagePointR">当前图像像素坐标R</param>
+            <param name="TeachWorldPointX">机构示教位物理坐标X</param>
+            <param name="TeachWorldPointY">机构示教位物理坐标Y</param>
+            <param name="TeachWorldPointR">机构示教位物理坐标R</param>
+            <param name="OffSet">机构相对放置坐标偏差量</param>
+            <param name="AbsSet">机构绝对放置坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.LocationTool.TransAndRotatePlace(System.Double[],System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Int32,System.Int32,HikAlgorithmTool.PointF@,HikAlgorithmTool.PointF@)">
+            <summary>
+            平移和旋转标定放置(相对标定)
+            </summary>
+            <param name="matrix">平移和旋转标定矩阵</param>
+            <param name="BaseImagePointX">基准图像像素坐标X</param>
+            <param name="BaseImagePointY">基准图像像素坐标Y</param>
+            <param name="BaseImagePointR">基准图像像素坐标R</param>
+            <param name="CurImagePointX">当前图像像素坐标X</param>
+            <param name="CurImagePointY">当前图像像素坐标Y</param>
+            <param name="CurImagePointR">当前图像像素坐标R</param>
+            <param name="TeachWorldPointX">机构示教位物理坐标X</param>
+            <param name="TeachWorldPointY">机构示教位物理坐标Y</param>
+            <param name="TeachWorldPointR">机构示教位物理坐标R</param>
+            <param name="BaseSnapWorldPointX">基准拍照位物理坐标X</param>
+            <param name="BaseSnapWorldPointY">基准拍照位物理坐标Y</param>
+            <param name="IsRelationshipSame">旋转一致性参数（物理坐标系与图像坐标系的角度旋转关系),1表示旋转趋势一致，-1表示旋转趋势相反</param>
+            <param name="IsRightCoor">是否是右手坐标系</param>
+            <param name="OffSet">机构相对放置坐标偏差量</param>
+            <param name="AbsSet">机构绝对放置坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:HikAlgorithmTool.LocationTool.TransAbsolutePlace(System.Double[],System.Single,System.Single,System.Single,System.Single,HikAlgorithmTool.PointF@)">
+            <summary>
+            平移标定绝对放置
+            </summary>
+            <param name="matrix">平移标定矩阵</param>
+            <param name="BaseImagePointR">基准图像像素坐标R</param>
+            <param name="CurImagePointX">当前图像像素坐标X</param>
+            <param name="CurImagePointY">当前图像像素坐标Y</param>
+            <param name="CurImagePointR">当前图像像素坐标R</param>
+            <param name="AbsSet">绝对放置坐标</param>
+            <returns></returns>
+        </member>
+        <member name="T:HikAlgorithmTool.HikAlgorithmToolErrorCodeEnum">
+            <summary>
+            HikMathTool库的错误码类
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.HikAlgorithmToolErrorCodeEnum.Success">
+            <summary>
+            处理成功
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.HikAlgorithmToolErrorCodeEnum.ParamError">
+            <summary>
+            输入参数有误
+            </summary>
+        </member>
+        <member name="F:HikAlgorithmTool.HikAlgorithmToolErrorCodeEnum.UnKnown">
+            <summary>
+            未知错误
+            </summary>
+        </member>
+        <member name="T:HikAlgorithmTool.HikAlgorithmToolLog">
+            <summary>
+            日志打印类
+            </summary>
+        </member>
+        <member name="M:HikAlgorithmTool.HikAlgorithmToolLog.Setup">
+            <summary>
+            日志设置
+            </summary>
+        </member>
+        <member name="M:HikAlgorithmTool.HikAlgorithmToolLog.Log(System.String)">
+            <summary>
+            打印并保存日志
+            </summary>
+            <param name="errorMsg"></param>
+        </member>
+        <member name="T:HikAlgorithmTool.PointF">
+            <summary>
+            点类型类
+            </summary>
+        </member>
+        <member name="P:HikAlgorithmTool.PointF.X">
+            <summary>
+            X坐标
+            </summary>
+        </member>
+        <member name="P:HikAlgorithmTool.PointF.Y">
+            <summary>
+            Y坐标
+            </summary>
+        </member>
+        <member name="P:HikAlgorithmTool.PointF.R">
+            <summary>
+            R坐标
+            </summary>
+        </member>
+    </members>
+</doc>

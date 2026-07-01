@@ -1,0 +1,741 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E98AA670-E430-4E7F-AAF7-66C61F7637F2}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>SeedCut</RootNamespace>
+    <AssemblyName>SeedCut</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.1.66\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="IMVSBlobFindModuCs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7fe8bad26cdedb7b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files\VisionMaster4.4.0\Development\V4.x\ComControls\Assembly\Module(sp)\x64\Location\IMVSBlobFindModu\IMVSBlobFindModuCs.dll</HintPath>
+    </Reference>
+    <Reference Include="IMVSGroupCs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=93c2eed79fa68a0a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files\VisionMaster4.4.0\Development\V4.x\ComControls\Assembly\IMVSGroupCs.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.10.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.10.0.0\lib\net462\Microsoft.Extensions.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.10.0.0\lib\net462\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.10.0.0\lib\net462\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.CommandLine, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.CommandLine.10.0.0\lib\net462\Microsoft.Extensions.Configuration.CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.EnvironmentVariables, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.EnvironmentVariables.10.0.0\lib\net462\Microsoft.Extensions.Configuration.EnvironmentVariables.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.FileExtensions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.FileExtensions.10.0.0\lib\net462\Microsoft.Extensions.Configuration.FileExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Json.10.0.0\lib\net462\Microsoft.Extensions.Configuration.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.UserSecrets, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.UserSecrets.10.0.0\lib\net462\Microsoft.Extensions.Configuration.UserSecrets.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.10.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Diagnostics, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Diagnostics.10.0.0\lib\net462\Microsoft.Extensions.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Diagnostics.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Diagnostics.Abstractions.10.0.0\lib\net462\Microsoft.Extensions.Diagnostics.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileProviders.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Abstractions.10.0.0\lib\net462\Microsoft.Extensions.FileProviders.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileProviders.Physical, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Physical.10.0.0\lib\net462\Microsoft.Extensions.FileProviders.Physical.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileSystemGlobbing, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.FileSystemGlobbing.10.0.0\lib\net462\Microsoft.Extensions.FileSystemGlobbing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Hosting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Hosting.10.0.0\lib\net462\Microsoft.Extensions.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Hosting.Abstractions.10.0.0\lib\net462\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.10.0.0\lib\net462\Microsoft.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.10.0.0\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Configuration, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Configuration.10.0.0\lib\net462\Microsoft.Extensions.Logging.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Console, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Console.10.0.0\lib\net462\Microsoft.Extensions.Logging.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Debug, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Debug.10.0.0\lib\net462\Microsoft.Extensions.Logging.Debug.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.EventLog, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.EventLog.10.0.0\lib\net462\Microsoft.Extensions.Logging.EventLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.EventSource, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.EventSource.10.0.0\lib\net462\Microsoft.Extensions.Logging.EventSource.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.10.0.0\lib\net462\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.ConfigurationExtensions.10.0.0\lib\net462\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.10.0.0\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="MvCameraControl.Net, Version=3.4.0.1, Culture=neutral, PublicKeyToken=52fddfb3f94be800, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files (x86)\MVS\Development\DotNet\win64\net40\MvCameraControl.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NModbus4, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NModbus4.2.1.0\lib\net40\NModbus4.dll</HintPath>
+    </Reference>
+    <Reference Include="S7.Net, Version=0.20.0.0, Culture=neutral, PublicKeyToken=d5812d469e84c693, processorArchitecture=MSIL">
+      <HintPath>..\packages\S7netplus.0.20.0\lib\net462\S7.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog, Version=4.3.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.4.3.0\lib\net471\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.Console, Version=6.1.1.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.Console.6.1.1\lib\net471\Serilog.Sinks.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.File.7.0.0\lib\net471\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.119.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.10.0.0\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Pipelines, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.10.0.0\lib\net462\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.10.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.10.0.0\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Channels, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Channels.8.0.0\lib\net462\System.Threading.Channels.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="VM.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=61600122bc9264b9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\VisionMaster4.4.0\Development\V4.x\ComControls\Assembly\VM.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.PlatformSDKCS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c1484a72052ee3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\VisionMaster4.4.0\Development\V4.x\ComControls\Assembly\VM.PlatformSDKCS.dll</HintPath>
+    </Reference>
+    <Reference Include="VMControls.BaseInterface, Version=1.0.0.0, Culture=neutral, PublicKeyToken=14444b8df74b6e6a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\VisionMaster4.4.0\Development\V4.x\ComControls\Assembly\VMControls.BaseInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="VMControls.Interface, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cb41614600cf774b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\VisionMaster4.4.0\Development\V4.x\ComControls\Assembly\VMControls.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="VMControls.WPF.Release, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fdd2c8be7291c30c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\VisionMaster4.4.0\Development\V4.x\ComControls\Assembly\VMControls.WPF.Release.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Framework\Config\DeviceConnectionConfig.cs" />
+    <Compile Include="Framework\Config\VisionDeviceConfig.cs" />
+    <Compile Include="Framework\Core\SlotSeedTracker\ISlotSeedTracker.cs" />
+    <Compile Include="Framework\Core\SlotSeedTracker\SeedTrackingModels.cs" />
+    <Compile Include="Framework\Core\SlotSeedTracker\SlotSeedTracker.cs" />
+    <Compile Include="Framework\Extensions\ServiceCollectionExtensions.cs" />
+    <Compile Include="Framework\Models\RecipeModels.cs" />
+    <Compile Include="Framework\Services\Conditions\ConditionDiagnostics.cs" />
+    <Compile Include="Framework\Services\Conditions\Conditions.cs" />
+    <Compile Include="Framework\Core\Enums.cs" />
+    <Compile Include="Framework\Core\Events.cs" />
+    <Compile Include="Framework\Core\ProductionContext.cs" />
+    <Compile Include="Framework\Services\Execution\Exceptions.cs" />
+    <Compile Include="Framework\Services\Execution\ExecutionController.cs" />
+    <Compile Include="Framework\Services\Execution\ExecutionTypes.cs" />
+    <Compile Include="Framework\Services\Handlers\BarcodeScanHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\CircularAxisInitHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\Diskvibratehandler.cs" />
+    <Compile Include="Framework\Services\Handlers\DiskVisionHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\HandlerRegistry.cs" />
+    <Compile Include="Framework\Services\Handlers\SmallDropStateCheckHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\LargeDropStateCheckHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\LargeTrayDirectionHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\LargeTrayVisionHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\LaserCutHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\LaserVisionHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\Robotactionhandler.cs" />
+    <Compile Include="Framework\Services\Handlers\Robotcommand.cs" />
+    <Compile Include="Framework\Services\Handlers\RobotCommandHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\SignalHandlerBase.cs" />
+    <Compile Include="Framework\Services\Handlers\SmallTrayDirectionHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\SmallTrayVisionHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\StopWorkHander.cs" />
+    <Compile Include="Framework\Services\Handlers\SystemShutdownHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\SystemStartupHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\TurntableMonitorHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\Visioncoordinatehandler.cs" />
+    <Compile Include="Framework\Services\Interfaces\IHandlerRegistry.cs" />
+    <Compile Include="Framework\Services\Interfaces\IRecipeService.cs" />
+    <Compile Include="Framework\Services\Interfaces\ISignalAccessor.cs" />
+    <Compile Include="Framework\Services\Interfaces\LaserPassParam.cs" />
+    <Compile Include="Framework\Services\Recipe\RecipeService.cs" />
+    <Compile Include="Framework\Services\Sequences\ConditionCatalog.cs" />
+    <Compile Include="Framework\Services\Sequences\PredefinedSequences.cs" />
+    <Compile Include="Framework\Services\Sequences\SequenceExecutor.cs" />
+    <Compile Include="Framework\Services\Sequences\SequenceTypes.cs" />
+    <Compile Include="Framework\Services\Signals\SignalAliasConfig.cs" />
+    <Compile Include="Framework\Services\Traceability\ITraceService.cs" />
+    <Compile Include="Framework\Services\Traceability\TraceService.cs" />
+    <Compile Include="Framework\Services\Traceability\TrayPairing.cs" />
+    <Compile Include="Models\HM_LaserConfig.cs" />
+    <Compile Include="SeedCutApp.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>SeedCutApp.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Services\DeviceAdapter\DeviceInitializationService.cs" />
+    <Compile Include="Framework\Services\Devices\DeviceManager.cs" />
+    <Compile Include="Framework\Services\Handlers\HandlerContext.cs" />
+    <Compile Include="Framework\Services\Interfaces\ICameraDevice.cs" />
+    <Compile Include="Framework\Services\Interfaces\IDevice.cs" />
+    <Compile Include="Framework\Services\Handlers\HandlerExecutor.cs" />
+    <Compile Include="Framework\Services\Interfaces\IIOManager.cs" />
+    <Compile Include="Framework\Services\Interfaces\ILaserDevice.cs" />
+    <Compile Include="Framework\Services\Interfaces\IServices.cs" />
+    <Compile Include="Framework\Services\Interfaces\IVibratorDevice.cs" />
+    <Compile Include="Framework\Services\Interfaces\LaserDeviceTypes.cs" />
+    <Compile Include="Framework\Services\Queues\DataPipeline.cs" />
+    <Compile Include="Framework\Services\Signals\SignalMonitor.cs" />
+    <Compile Include="Framework\Models\AlarmItem.cs" />
+    <Compile Include="Framework\Models\AlarmLevel.cs" />
+    <Compile Include="Services\Camera\HikCameraConnectAdapter.cs" />
+    <Compile Include="Services\DeviceAdapter\HikCameraDeviceAdapter.cs" />
+    <Compile Include="Services\Camera\HikCameraInstance.cs" />
+    <Compile Include="Services\Camera\HikCameraSDKManager.cs" />
+    <Compile Include="Models\DeviceConfig.cs" />
+    <Compile Include="Models\LaserConfig.cs" />
+    <Compile Include="Models\ModbusAddress.cs" />
+    <Compile Include="Models\PLCConfig.cs" />
+    <Compile Include="Models\PLCModule\CsvDrivenModuleDefinition.cs" />
+    <Compile Include="Models\PLCModule\DictionaryExtensions.cs" />
+    <Compile Include="Models\PLCModule\PLCAddressItem.cs" />
+    <Compile Include="Models\PLCModule\PLCAddressRegistry.cs" />
+    <Compile Include="Models\PLCModule\PLCConfigImporter.cs" />
+    <Compile Include="Models\PLCModule\PLCFeatureFlags.cs" />
+    <Compile Include="Models\PLCModule\PLCModuleFactory.cs" />
+    <Compile Include="Models\PLCModule\PLCModuleMetadata.cs" />
+    <Compile Include="Models\RobotConfig.cs" />
+    <Compile Include="Models\VibratorConfig.cs" />
+    <Compile Include="S7DeviceConfig.cs" />
+    <Compile Include="Framework\Services\Alarm\AlarmService.cs" />
+    <Compile Include="Services\Camera\HikCameraConfig.cs" />
+    <Compile Include="Services\Camera\HikCameraServiceFactory.cs" />
+    <Compile Include="Services\Connection\ConnectionManager.cs" />
+    <Compile Include="Services\Connection\ConnectionMonitorService.cs" />
+    <Compile Include="Services\Connection\ReconnectionConfig.cs" />
+    <Compile Include="Framework\Services\Interfaces\IAlarmService.cs" />
+    <Compile Include="Services\DeviceAdapter\HM_LaserDeviceAdapter.cs" />
+    <Compile Include="Services\DeviceAdapter\ScannerService.cs" />
+    <Compile Include="Services\HM\HM_Constants.cs" />
+    <Compile Include="Services\HM\HM_HashuScanDLL.cs" />
+    <Compile Include="Services\HM\HM_HashuUDM_DLL.cs" />
+    <Compile Include="Services\HM\HM_Structures.cs" />
+    <Compile Include="Services\HM_LaserService.cs" />
+    <Compile Include="Services\HM_LaserServiceConnectAdapter.cs" />
+    <Compile Include="Services\HM_LaserServiceExtensions.cs" />
+    <Compile Include="Services\ICameraService.cs" />
+    <Compile Include="Services\Connection\IConnectableDevice.cs" />
+    <Compile Include="Services\ILaserService.cs" />
+    <Compile Include="Framework\Services\Interfaces\ILogService.cs" />
+    <Compile Include="Services\IPLCService.cs" />
+    <Compile Include="Services\IRobotService.cs" />
+    <Compile Include="Services\IVibratorService.cs" />
+    <Compile Include="Services\IVisionService.cs" />
+    <Compile Include="Services\LaserService.cs" />
+    <Compile Include="Services\LaserServiceConnectAdapter.cs" />
+    <Compile Include="Services\ModbusRequestQueue.cs" />
+    <Compile Include="Services\PLCAlarmMonitor.cs" />
+    <Compile Include="Services\DeviceAdapter\PLCDeviceAdapter.cs" />
+    <Compile Include="Services\PLCService.cs" />
+    <Compile Include="Services\PLCServiceConnectAdapter.cs" />
+    <Compile Include="Framework\Services\Logging\SerilogService.cs" />
+    <Compile Include="Framework\Services\Execution\TaskExecutionManager.cs" />
+    <Compile Include="Services\DeviceAdapter\RobotDeviceAdapter.cs" />
+    <Compile Include="Services\RobotServiceConnectAdapter.cs" />
+    <Compile Include="Services\DeviceAdapter\VibratorDeviceAdapter.cs" />
+    <Compile Include="Services\VibratorServiceConnectAdapter.cs" />
+    <Compile Include="Services\DeviceAdapter\VisionDeviceAdapter.cs" />
+    <Compile Include="ViewModels\AlarmViewModel.cs" />
+    <Compile Include="ViewModels\DeviceStatusItem.cs" />
+    <Compile Include="ViewModels\HandlerDebugViewModel.cs" />
+    <Compile Include="ViewModels\HM_LaserDebugViewModel.cs" />
+    <Compile Include="ViewModels\LaserDebugViewModel.cs" />
+    <Compile Include="ViewModels\LogLevelToBrushConverter.cs" />
+    <Compile Include="ViewModels\PLCModule\MainPLCViewModel.cs" />
+    <Compile Include="ViewModels\PLCModule\PLCControlFactory.cs" />
+    <Compile Include="ViewModels\PLCModule\PLCModuleViewModel.cs" />
+    <Compile Include="Services\RobotService.cs" />
+    <Compile Include="Framework\Services\Monitor\SystemMonitor.cs" />
+    <Compile Include="Services\VibratorService.cs" />
+    <Compile Include="Services\VisionMasterService.cs" />
+    <Compile Include="ViewModels\AdminViewModel.cs" />
+    <Compile Include="ViewModels\CameraViewModel.cs" />
+    <Compile Include="ViewModels\LoadingViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\LogViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ModuleCheckItemViewModel.cs" />
+    <Compile Include="ViewModels\MonitorViewModel.cs" />
+    <Compile Include="ViewModels\RecipeEditorViewModel.cs" />
+    <Compile Include="ViewModels\RelayCommand.cs" />
+    <Compile Include="ViewModels\RobotViewModel.cs" />
+    <Compile Include="ViewModels\TraceQueryViewModel.cs" />
+    <Compile Include="ViewModels\VibratorViewModel.cs" />
+    <Compile Include="ViewModels\VisionViewModel.cs" />
+    <Compile Include="Views\AdminView.xaml.cs">
+      <DependentUpon>AdminView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AlarmHistoryView.xaml.cs">
+      <DependentUpon>AlarmHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AlarmPopupWindow.xaml.cs">
+      <DependentUpon>AlarmPopupWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CameraView.xaml.cs">
+      <DependentUpon>CameraView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Converters\BoolToColorConverter.cs" />
+    <Compile Include="Views\Converters\Converters.cs" />
+    <Compile Include="Views\Converters\ProgressToWidthConverter.cs" />
+    <Compile Include="Views\Converters\UserTypeToVisibilityConverter.cs" />
+    <Compile Include="Views\Converters\ZeroToVisibilityConverter.cs" />
+    <Compile Include="Views\DeviceStatusPopup.xaml.cs">
+      <DependentUpon>DeviceStatusPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HandlerDebugView.xaml.cs">
+      <DependentUpon>HandlerDebugView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HM_LaserDebugView.xaml.cs">
+      <DependentUpon>HM_LaserDebugView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LaserDebugView.xaml.cs">
+      <DependentUpon>LaserDebugView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NullToVisibilityConverter.cs" />
+    <Compile Include="Views\PLCModule\DynamicPLCModuleView.xaml.cs">
+      <DependentUpon>DynamicPLCModuleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoadingWindow.xaml.cs">
+      <DependentUpon>LoadingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LogView.xaml.cs">
+      <DependentUpon>LogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MonitorView.xaml.cs">
+      <DependentUpon>MonitorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PasswordBoxHelper.cs" />
+    <Compile Include="Views\PLCModule\MainPLCView.xaml.cs">
+      <DependentUpon>MainPLCView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RecipeEditorView.xaml.cs">
+      <DependentUpon>RecipeEditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RobotView.xaml.cs">
+      <DependentUpon>RobotView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TraceQueryPage.xaml.cs">
+      <DependentUpon>TraceQueryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VibratorView.xaml.cs">
+      <DependentUpon>VibratorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VisionView.xaml.cs">
+      <DependentUpon>VisionView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Events\ModuleCheckedEventArgs.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Views\AdminView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AlarmHistoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AlarmPopupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CameraView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DeviceStatusPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HandlerDebugView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\HM_LaserDebugView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LaserDebugView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PLCModule\DynamicPLCModuleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoadingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LoginWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LogView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MonitorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PLCModule\MainPLCView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RecipeEditorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\RobotView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TraceQueryPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\VibratorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VisionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\LoginRequest.cs" />
+    <Compile Include="Models\TaskLog.cs" />
+    <Compile Include="Models\UserType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Config\DeviceConnectionConfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\HikCameraConfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\PLCAddresses.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\Recipes\1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\Recipes\Default.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\Recipes\_settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\Recipes\玉米.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\SignalAliases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\system.ini" />
+    <None Include="Config\VisionDevice.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SeedCutApp.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>SeedCutApp.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Config\HM_LaserConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Config\LaserConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Config\PLCFeatureFlags.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Config\RobotConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Config\VibratorConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Dlls\Apps.BaseData.dll" />
+    <Content Include="Dlls\Apps.BaseLog.dll" />
+    <Content Include="Dlls\Apps.ColorFun.dll" />
+    <Content Include="Dlls\Apps.Data.dll" />
+    <Content Include="Dlls\Apps.ErrorCode.dll" />
+    <Content Include="Dlls\Apps.Interface.dll" />
+    <Content Include="Dlls\Apps.Localization.dll" />
+    <Content Include="Dlls\Apps.Log.dll" />
+    <Content Include="Dlls\Apps.PcUI.dll" />
+    <Content Include="Dlls\Apps.UIData.dll" />
+    <Content Include="Dlls\Apps.UIHelper.dll" />
+    <Content Include="Dlls\Apps.XmlParser.dll" />
+    <Content Include="Dlls\Apps.XmlUI.dll" />
+    <Content Include="Dlls\Dapper.dll" />
+    <Content Include="Dlls\DesignerModifyDataSource.dll" />
+    <Content Include="Dlls\DirectoryBrowser.dll" />
+    <Content Include="Dlls\Frontend.Base.dll" />
+    <Content Include="Dlls\Frontend.Controls.dll" />
+    <Content Include="Dlls\Frontend.Data.dll" />
+    <Content Include="Dlls\Frontend.Interface.dll" />
+    <Content Include="Dlls\FrontendUI.Design.dll" />
+    <Content Include="Dlls\GateWay.Base.Xml.dll" />
+    <Content Include="Dlls\GateWay.Compress.dll" />
+    <Content Include="Dlls\GateWay.Control.dll" />
+    <Content Include="Dlls\GateWay.CostomDialog.dll" />
+    <Content Include="Dlls\GateWay.Data.dll" />
+    <Content Include="Dlls\GateWay.Localization.dll" />
+    <Content Include="Dlls\GateWay.Util.dll" />
+    <Content Include="Dlls\GateWay.Xml.dll" />
+    <Content Include="Dlls\GateWayCommonLib.dll" />
+    <Content Include="Dlls\GateWayFrameworkData.dll" />
+    <Content Include="Dlls\GateWayFrameworkMain.dll" />
+    <Content Include="Dlls\GateWayServer.dll" />
+    <Content Include="Dlls\GatwWay.Interface.dll" />
+    <Content Include="Dlls\GlobalScriptUI.dll" />
+    <Content Include="Dlls\HM_Comm.dll" />
+    <Content Include="Dlls\HM_HashuScan.dll" />
+    <Content Include="Dlls\ICSharpCode.AvalonEdit.dll" />
+    <Content Include="Dlls\ICSharpCode.NRefactory.Cecil.dll" />
+    <Content Include="Dlls\ICSharpCode.NRefactory.CSharp.dll" />
+    <Content Include="Dlls\ICSharpCode.NRefactory.dll" />
+    <Content Include="Dlls\ICSharpCode.NRefactory.Xml.dll" />
+    <Content Include="Dlls\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="Dlls\ICSharpCode.WpfDesign.Designer.dll" />
+    <Content Include="Dlls\ICSharpCode.WpfDesign.dll" />
+    <Content Include="Dlls\ICSharpCode.WpfDesign.XamlDom.dll" />
+    <Content Include="Dlls\IMVSBlobFindModuCs.dll" />
+    <Content Include="Dlls\IMVSGroupCs.dll" />
+    <Content Include="Dlls\MvCameraControl.Net.dll" />
+    <Content Include="Dlls\MVDCore.Net.dll" />
+    <Content Include="Dlls\MVDImage.Net.dll" />
+    <Content Include="Dlls\Mvvm.dll" />
+    <Content Include="Dlls\Newtonsoft.Json.dll" />
+    <Content Include="Dlls\NModbus4.dll" />
+    <Content Include="Dlls\OpenCvSharp.dll" />
+    <Content Include="Dlls\OxyPlot.dll" />
+    <Content Include="Dlls\OxyPlot.Wpf.dll" />
+    <Content Include="Dlls\OxyPlot.Wpf.Shared.dll" />
+    <Content Include="Dlls\PasswordWindowUI.dll" />
+    <Content Include="Dlls\PropertyGrid.dll" />
+    <Content Include="Dlls\S7.Net.dll" />
+    <Content Include="Dlls\Serilog.dll" />
+    <Content Include="Dlls\Serilog.Sinks.Console.dll" />
+    <Content Include="Dlls\Serilog.Sinks.File.dll" />
+    <Content Include="Dlls\UIVersionControlManager.dll" />
+    <Content Include="Dlls\VM.AppData.dll" />
+    <Content Include="Dlls\VM.CodeBuild.dll" />
+    <Content Include="Dlls\VM.CodeCompletion.dll" />
+    <Content Include="Dlls\VM.Compress.dll" />
+    <Content Include="Dlls\VM.Controls.dll" />
+    <Content Include="Dlls\VM.Core.dll" />
+    <Content Include="Dlls\VM.CostomDialog.dll" />
+    <Content Include="Dlls\VM.ExternalCall.dll" />
+    <Content Include="Dlls\VM.Framework.Container.dll" />
+    <Content Include="Dlls\VM.PcUI.dll" />
+    <Content Include="Dlls\VM.PlatformSDKCS.dll" />
+    <Content Include="Dlls\VM.User.dll" />
+    <Content Include="Dlls\VM.Util.dll" />
+    <Content Include="Dlls\VM.Utility.dll" />
+    <Content Include="Dlls\VM.Xml.dll" />
+    <Content Include="Dlls\VMBaseControls.dll" />
+    <Content Include="Dlls\VMControls.BaseInterface.dll" />
+    <Content Include="Dlls\VMControls.Data.dll" />
+    <Content Include="Dlls\VMControls.Interface.dll" />
+    <Content Include="Dlls\VMControls.RenderInterface.dll" />
+    <Content Include="Dlls\VMControls.WPF.dll" />
+    <Content Include="Dlls\VMControls.WPF.Release.dll" />
+    <Content Include="Dlls\WpfCustomPlot.dll" />
+    <Content Include="Dlls\WriteableBitmapEx.Wpf.dll" />
+    <Content Include="Dlls\x64\SQLite.Interop.dll" />
+    <Content Include="Dlls\x86\SQLite.Interop.dll" />
+    <Content Include="test.sol">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
+    <Error Condition="!Exists('..\packages\Serilog.4.3.0\build\Serilog.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Serilog.4.3.0\build\Serilog.targets'))" />
+    <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+    <Error Condition="!Exists('packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
+  </Target>
+  <Import Project="..\packages\Serilog.4.3.0\build\Serilog.targets" Condition="Exists('..\packages\Serilog.4.3.0\build\Serilog.targets')" />
+  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(ProjectDir)\dlls\* $(TargetDir)  /Y
+copy $(ProjectDir)\Config\system.ini $(TargetDir)  /Y</PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
+</Project>

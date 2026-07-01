@@ -1,0 +1,1064 @@
+﻿<Window
+    x:Class="SeedCut.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:views="clr-namespace:SeedCut.Views"
+    Title="农高智造"
+    Width="1600"
+    Height="900"
+    Background="#E3F2FD"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <!--  导航按钮基础样式  -->
+        <Style x:Key="NavButtonBaseStyle" TargetType="Button">
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Height" Value="80" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#666666" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Margin" Value="0,5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1E88E5" />
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  各个页面的导航按钮样式  -->
+        <Style
+            x:Key="NavButton_HomePage"
+            BasedOn="{StaticResource NavButtonBaseStyle}"
+            TargetType="Button">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectedPage}" Value="主页">
+                    <Setter Property="Background" Value="#2196F3" />
+                    <Setter Property="Foreground" Value="White" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style
+            x:Key="NavButton_Monitor"
+            BasedOn="{StaticResource NavButtonBaseStyle}"
+            TargetType="Button">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectedPage}" Value="监测">
+                    <Setter Property="Background" Value="#2196F3" />
+                    <Setter Property="Foreground" Value="White" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style
+            x:Key="NavButton_Log"
+            BasedOn="{StaticResource NavButtonBaseStyle}"
+            TargetType="Button">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectedPage}" Value="日志">
+                    <Setter Property="Background" Value="#2196F3" />
+                    <Setter Property="Foreground" Value="White" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style
+            x:Key="NavButton_Trace"
+            BasedOn="{StaticResource NavButtonBaseStyle}"
+            TargetType="Button">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectedPage}" Value="追溯">
+                    <Setter Property="Background" Value="#2196F3" />
+                    <Setter Property="Foreground" Value="White" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style
+            x:Key="NavButton_Admin"
+            BasedOn="{StaticResource NavButtonBaseStyle}"
+            TargetType="Button">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectedPage}" Value="管理员">
+                    <Setter Property="Background" Value="#2196F3" />
+                    <Setter Property="Foreground" Value="White" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  输入框样式  -->
+        <Style x:Key="ConfigInputStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="45" />
+            <Setter Property="Padding" Value="15,0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#BDBDBD" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#2196F3" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  下拉框样式  -->
+        <Style x:Key="ConfigComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Height" Value="45" />
+            <Setter Property="Padding" Value="15,0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#BDBDBD" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+
+        <!--  控制按钮样式  -->
+        <Style x:Key="ControlButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="180" />
+            <Setter Property="Height" Value="60" />
+            <Setter Property="Margin" Value="15,0" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    Opacity="0.3"
+                                    ShadowDepth="2" />
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="130" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--  左侧导航栏  -->
+        <Border
+            Grid.Column="0"
+            Padding="0,20"
+            Background="#90CAF9">
+            <StackPanel>
+                <!--  Logo  -->
+                <Grid
+                    Width="60"
+                    Height="60"
+                    Margin="0,0,0,30">
+                    <Ellipse Fill="#4CAF50" />
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="30"
+                        FontWeight="Bold"
+                        Foreground="White"
+                        Text="农" />
+                </Grid>
+
+                <!--  导航按钮  -->
+                <Button
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="主页"
+                    Style="{StaticResource NavButton_HomePage}">
+                    <StackPanel>
+                        <TextBlock FontSize="24" Text="🏠" />
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            FontSize="14"
+                            Text="主页" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="监测"
+                    Style="{StaticResource NavButton_Monitor}">
+                    <StackPanel>
+                        <TextBlock FontSize="24" Text="📊" />
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            FontSize="14"
+                            Text="监测" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="日志"
+                    Style="{StaticResource NavButton_Log}">
+                    <StackPanel>
+                        <TextBlock FontSize="24" Text="📋" />
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            FontSize="14"
+                            Text="日志" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="追溯"
+                    Style="{StaticResource NavButton_Trace}">       
+                    <StackPanel>
+                        <TextBlock FontSize="24" Text="📋" />
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            FontSize="14"
+                            Text="追溯" />
+                    </StackPanel>
+                </Button>
+
+
+                <Button
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="管理员"
+                    Style="{StaticResource NavButton_Admin}">
+                    <StackPanel>
+                        <TextBlock FontSize="24" Text="👤" />
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            FontSize="14"
+                            Text="管理员" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!--  右侧主内容区  -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="120" />
+            </Grid.RowDefinitions>
+
+            <!--  顶部状态栏  -->
+            <Border
+                Grid.Row="0"
+                Padding="30,0"
+                Background="White">
+                <Border.Effect>
+                    <DropShadowEffect
+                        BlurRadius="10"
+                        Opacity="0.1"
+                        ShadowDepth="0" />
+                </Border.Effect>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  左侧：标题和连接状态  -->
+                    <StackPanel
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal" Cursor="">
+                        <Grid
+                            Width="40"
+                            Height="40"
+                            Margin="0,0,15,0">
+                            <Ellipse Fill="#4CAF50" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Foreground="White"
+                                Text="农" />
+                        </Grid>
+                        <TextBlock
+                            Margin="0,0,30,0"
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Text="农高智造" />
+
+                        <Border
+    x:Name="DeviceStatusTrigger"
+    Padding="12,6"
+    VerticalAlignment="Center"
+    Background="{Binding ConnectionStatusBackground}"
+    CornerRadius="15"
+    Cursor="Hand"
+    MouseEnter="DeviceStatusTrigger_MouseEnter"
+    MouseLeave="DeviceStatusTrigger_MouseLeave">
+
+                            <StackPanel Orientation="Horizontal">
+                                <!--  动态状态灯  -->
+                                <Ellipse
+            Width="10"
+            Height="10"
+            Margin="0,0,8,0"
+            Fill="{Binding OverallConnectionBrush}" />
+
+                                <!--  动态连接状态文本  -->
+                                <TextBlock
+            FontSize="14"
+            Foreground="{Binding ConnectionStatusForeground}"
+            Text="{Binding ConnectionStatus}" />
+
+                                <!--  可选：显示设备数量  -->
+                                <TextBlock
+            Margin="5,0,0,0"
+            FontSize="12"
+            Foreground="{Binding ConnectionStatusForeground}"
+            Opacity="0.7">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="({0}/{1})">
+                                            <Binding Path="ConnectedDeviceCount" />
+                                            <Binding Path="TotalDeviceCount" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <!--  设备状态 Popup  -->
+                        <Popup
+                            x:Name="DeviceStatusPopup"
+                            AllowsTransparency="True"
+                            Placement="Bottom"
+                            PlacementTarget="{Binding ElementName=DeviceStatusTrigger}"
+                            PopupAnimation="Fade"
+                            StaysOpen="True">
+                            <Border
+                                Padding="0,5,0,0"
+                                Background="Transparent"
+                                MouseEnter="DeviceStatusPopup_MouseEnter"
+                                MouseLeave="DeviceStatusPopup_MouseLeave">
+                                <views:DeviceStatusPopup DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}" />
+                            </Border>
+                        </Popup>
+                    </StackPanel>
+
+                    <!--  中间：报警信息栏（动态绑定）  -->
+                    <Border
+                        x:Name="AlarmBar"
+                        Grid.Column="1"
+                        Margin="30,0"
+                        Padding="12,6"
+                        VerticalAlignment="Center"
+                        Background="{Binding AlarmViewModel.AlarmBackgroundBrush, FallbackValue=#E8F5E9}"
+                        CornerRadius="15"
+                        Cursor="Hand"
+                        MouseLeftButtonDown="AlarmBar_MouseLeftButtonDown">
+                        <StackPanel Orientation="Horizontal">
+                            <!--  动态指示灯圆点  -->
+                            <Ellipse
+                                Width="10"
+                                Height="10"
+                                Margin="0,0,8,0"
+                                Fill="{Binding AlarmViewModel.AlarmIconBrush, FallbackValue=#4CAF50}" />
+
+                            <!--  动态报警文本  -->
+                            <TextBlock
+                                FontSize="14"
+                                Foreground="{Binding AlarmViewModel.AlarmForegroundBrush, FallbackValue=#2E7D32}"
+                                Text="{Binding AlarmViewModel.LatestAlarmText, FallbackValue=无报警}"
+                                TextTrimming="CharacterEllipsis" />
+
+
+                        </StackPanel>
+                    </Border>
+
+                    <!--  右侧：用户信息和时间  -->
+                    <StackPanel
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Border
+                            Margin="0,0,20,0"
+                            Padding="12,8"
+                            Background="#E3F2FD"
+                            CornerRadius="20">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse
+                                    Width="32"
+                                    Height="32"
+                                    Margin="0,0,8,0"
+                                    Fill="#2196F3">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect
+                                            BlurRadius="5"
+                                            Opacity="0.3"
+                                            ShadowDepth="0" />
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                                <TextBlock
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Text="{Binding CurrentUserName}" />
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="10"
+                                    Foreground="#666"
+                                    Text="▼" />
+                            </StackPanel>
+                        </Border>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="14"
+                            Foreground="#666"
+                            Text="{Binding CurrentTime}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!--  主内容区域  -->
+            <ContentControl Grid.Row="1" Content="{Binding CurrentPageContent}">
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <ContentPresenter Content="{Binding}" />
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <!--  当CurrentPageContent为null时，显示主页内容  -->
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentPageContent}" Value="{x:Null}">
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <!--  主页内容（任务配置和效率统计）  -->
+                                            <Grid Margin="30,20,30,20">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1.3*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!--  左侧：任务配置  -->
+                                                <Border
+                                                    Grid.Column="0"
+                                                    Margin="0,0,15,0"
+                                                    Padding="30"
+                                                    Background="White"
+                                                    CornerRadius="15">
+                                                    <Border.Effect>
+                                                        <DropShadowEffect
+                                                            BlurRadius="20"
+                                                            Opacity="0.1"
+                                                            ShadowDepth="0" />
+                                                    </Border.Effect>
+                                                    <StackPanel>
+                                                        <!--  标题  -->
+                                                        <Border
+                                                            Margin="0,0,0,30"
+                                                            Padding="15,10"
+                                                            Background="#E3F2FD"
+                                                            CornerRadius="10">
+                                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                                <TextBlock
+                                                                    Margin="0,0,10,0"
+                                                                    FontSize="20"
+                                                                    Text="⚙" />
+                                                                <TextBlock
+                                                                    FontSize="18"
+                                                                    FontWeight="Bold"
+                                                                    Foreground="#1976D2"
+                                                                    Text="任务配置" />
+                                                            </StackPanel>
+                                                        </Border>
+
+                                                        <!--  任务量  -->
+                                                        <StackPanel Margin="0,0,0,25">
+                                                            <TextBlock
+                                                                Margin="0,0,0,10"
+                                                                FontSize="14"
+                                                                Foreground="#666"
+                                                                Text="任务量" />
+                                                            <Grid>
+                                                                <TextBox Style="{StaticResource ConfigInputStyle}" Text="{Binding TaskQuantity, UpdateSourceTrigger=PropertyChanged}" />
+                                                                <TextBlock
+                                                                    Margin="0,0,15,0"
+                                                                    HorizontalAlignment="Right"
+                                                                    VerticalAlignment="Center"
+                                                                    FontSize="14"
+                                                                    Foreground="#999"
+                                                                    IsHitTestVisible="False"
+                                                                    Text="盘" />
+                                                            </Grid>
+                                                        </StackPanel>
+
+                                                        <!--  种子代号  -->
+                                                        <StackPanel Margin="0,0,0,25">
+                                                            <TextBlock
+                                                                Margin="0,0,0,10"
+                                                                FontSize="14"
+                                                                Foreground="#666"
+                                                                Text="种子代号" />
+                                                            <ComboBox
+                                                                ItemsSource="{Binding SeedCodes}"
+                                                                SelectedItem="{Binding SelectedSeedCode}"
+                                                                Style="{StaticResource ConfigComboBoxStyle}">
+                                                                <ComboBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <TextBlock Text="{Binding}" />
+                                                                    </DataTemplate>
+                                                                </ComboBox.ItemTemplate>
+                                                            </ComboBox>
+                                                        </StackPanel>
+
+                                                        <!--  切割面积  -->
+                                                        <StackPanel Margin="0,0,0,40">
+                                                            <TextBlock
+                                                                Margin="0,0,0,10"
+                                                                FontSize="14"
+                                                                Foreground="#666"
+                                                                Text="切割面积" />
+                                                            <Grid>
+                                                                <ComboBox
+                                                                    ItemsSource="{Binding CutAreas}"
+                                                                    SelectedItem="{Binding SelectedCutArea}"
+                                                                    Style="{StaticResource ConfigComboBoxStyle}">
+                                                                    <ComboBox.ItemTemplate>
+                                                                        <DataTemplate>
+                                                                            <TextBlock Text="{Binding}" />
+                                                                        </DataTemplate>
+                                                                    </ComboBox.ItemTemplate>
+                                                                </ComboBox>
+                                                                <TextBlock
+                                                                    Margin="0,0,35,0"
+                                                                    HorizontalAlignment="Right"
+                                                                    VerticalAlignment="Center"
+                                                                    FontSize="14"
+                                                                    Foreground="#999"
+                                                                    IsHitTestVisible="False"
+                                                                    Text="cm²" />
+                                                            </Grid>
+                                                        </StackPanel>
+
+                                                        <!--  保存配置按钮  -->
+                                                        <Button
+                                                            Height="50"
+                                                            Background="#2196F3"
+                                                            Command="{Binding SaveConfigCommand}"
+                                                            Cursor="Hand">
+                                                            <Button.Style>
+                                                                <Style TargetType="Button">
+                                                                    <Setter Property="Template">
+                                                                        <Setter.Value>
+                                                                            <ControlTemplate TargetType="Button">
+                                                                                <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                                </Border>
+                                                                            </ControlTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                    <Style.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="#1976D2" />
+                                                                        </Trigger>
+                                                                        <Trigger Property="IsEnabled" Value="False">
+                                                                            <Setter Property="Background" Value="#BDBDBD" />
+                                                                        </Trigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Button.Style>
+                                                            <TextBlock
+                                                                FontSize="16"
+                                                                FontWeight="Bold"
+                                                                Foreground="White"
+                                                                Text="保存配置" />
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!--  右侧：效率统计  -->
+                                                <Border
+                                                    Grid.Column="1"
+                                                    Margin="15,0,0,0"
+                                                    Padding="30"
+                                                    Background="White"
+                                                    CornerRadius="15">
+                                                    <Border.Effect>
+                                                        <DropShadowEffect
+                                                            BlurRadius="20"
+                                                            Opacity="0.1"
+                                                            ShadowDepth="0" />
+                                                    </Border.Effect>
+                                                    <StackPanel>
+                                                        <!--  标题  -->
+                                                        <Border
+                                                            Margin="0,0,0,30"
+                                                            Padding="15,10"
+                                                            Background="#E3F2FD"
+                                                            CornerRadius="10">
+                                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                                <TextBlock
+                                                                    Margin="0,0,10,0"
+                                                                    FontSize="20"
+                                                                    Text="📊" />
+                                                                <TextBlock
+                                                                    FontSize="18"
+                                                                    FontWeight="Bold"
+                                                                    Foreground="#1976D2"
+                                                                    Text="效率统计" />
+                                                            </StackPanel>
+                                                        </Border>
+
+                                                        <!--  统计数据网格  -->
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+                                                            </Grid.RowDefinitions>
+
+                                                            <!--  第一行  -->
+                                                            <StackPanel
+                                                                Grid.Row="0"
+                                                                Grid.Column="0"
+                                                                Margin="0,0,10,20">
+                                                                <TextBlock
+                                                                    Margin="0,0,0,8"
+                                                                    FontSize="13"
+                                                                    Foreground="#666"
+                                                                    Text="运行时间" />
+                                                                <Border
+                                                                    Background="#FAFAFA"
+                                                                    BorderBrush="#E0E0E0"
+                                                                    BorderThickness="1"
+                                                                    CornerRadius="5">
+                                                                    <Grid Height="45">
+                                                                        <TextBlock
+                                                                            Margin="15,0"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="14"
+                                                                            Text="{Binding RunningTime}" />
+                                                                        <TextBlock
+                                                                            Margin="0,0,15,0"
+                                                                            HorizontalAlignment="Right"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="13"
+                                                                            Foreground="#999"
+                                                                            Text="粒/s" />
+                                                                    </Grid>
+                                                                </Border>
+                                                            </StackPanel>
+
+                                                            <StackPanel
+                                                                Grid.Row="0"
+                                                                Grid.Column="1"
+                                                                Margin="10,0,0,20">
+                                                                <TextBlock
+                                                                    Margin="0,0,0,8"
+                                                                    FontSize="13"
+                                                                    Foreground="#666"
+                                                                    Text="平均时间" />
+                                                                <Border
+                                                                    Background="#FAFAFA"
+                                                                    BorderBrush="#E0E0E0"
+                                                                    BorderThickness="1"
+                                                                    CornerRadius="5">
+                                                                    <Grid Height="45">
+                                                                        <TextBlock
+                                                                            Margin="15,0"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="14"
+                                                                            Text="{Binding AverageTime}" />
+                                                                        <TextBlock
+                                                                            Margin="0,0,15,0"
+                                                                            HorizontalAlignment="Right"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="13"
+                                                                            Foreground="#999"
+                                                                            Text="粒/s" />
+                                                                    </Grid>
+                                                                </Border>
+                                                            </StackPanel>
+
+                                                            <!--  第二行  -->
+                                                            <StackPanel
+                                                                Grid.Row="1"
+                                                                Grid.Column="0"
+                                                                Margin="0,0,10,20">
+                                                                <TextBlock
+                                                                    Margin="0,0,0,8"
+                                                                    FontSize="13"
+                                                                    Foreground="#666"
+                                                                    Text="抓取数量" />
+                                                                <Border
+                                                                    Background="#FAFAFA"
+                                                                    BorderBrush="#E0E0E0"
+                                                                    BorderThickness="1"
+                                                                    CornerRadius="5">
+                                                                    <Grid Height="45">
+                                                                        <TextBlock
+                                                                            Margin="15,0"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="14"
+                                                                            Text="{Binding GrabCount}" />
+                                                                        <TextBlock
+                                                                            Margin="0,0,15,0"
+                                                                            HorizontalAlignment="Right"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="13"
+                                                                            Foreground="#999"
+                                                                            Text="粒" />
+                                                                    </Grid>
+                                                                </Border>
+                                                            </StackPanel>
+
+                                                            <StackPanel
+                                                                Grid.Row="1"
+                                                                Grid.Column="1"
+                                                                Margin="10,0,0,20">
+                                                                <TextBlock
+                                                                    Margin="0,0,0,8"
+                                                                    FontSize="13"
+                                                                    Foreground="#666"
+                                                                    Text="激光抓取数量" />
+                                                                <Border
+                                                                    Background="#FAFAFA"
+                                                                    BorderBrush="#E0E0E0"
+                                                                    BorderThickness="1"
+                                                                    CornerRadius="5">
+                                                                    <Grid Height="45">
+                                                                        <TextBlock
+                                                                            Margin="15,0"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="14"
+                                                                            Text="{Binding LaserGrabCount}" />
+                                                                        <TextBlock
+                                                                            Margin="0,0,15,0"
+                                                                            HorizontalAlignment="Right"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="13"
+                                                                            Foreground="#999"
+                                                                            Text="粒" />
+                                                                    </Grid>
+                                                                </Border>
+                                                            </StackPanel>
+
+                                                            <!--  第三行  -->
+                                                            <StackPanel
+                                                                Grid.Row="2"
+                                                                Grid.Column="0"
+                                                                Margin="0,0,10,20">
+                                                                <TextBlock
+                                                                    Margin="0,0,0,8"
+                                                                    FontSize="13"
+                                                                    Foreground="#666"
+                                                                    Text="小料收集数量" />
+                                                                <Border
+                                                                    Background="#FAFAFA"
+                                                                    BorderBrush="#E0E0E0"
+                                                                    BorderThickness="1"
+                                                                    CornerRadius="5">
+                                                                    <Grid Height="45">
+                                                                        <TextBlock
+                                                                            Margin="15,0"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="14"
+                                                                            Text="{Binding SmallMaterialCount}" />
+                                                                        <TextBlock
+                                                                            Margin="0,0,15,0"
+                                                                            HorizontalAlignment="Right"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="13"
+                                                                            Foreground="#999"
+                                                                            Text="粒" />
+                                                                    </Grid>
+                                                                </Border>
+                                                            </StackPanel>
+
+                                                            <StackPanel
+                                                                Grid.Row="2"
+                                                                Grid.Column="1"
+                                                                Margin="10,0,0,20">
+                                                                <TextBlock
+                                                                    Margin="0,0,0,8"
+                                                                    FontSize="13"
+                                                                    Foreground="#666"
+                                                                    Text="大料收集数量" />
+                                                                <Border
+                                                                    Background="#FAFAFA"
+                                                                    BorderBrush="#E0E0E0"
+                                                                    BorderThickness="1"
+                                                                    CornerRadius="5">
+                                                                    <Grid Height="45">
+                                                                        <TextBlock
+                                                                            Margin="15,0"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="14"
+                                                                            Text="{Binding LargeMaterialCount}" />
+                                                                        <TextBlock
+                                                                            Margin="0,0,15,0"
+                                                                            HorizontalAlignment="Right"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="13"
+                                                                            Foreground="#999"
+                                                                            Text="粒" />
+                                                                    </Grid>
+                                                                </Border>
+                                                            </StackPanel>
+
+                                                            <!--  第四行  -->
+                                                            <StackPanel
+                                                                Grid.Row="3"
+                                                                Grid.Column="0"
+                                                                Margin="0,0,10,20">
+                                                                <TextBlock
+                                                                    Margin="0,0,0,8"
+                                                                    FontSize="13"
+                                                                    Foreground="#666"
+                                                                    Text="激光视觉成功率" />
+                                                                <Border
+                                                                    Background="#FAFAFA"
+                                                                    BorderBrush="#E0E0E0"
+                                                                    BorderThickness="1"
+                                                                    CornerRadius="5">
+                                                                    <Grid Height="45">
+                                                                        <TextBlock
+                                                                            Margin="15,0"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="14"
+                                                                            Text="{Binding LaserVisionSuccessRate}" />
+                                                                        <TextBlock
+                                                                            Margin="0,0,15,0"
+                                                                            HorizontalAlignment="Right"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="13"
+                                                                            Foreground="#999"
+                                                                            Text="%" />
+                                                                    </Grid>
+                                                                </Border>
+                                                            </StackPanel>
+
+                                                            <StackPanel
+                                                                Grid.Row="3"
+                                                                Grid.Column="1"
+                                                                Margin="10,0,0,20">
+                                                                <TextBlock
+                                                                    Margin="0,0,0,8"
+                                                                    FontSize="13"
+                                                                    Foreground="#666"
+                                                                    Text="小料收集成功率" />
+                                                                <Border
+                                                                    Background="#FAFAFA"
+                                                                    BorderBrush="#E0E0E0"
+                                                                    BorderThickness="1"
+                                                                    CornerRadius="5">
+                                                                    <Grid Height="45">
+                                                                        <TextBlock
+                                                                            Margin="15,0"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="14"
+                                                                            Text="{Binding SmallMaterialSuccessRate}" />
+                                                                        <TextBlock
+                                                                            Margin="0,0,15,0"
+                                                                            HorizontalAlignment="Right"
+                                                                            VerticalAlignment="Center"
+                                                                            FontSize="13"
+                                                                            Foreground="#999"
+                                                                            Text="粒" />
+                                                                    </Grid>
+                                                                </Border>
+                                                            </StackPanel>
+                                                        </Grid>
+
+                                                        <!--  大料收集成功率（单独一行）  -->
+                                                        <StackPanel Margin="0,0,0,0">
+                                                            <TextBlock
+                                                                Margin="0,0,0,8"
+                                                                FontSize="13"
+                                                                Foreground="#666"
+                                                                Text="大料收集成功率" />
+                                                            <Border
+                                                                Background="#FAFAFA"
+                                                                BorderBrush="#E0E0E0"
+                                                                BorderThickness="1"
+                                                                CornerRadius="5">
+                                                                <Grid Height="45">
+                                                                    <TextBlock
+                                                                        Margin="15,0"
+                                                                        VerticalAlignment="Center"
+                                                                        FontSize="14"
+                                                                        Text="{Binding LargeMaterialSuccessRate}" />
+                                                                    <TextBlock
+                                                                        Margin="0,0,15,0"
+                                                                        HorizontalAlignment="Right"
+                                                                        VerticalAlignment="Center"
+                                                                        FontSize="13"
+                                                                        Foreground="#999"
+                                                                        Text="粒" />
+                                                                </Grid>
+                                                            </Border>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Border>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+
+            <!--  底部控制按钮（仅在主页显示）  -->
+            <Border
+                Grid.Row="2"
+                Margin="30,0,30,20"
+                Padding="20"
+                Background="White"
+                CornerRadius="15">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedPage}" Value="主页">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Border.Effect>
+                    <DropShadowEffect
+                        BlurRadius="20"
+                        Opacity="0.1"
+                        ShadowDepth="0" />
+                </Border.Effect>
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <!--  启动  -->
+                    <Button
+                        Background="#4CAF50"
+                        Command="{Binding StartCommand}"
+                        Style="{StaticResource ControlButtonStyle}">
+                        <Button.Effect>
+                            <DropShadowEffect
+                                BlurRadius="15"
+                                Opacity="0.4"
+                                ShadowDepth="0"
+                                Color="#4CAF50" />
+                        </Button.Effect>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                FontSize="20"
+                                Text="▶" />
+                            <TextBlock FontSize="18" Text="启动" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  暂停  -->
+                    <Button
+                        Background="#FF9800"
+                        Command="{Binding PauseCommand}"
+                        Style="{StaticResource ControlButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                FontSize="20"
+                                Text="⏸" />
+                            <TextBlock FontSize="18" Text="暂停" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  停止  -->
+                    <Button
+                        Background="#F44336"
+                        Command="{Binding StopCommand}"
+                        Style="{StaticResource ControlButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                FontSize="20"
+                                Text="⏹" />
+                            <TextBlock FontSize="18" Text="停止" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  复位  -->
+                    <Button
+                        Background="#2196F3"
+                        Command="{Binding ResetCommand}"
+                        Style="{StaticResource ControlButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                FontSize="20"
+                                Text="↻" />
+                            <TextBlock FontSize="18" Text="复位" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  初始化  -->
+                    <Button
+                        Background="#00BCD4"
+                        Command="{Binding InitializeCommand}"
+                        Style="{StaticResource ControlButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                FontSize="20"
+                                Text="⚡" />
+                            <TextBlock FontSize="18" Text="初始化" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  清料  -->
+                    <Button
+                        Background="#9C27B0"
+                        Command="{Binding ClearCommand}"
+                        Style="{StaticResource ControlButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                FontSize="20"
+                                Text="🗑" />
+                            <TextBlock FontSize="18" Text="清料" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

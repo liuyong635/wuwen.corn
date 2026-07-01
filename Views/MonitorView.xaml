@@ -1,0 +1,513 @@
+﻿<UserControl
+    x:Class="SeedCut.Views.MonitorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="800"
+    d:DesignWidth="1400"
+    Background="Transparent"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <!--  信息卡片样式  -->
+        <Style x:Key="InfoCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#E0E0E0" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="20,15" />
+            <Setter Property="Margin" Value="0,0,0,15" />
+        </Style>
+
+        <!--  视觉卡片样式  -->
+        <Style x:Key="VisionCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="CornerRadius" Value="15" />
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect
+                        BlurRadius="20"
+                        Opacity="0.1"
+                        ShadowDepth="0" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="30,20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="520" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--  左侧：当前抓取种子信息  -->
+        <Border
+            Grid.Column="0"
+            Margin="0,0,20,0"
+            Padding="30"
+            Background="White"
+            CornerRadius="15">
+            <Border.Effect>
+                <DropShadowEffect
+                    BlurRadius="20"
+                    Opacity="0.1"
+                    ShadowDepth="0" />
+            </Border.Effect>
+
+            <StackPanel>
+                <!--  标题  -->
+                <Border
+                    Margin="0,0,0,40"
+                    Padding="15,12"
+                    Background="#E3F2FD"
+                    CornerRadius="10">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Foreground="#1976D2"
+                        Text="当前抓取种子信息" />
+                </Border>
+
+                <!--  周长  -->
+                <Border Style="{StaticResource InfoCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border
+                            Grid.Column="0"
+                            Width="40"
+                            Height="40"
+                            Margin="0,0,15,0"
+                            Background="#E3F2FD"
+                            CornerRadius="20">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="20"
+                                Text="⭕" />
+                        </Border>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                FontSize="14"
+                                Foreground="#666"
+                                Text="周长:" />
+                            <TextBlock
+                                FontSize="22"
+                                FontWeight="Bold"
+                                Foreground="#1976D2"
+                                Text="{Binding Perimeter}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!--  面积  -->
+                <Border Style="{StaticResource InfoCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border
+                            Grid.Column="0"
+                            Width="40"
+                            Height="40"
+                            Margin="0,0,15,0"
+                            Background="#E8F5E9"
+                            CornerRadius="20">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="20"
+                                Text="📐" />
+                        </Border>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                FontSize="14"
+                                Foreground="#666"
+                                Text="面积:" />
+                            <TextBlock
+                                FontSize="22"
+                                FontWeight="Bold"
+                                Foreground="#4CAF50"
+                                Text="{Binding Area}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!--  长  -->
+                <Border Style="{StaticResource InfoCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border
+                            Grid.Column="0"
+                            Width="40"
+                            Height="40"
+                            Margin="0,0,15,0"
+                            Background="#FFF3E0"
+                            CornerRadius="20">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="20"
+                                Text="📏" />
+                        </Border>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                FontSize="14"
+                                Foreground="#666"
+                                Text="长:" />
+                            <TextBlock
+                                FontSize="22"
+                                FontWeight="Bold"
+                                Foreground="#FF9800"
+                                Text="{Binding Length}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!--  宽  -->
+                <Border Style="{StaticResource InfoCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border
+                            Grid.Column="0"
+                            Width="40"
+                            Height="40"
+                            Margin="0,0,15,0"
+                            Background="#F3E5F5"
+                            CornerRadius="20">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="20"
+                                Text="📐" />
+                        </Border>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                FontSize="14"
+                                Foreground="#666"
+                                Text="宽:" />
+                            <TextBlock
+                                FontSize="22"
+                                FontWeight="Bold"
+                                Foreground="#9C27B0"
+                                Text="{Binding Width}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <!--  右侧：视觉展示区  -->
+        <Border
+            Grid.Column="1"
+            Padding="30"
+            Background="White"
+            CornerRadius="15">
+            <Border.Effect>
+                <DropShadowEffect
+                    BlurRadius="20"
+                    Opacity="0.1"
+                    ShadowDepth="0" />
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!--  标题  -->
+                <Border
+                    Grid.Row="0"
+                    Margin="0,0,0,20"
+                    Padding="15,12"
+                    Background="#E3F2FD"
+                    CornerRadius="10">
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="20"
+                            Text="📷" />
+                        <TextBlock
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Foreground="#1976D2"
+                            Text="视觉展示区" />
+                    </StackPanel>
+                </Border>
+
+                <!--  四个视觉展示区域  -->
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  抓取视觉  -->
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Style="{StaticResource VisionCardStyle}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!--  图像显示区  -->
+                            <Border
+                                Grid.Row="0"
+                                Margin="10"
+                                Background="#F5F5F5"
+                                CornerRadius="10">
+                                <Grid>
+                                    <!--  占位图或实际图像  -->
+                                    <Image
+                                        RenderOptions.BitmapScalingMode="HighQuality"
+                                        Source="{Binding GrabVisionImage}"
+                                        Stretch="Uniform" />
+
+                                    <!--  占位文字（当没有图像时显示）  -->
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Foreground="#999"
+                                        Text="抓取视觉">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding GrabVisionImage}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+
+                            <!--  标签  -->
+                            <Border
+                                Grid.Row="1"
+                                Margin="10,0,10,10"
+                                Padding="15,10"
+                                Background="#E3F2FD"
+                                CornerRadius="8">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    FontSize="15"
+                                    FontWeight="SemiBold"
+                                    Foreground="#1976D2"
+                                    Text="抓取视觉" />
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!--  小料视觉  -->
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Style="{StaticResource VisionCardStyle}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Border
+                                Grid.Row="0"
+                                Margin="10"
+                                Background="#F5F5F5"
+                                CornerRadius="10">
+                                <Grid>
+                                    <Image
+                                        RenderOptions.BitmapScalingMode="HighQuality"
+                                        Source="{Binding SmallMaterialVisionImage}"
+                                        Stretch="Uniform" />
+
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Foreground="#999"
+                                        Text="小料视觉">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding SmallMaterialVisionImage}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+
+                            <Border
+                                Grid.Row="1"
+                                Margin="10,0,10,10"
+                                Padding="15,10"
+                                Background="#E8F5E9"
+                                CornerRadius="8">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    FontSize="15"
+                                    FontWeight="SemiBold"
+                                    Foreground="#4CAF50"
+                                    Text="小料视觉" />
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!--  激光视觉  -->
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Style="{StaticResource VisionCardStyle}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Border
+                                Grid.Row="0"
+                                Margin="10"
+                                Background="#F5F5F5"
+                                CornerRadius="10">
+                                <Grid>
+                                    <Image
+                                        RenderOptions.BitmapScalingMode="HighQuality"
+                                        Source="{Binding LaserVisionImage}"
+                                        Stretch="Uniform" />
+
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Foreground="#999"
+                                        Text="激光视觉">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding LaserVisionImage}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+
+                            <Border
+                                Grid.Row="1"
+                                Margin="10,0,10,10"
+                                Padding="15,10"
+                                Background="#E1F5FE"
+                                CornerRadius="8">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    FontSize="15"
+                                    FontWeight="SemiBold"
+                                    Foreground="#0288D1"
+                                    Text="激光视觉" />
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!--  大料视觉  -->
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Style="{StaticResource VisionCardStyle}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Border
+                                Grid.Row="0"
+                                Margin="10"
+                                Background="#F5F5F5"
+                                CornerRadius="10">
+                                <Grid>
+                                    <Image
+                                        RenderOptions.BitmapScalingMode="HighQuality"
+                                        Source="{Binding LargeMaterialVisionImage}"
+                                        Stretch="Uniform" />
+
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Foreground="#999"
+                                        Text="大料视觉">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding LargeMaterialVisionImage}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+
+                            <Border
+                                Grid.Row="1"
+                                Margin="10,0,10,10"
+                                Padding="15,10"
+                                Background="#FFF3E0"
+                                CornerRadius="8">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    FontSize="15"
+                                    FontWeight="SemiBold"
+                                    Foreground="#F57C00"
+                                    Text="大料视觉" />
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

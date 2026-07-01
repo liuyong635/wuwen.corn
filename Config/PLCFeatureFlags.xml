@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PLCFeatureFlags xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EnableUI>true</EnableUI>
+  <EnableAlarm>true</EnableAlarm>
+  <EnableDataLogging>true</EnableDataLogging>
+  <CodeGenerationModeOnly>false</CodeGenerationModeOnly>
+  <UIRefreshInterval>500</UIRefreshInterval>
+  <ShowHiddenAddresses>false</ShowHiddenAddresses>
+  <AlarmScanInterval>200</AlarmScanInterval>
+  <MaxAlarmHistoryCount>1000</MaxAlarmHistoryCount>
+  <UseCsvConfiguration>true</UseCsvConfiguration>
+  <CsvConfigPath>Config/PLCAddresses.csv</CsvConfigPath>
+  <UseCodeDefinedModules>false</UseCodeDefinedModules>
+</PLCFeatureFlags>

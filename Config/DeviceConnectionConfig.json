@@ -1,0 +1,97 @@
+{
+  "ConnectionMode": "Debug",
+  "ForceProductionInDebug": false,
+  "Devices": [
+    {
+      "DeviceId": "VisionSDK",
+      "DisplayName": "\u6D77\u5EB7VM SDK",
+      "Enabled": true,
+      "IsCritical": true,
+      "SkipInDebug": false,
+      "ConnectionTimeoutMs": 5000,
+      "AutoConnectOnStartup": true
+    },
+    {
+      "DeviceId": "VisionDongle",
+      "DisplayName": "\u6D77\u5EB7VM\u52A0\u5BC6\u72D7",
+      "Enabled": true,
+      "IsCritical": true,
+      "SkipInDebug": false,
+      "ConnectionTimeoutMs": 5000,
+      "AutoConnectOnStartup": true
+    },
+    {
+      "DeviceId": "PLC",
+      "DisplayName": "\u897F\u95E8\u5B50PLC",
+      "Enabled": true,
+      "IsCritical": true,
+      "SkipInDebug": false,
+      "ConnectionTimeoutMs": 5000,
+      "AutoConnectOnStartup": true
+    },
+    {
+      "DeviceId": "Robot",
+      "DisplayName": "SCARA\u673A\u5668\u4EBA",
+      "Enabled": true,
+      "IsCritical": true,
+      "SkipInDebug": false,
+      "ConnectionTimeoutMs": 5000,
+      "AutoConnectOnStartup": true
+    },
+    {
+      "DeviceId": "Vision",
+      "DisplayName": "\u89C6\u89C9\u7CFB\u7EDF",
+      "Enabled": true,
+      "IsCritical": true,
+      "SkipInDebug": false,
+      "ConnectionTimeoutMs": 10000,
+      "AutoConnectOnStartup": true
+    },
+    {
+      "DeviceId": "HM_Laser",
+      "DisplayName": "HM\u6FC0\u5149\u5668",
+      "Enabled": true,
+      "IsCritical": false,
+      "SkipInDebug": false,
+      "ConnectionTimeoutMs": 5000,
+      "AutoConnectOnStartup": true
+    },
+    {
+      "DeviceId": "Vibrator",
+      "DisplayName": "\u632F\u52A8\u76D8\u8BBE\u5907",
+      "Enabled": true,
+      "IsCritical": false,
+      "SkipInDebug": false,
+      "ConnectionTimeoutMs": 5000,
+      "AutoConnectOnStartup": true
+    },
+    {
+      "DeviceId": "Scanner_Small",
+      "DisplayName": "\u5C0F\u6599\u76D8\u626B\u7801\u5668",
+      "Enabled": true,
+      "IsCritical": false,
+      "SkipInDebug": true,
+      "ConnectionTimeoutMs": 5000,
+      "AutoConnectOnStartup": true
+    },
+    {
+      "DeviceId": "Scanner_Large",
+      "DisplayName": "\u5927\u6599\u76D8\u626B\u7801\u5668",
+      "Enabled": true,
+      "IsCritical": false,
+      "SkipInDebug": true,
+      "ConnectionTimeoutMs": 5000,
+      "AutoConnectOnStartup": true
+    }
+  ],
+  "DebugSettings": {
+    "SkipLoadingPage": false,
+    "AutoPassCriticalCheck": true,
+    "ConnectionTimeoutMs": 3000,
+    "ShowDebugWarning": true
+  },
+  "GlobalConnectionTimeoutMs": 10000,
+  "EnableParallelConnection": false,
+  "IsDebugMode": true,
+  "IsProductionMode": false
+}

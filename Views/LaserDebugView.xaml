@@ -1,0 +1,453 @@
+﻿<UserControl
+    x:Class="SeedCut.Views.LaserDebugView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:SeedCut.ViewModels"
+    Background="White">
+
+    <UserControl.Resources>
+        <!--  日志级别颜色转换器  -->
+        <vm:LogLevelToBrushConverter x:Key="LogLevelToBrushConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
+        <!--  按钮样式  -->
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#007ACC" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="15,8" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#005A9E" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#CCCCCC" />
+                    <Setter Property="Cursor" Value="Arrow" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style
+            x:Key="SecondaryButton"
+            BasedOn="{StaticResource PrimaryButton}"
+            TargetType="Button">
+            <Setter Property="Background" Value="#F0F0F0" />
+            <Setter Property="Foreground" Value="#333333" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E0E0E0" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style
+            x:Key="DangerButton"
+            BasedOn="{StaticResource PrimaryButton}"
+            TargetType="Button">
+            <Setter Property="Background" Value="#E74C3C" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#C0392B" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  1. 连接控制区  -->
+        <GroupBox
+            Grid.Row="0"
+            Margin="0,0,0,15"
+            FontSize="14"
+            FontWeight="Bold"
+            Header="连接控制">
+            <StackPanel Margin="15">
+                <!--  连接状态显示  -->
+                <Grid Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <Ellipse
+                            Width="16"
+                            Height="16"
+                            Margin="0,0,10,0"
+                            Fill="{Binding ConnectionIndicatorBrush}" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            FontWeight="Normal"
+                            Text="{Binding ConnectionStatus}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontWeight="Normal"
+                            Text="服务端口: " />
+                        <TextBlock
+                            Margin="0,0,15,0"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Text="{Binding ServerPort}" />
+
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontWeight="Normal"
+                            Text="自动Mark: " />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Text="{Binding AutoSendMark}" />
+                    </StackPanel>
+                </Grid>
+
+                <!--  连接按钮  -->
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="120"
+                        Margin="0,0,10,0"
+                        Command="{Binding StartServerCommand}"
+                        Content="启动服务器"
+                        Style="{StaticResource PrimaryButton}" />
+                    <Button
+                        Width="120"
+                        Command="{Binding DisconnectCommand}"
+                        Content="断开连接"
+                        Style="{StaticResource DangerButton}" />
+                </StackPanel>
+
+                <!--  状态消息  -->
+                <TextBlock
+                    Margin="0,10,0,0"
+                    FontSize="12"
+                    FontWeight="Normal"
+                    Foreground="#666666"
+                    Text="{Binding StatusMessage}" />
+            </StackPanel>
+        </GroupBox>
+
+        <!--  2. 快速测试区  -->
+        <GroupBox
+            Grid.Row="1"
+            Margin="0,0,0,15"
+            FontSize="14"
+            FontWeight="Bold"
+            Header="快速测试">
+            <StackPanel Margin="15">
+                <!--  基础指令  -->
+                <TextBlock
+                    Margin="0,0,0,8"
+                    FontSize="12"
+                    FontWeight="Normal"
+                    Foreground="#666"
+                    Text="基础指令" />
+                <WrapPanel Margin="0,0,0,15">
+                    <Button
+                        Width="140"
+                        Margin="0,0,10,5"
+                        Command="{Binding MarkCommand}"
+                        Content="开始打标 (Mark)"
+                        Style="{StaticResource PrimaryButton}" />
+                    <Button
+                        Width="140"
+                        Margin="0,0,10,5"
+                        Command="{Binding StopMarkCommand}"
+                        Content="停止打标 (StopMark)"
+                        Style="{StaticResource DangerButton}" />
+                    <Button
+                        Width="140"
+                        Margin="0,0,10,5"
+                        Command="{Binding GetProgressCommand}"
+                        Content="查询进度"
+                        Style="{StaticResource SecondaryButton}" />
+                </WrapPanel>
+
+                <!--  打标进度  -->
+                <Grid Margin="0,0,0,15" Visibility="{Binding IsMarking, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        FontWeight="Normal"
+                        Text="打标进度: " />
+                    <ProgressBar
+                        Grid.Column="1"
+                        Height="20"
+                        Margin="10,0"
+                        Maximum="100"
+                        Value="{Binding MarkProgress}" />
+                    <TextBlock
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Text="{Binding MarkProgress, StringFormat={}{0}%}" />
+                </Grid>
+
+                <!--  图形测试  -->
+                <TextBlock
+                    Margin="0,0,0,8"
+                    FontSize="12"
+                    FontWeight="Normal"
+                    Foreground="#666"
+                    Text="图形测试" />
+                <Grid Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        FontWeight="Normal"
+                        Text="坐标: " />
+                    <TextBox
+                        Grid.Column="1"
+                        Margin="5,0"
+                        Padding="5"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding TestCoordinates, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button
+                        Grid.Column="2"
+                        Width="100"
+                        Margin="5,0"
+                        Command="{Binding TestAddLinesCommand}"
+                        Content="AddLines"
+                        Style="{StaticResource SecondaryButton}" />
+                    <Button
+                        Grid.Column="3"
+                        Width="100"
+                        Margin="5,0,0,0"
+                        Command="{Binding TestAddAreasCommand}"
+                        Content="AddAreas"
+                        Style="{StaticResource SecondaryButton}" />
+                </Grid>
+
+                <!--  文档加载  -->
+                <TextBlock
+                    Margin="0,0,0,8"
+                    FontSize="12"
+                    FontWeight="Normal"
+                    Foreground="#666"
+                    Text="文档管理" />
+                <Grid Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        FontWeight="Normal"
+                        Text="HSD文件: " />
+                    <TextBox
+                        Grid.Column="1"
+                        Margin="5,0"
+                        Padding="5"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding HsdFilePath, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button
+                        Grid.Column="2"
+                        Width="100"
+                        Margin="5,0,0,0"
+                        Command="{Binding LoadHsdFileCommand}"
+                        Content="加载文档"
+                        Style="{StaticResource SecondaryButton}" />
+                </Grid>
+
+                <!--  参数设置  -->
+                <TextBlock
+                    Margin="0,0,0,8"
+                    FontSize="12"
+                    FontWeight="Normal"
+                    Foreground="#666"
+                    Text="参数设置" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        FontWeight="Normal"
+                        Text="图层ID: " />
+                    <TextBox
+                        Grid.Column="1"
+                        Margin="5,0"
+                        Padding="5"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding LayerId, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock
+                        Grid.Column="2"
+                        Margin="15,0,0,0"
+                        VerticalAlignment="Center"
+                        FontWeight="Normal"
+                        Text="激光能量: " />
+                    <TextBox
+                        Grid.Column="3"
+                        Margin="5,0"
+                        Padding="5"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding LaserPower, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <Button
+                        Grid.Column="4"
+                        Width="100"
+                        Margin="15,0,0,0"
+                        Command="{Binding SetLaserPowerCommand}"
+                        Content="设置能量"
+                        Style="{StaticResource SecondaryButton}" />
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+
+        <!--  3. 自定义指令  -->
+        <GroupBox
+            Grid.Row="2"
+            Margin="0,0,0,15"
+            FontSize="14"
+            FontWeight="Bold"
+            Header="自定义指令">
+            <Grid Margin="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBox
+                    Grid.Column="0"
+                    Padding="8"
+                    VerticalContentAlignment="Center"
+                    FontSize="14"
+                    FontWeight="Normal"
+                    Text="{Binding CustomCommand, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="10,0,0,0"
+                    Command="{Binding SendCommandCommand}"
+                    Content="发送指令"
+                    Style="{StaticResource PrimaryButton}" />
+                <Button
+                    Grid.Column="2"
+                    Width="100"
+                    Margin="10,0,0,0"
+                    Command="{Binding ClearQueueCommand}"
+                    Content="清空队列"
+                    Style="{StaticResource SecondaryButton}" />
+                <TextBlock
+                    Grid.Column="3"
+                    Margin="15,0,0,0"
+                    VerticalAlignment="Center"
+                    FontWeight="Normal">
+                    <Run Text="队列: " />
+                    <Run FontWeight="Bold" Text="{Binding QueueLength}" />
+                    <Run Text="条" />
+                </TextBlock>
+            </Grid>
+        </GroupBox>
+
+        <!--  4. 通信日志  -->
+        <GroupBox
+            Grid.Row="3"
+            FontSize="14"
+            FontWeight="Bold"
+            Header="通信日志">
+            <Grid Margin="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!--  日志工具栏  -->
+                <StackPanel
+                    Grid.Row="0"
+                    Margin="0,0,0,10"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontWeight="Normal"
+                        Foreground="#666"
+                        Text="{Binding Logs.Count, StringFormat='共 {0} 条日志'}" />
+                    <Button
+                        Width="80"
+                        Margin="15,0,0,0"
+                        Padding="8,4"
+                        Command="{Binding ClearLogsCommand}"
+                        Content="清空日志"
+                        Style="{StaticResource SecondaryButton}" />
+                </StackPanel>
+
+                <!--  日志列表  -->
+                <DataGrid
+                    Grid.Row="1"
+                    AlternatingRowBackground="#F9F9F9"
+                    AutoGenerateColumns="False"
+                    FontFamily="Consolas"
+                    FontSize="12"
+                    GridLinesVisibility="None"
+                    HeadersVisibility="Column"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Logs}"
+                    RowHeight="28">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding TimeString}"
+                            Header="时间" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Message}"
+                            Header="消息" />
+                    </DataGrid.Columns>
+
+                    <!--  行样式：根据日志级别改变颜色  -->
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Foreground" Value="{Binding Level, Converter={StaticResource LogLevelToBrushConverter}}" />
+                        </Style>
+                    </DataGrid.RowStyle>
+                </DataGrid>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>

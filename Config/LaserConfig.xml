@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LaserConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <IpAddress>127.0.0.1</IpAddress>
+  <Port>8001</Port>
+  <TimeoutMs>5000</TimeoutMs>
+  <AutoSendMark>false</AutoSendMark>
+  <MaxQueueLength>100</MaxQueueLength>
+  <WorkAreaMinX>-100</WorkAreaMinX>
+  <WorkAreaMaxX>100</WorkAreaMaxX>
+  <WorkAreaMinY>-100</WorkAreaMinY>
+  <WorkAreaMaxY>100</WorkAreaMaxY>
+  <EnableCoordinateCheck>true</EnableCoordinateCheck>
+</LaserConfig>

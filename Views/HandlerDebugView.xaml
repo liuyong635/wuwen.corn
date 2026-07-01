@@ -1,0 +1,783 @@
+<UserControl
+    x:Class="SeedCut.Views.HandlerDebugView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:SeedCut.Views.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="800"
+    d:DesignWidth="1000"
+    Background="#1E1E1E"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <!--  转换器  -->
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+
+        <!--  按钮样式  -->
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Background" Value="#3C3C3C" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#555" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="15,8" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#4C4C4C" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#2C2C2C" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#2A2A2A" />
+                                <Setter Property="Foreground" Value="#666" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--  主要按钮样式（绿色）  -->
+        <Style
+            x:Key="PrimaryButton"
+            BasedOn="{StaticResource ActionButton}"
+            TargetType="Button">
+            <Setter Property="Background" Value="#2D7D46" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#3D9D56" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#1D6D36" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#1A3D20" />
+                    <Setter Property="Foreground" Value="#666" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  危险按钮样式（红色）  -->
+        <Style
+            x:Key="DangerButton"
+            BasedOn="{StaticResource ActionButton}"
+            TargetType="Button">
+            <Setter Property="Background" Value="#8B2635" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#A53645" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#6B1625" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#3D1015" />
+                    <Setter Property="Foreground" Value="#666" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  卡片样式  -->
+        <Style x:Key="CardBorder" TargetType="Border">
+            <Setter Property="Background" Value="#2D2D2D" />
+            <Setter Property="BorderBrush" Value="#3D3D3D" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="15" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+        </Style>
+
+        <!--  下拉框样式（深色主题）  -->
+        <Style x:Key="ModernComboBox" TargetType="ComboBox">
+            <Setter Property="Background" Value="#2D2D2D" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#555" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="10,8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Background" Value="#2D2D2D" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="Padding" Value="10,8" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ComboBoxItem">
+                                    <Border
+                                        x:Name="Bd"
+                                        Padding="{TemplateBinding Padding}"
+                                        Background="{TemplateBinding Background}"
+                                        BorderThickness="0">
+                                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsHighlighted" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="#3D6A99" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="#3D6A99" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton
+                                x:Name="ToggleButton"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                ClickMode="Press"
+                                Focusable="False"
+                                IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="4">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="20" />
+                                                </Grid.ColumnDefinitions>
+                                                <Path
+                                                    Grid.Column="1"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Data="M 0 0 L 4 4 L 8 0 Z"
+                                                    Fill="White" />
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter
+                                Margin="10,0,30,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding SelectionBoxItem}"
+                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                IsHitTestVisible="False" />
+                            <Popup
+                                x:Name="Popup"
+                                AllowsTransparency="True"
+                                Focusable="False"
+                                IsOpen="{TemplateBinding IsDropDownOpen}"
+                                Placement="Bottom"
+                                PopupAnimation="Slide">
+                                <Border
+                                    MinWidth="{TemplateBinding ActualWidth}"
+                                    MaxHeight="200"
+                                    Background="#2D2D2D"
+                                    BorderBrush="#555"
+                                    BorderThickness="1"
+                                    CornerRadius="4">
+                                    <ScrollViewer>
+                                        <StackPanel IsItemsHost="True" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280" />
+            <!--  左侧：条件选择器  -->
+            <ColumnDefinition Width="15" />
+            <ColumnDefinition Width="*" />
+            <!--  右侧：复合操作/序列调试  -->
+        </Grid.ColumnDefinitions>
+
+        <!--  左侧：条件选择器  -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  标题  -->
+            <StackPanel
+                Grid.Row="0"
+                Margin="0,0,0,10"
+                Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,0,8,0"
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    Text="📋" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Text="条件选择器" />
+            </StackPanel>
+
+            <!--  快捷操作  -->
+            <Border
+                Grid.Row="1"
+                Padding="10"
+                Style="{StaticResource CardBorder}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="0,0,0,8"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        Foreground="#CCC"
+                        Text="快捷操作" />
+
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding QuickActions}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button
+                                    Margin="0,0,5,5"
+                                    Padding="8,5"
+                                    Command="{Binding DataContext.ExecuteQuickActionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding ActionId}"
+                                    Content="{Binding DisplayName}"
+                                    FontSize="11"
+                                    Style="{StaticResource ActionButton}"
+                                    ToolTip="{Binding Description}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Border>
+
+            <!--  条件分组列表  -->
+            <Border
+                Grid.Row="2"
+                Padding="10"
+                Style="{StaticResource CardBorder}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel
+                        Grid.Row="0"
+                        Margin="0,0,0,8"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            FontSize="12"
+                            FontWeight="SemiBold"
+                            Foreground="#CCC"
+                            Text="可选条件" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="11"
+                            Foreground="#888"
+                            Text="{Binding SelectedConditionCount, StringFormat=' (已选 {0} 个)'}" />
+                        <Button
+                            Margin="10,0,0,0"
+                            Padding="5,2"
+                            Command="{Binding RefreshConditionStatusCommand}"
+                            Content="🔄"
+                            FontSize="10"
+                            Style="{StaticResource ActionButton}"
+                            ToolTip="刷新状态" />
+                    </StackPanel>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding ConditionGroups}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Expander Margin="0,0,0,5" IsExpanded="{Binding IsExpanded}">
+                                        <Expander.Header>
+                                            <TextBlock
+                                                FontSize="12"
+                                                FontWeight="SemiBold"
+                                                Foreground="#DDD"
+                                                Text="{Binding GroupName}" />
+                                        </Expander.Header>
+                                        <ItemsControl Margin="10,5,0,0" ItemsSource="{Binding Conditions}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border
+                                                        Margin="0,2"
+                                                        Padding="8,5"
+                                                        Background="#383838"
+                                                        CornerRadius="3">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <!--  选择框  -->
+                                                            <CheckBox
+                                                                Grid.Column="0"
+                                                                Margin="0,0,8,0"
+                                                                VerticalAlignment="Center"
+                                                                IsChecked="{Binding IsSelected}" />
+
+                                                            <!--  状态指示  -->
+                                                            <TextBlock
+                                                                Grid.Column="1"
+                                                                Margin="0,0,6,0"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="10"
+                                                                Text="{Binding StatusIndicator}">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                                                <Setter Property="Foreground" Value="#4CAF50" />
+                                                                            </DataTrigger>
+                                                                            <DataTrigger Binding="{Binding IsActive}" Value="False">
+                                                                                <Setter Property="Foreground" Value="#666" />
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+
+                                                            <!--  条件信息  -->
+                                                            <StackPanel Grid.Column="2">
+                                                                <TextBlock
+                                                                    FontSize="11"
+                                                                    Foreground="White"
+                                                                    Text="{Binding DisplayName}" />
+                                                                <TextBlock
+                                                                    FontSize="9"
+                                                                    Foreground="#888"
+                                                                    Text="{Binding RelatedHandlerId, StringFormat='→ {0}'}" />
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Expander>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <!--  操作按钮  -->
+            <Border
+                Grid.Row="3"
+                Padding="10"
+                Style="{StaticResource CardBorder}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <Button
+                            Padding="10,6"
+                            Command="{Binding ApplySelectedConditionsCommand}"
+                            Content="✓ 应用选中"
+                            FontSize="11"
+                            Style="{StaticResource PrimaryButton}" />
+                        <Button
+                            Padding="10,6"
+                            Command="{Binding ClearSelectedConditionsCommand}"
+                            Content="✗ 清除选中"
+                            FontSize="11"
+                            Style="{StaticResource ActionButton}" />
+                        <Button
+                            Padding="10,6"
+                            Command="{Binding ClearAllConditionsCommand}"
+                            Content="全部清除"
+                            FontSize="11"
+                            Style="{StaticResource DangerButton}" />
+                    </StackPanel>
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Margin="0,8,0,0"
+                        FontSize="10"
+                        Foreground="#888"
+                        Text="{Binding ConditionStatusText}" />
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!--  分隔线  -->
+        <Border
+            Grid.Column="1"
+            Width="1"
+            Margin="7,0"
+            Background="#3D3D3D" />
+
+        <!--  右侧：复合操作/序列调试  -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--  标题  -->
+            <StackPanel
+                Grid.Row="0"
+                Margin="0,0,0,15"
+                Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,0,8,0"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    Text="⚡" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Text="序列调试（一键执行）" />
+            </StackPanel>
+
+            <!--  序列选择  -->
+            <Border Grid.Row="1" Style="{StaticResource CardBorder}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            VerticalAlignment="Center"
+                            FontSize="13"
+                            Foreground="#CCC"
+                            Text="选择操作:" />
+                        <ComboBox
+                            Width="300"
+                            DisplayMemberPath="DisplayName"
+                            ItemsSource="{Binding Sequences}"
+                            SelectedItem="{Binding SelectedSequence}"
+                            Style="{StaticResource ModernComboBox}" />
+                        <Button
+                            Margin="5,0,0,0"
+                            Padding="10,5"
+                            Command="{Binding RefreshSequencesCommand}"
+                            Content="🔄"
+                            Style="{StaticResource ActionButton}" />
+                    </StackPanel>
+
+                    <!--  序列描述  -->
+                    <TextBlock
+                        Grid.Row="1"
+                        Margin="0,10,0,0"
+                        FontSize="12"
+                        Foreground="#AAA"
+                        Text="{Binding SelectedSequenceInfo}"
+                        TextWrapping="Wrap"
+                        Visibility="{Binding HasSequenceSelection, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                    <!--  推荐条件区域  -->
+                    <Border
+                        Grid.Row="2"
+                        Margin="0,10,0,0"
+                        Padding="10"
+                        Background="#383838"
+                        CornerRadius="4"
+                        Visibility="{Binding HasRecommendedConditions, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel
+                                Grid.Row="0"
+                                Margin="0,0,0,8"
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,5,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    Text="📋" />
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    FontWeight="SemiBold"
+                                    Foreground="#4CAF50"
+                                    Text="推荐条件配置" />
+                            </StackPanel>
+
+                            <!--  推荐条件列表  -->
+                            <ItemsControl Grid.Row="1" ItemsSource="{Binding RecommendedConditions}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border
+                                            Margin="0,2"
+                                            Padding="8,5"
+                                            Background="#2D2D2D"
+                                            CornerRadius="3">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!--  状态指示  -->
+                                                <TextBlock
+                                                    Grid.Column="0"
+                                                    Margin="0,0,8,0"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="10"
+                                                    Text="{Binding StatusIndicator}">
+                                                    <TextBlock.Foreground>
+                                                        <SolidColorBrush Color="{Binding StatusColor}" />
+                                                    </TextBlock.Foreground>
+                                                </TextBlock>
+
+                                                <!--  条件名称  -->
+                                                <TextBlock
+                                                    Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="11"
+                                                    Foreground="White"
+                                                    Text="{Binding DisplayName}" />
+
+                                                <!--  分组标签  -->
+                                                <Border
+                                                    Grid.Column="2"
+                                                    Padding="4,1"
+                                                    VerticalAlignment="Center"
+                                                    Background="#555"
+                                                    CornerRadius="2">
+                                                    <TextBlock
+                                                        FontSize="9"
+                                                        Foreground="#AAA"
+                                                        Text="{Binding Group}" />
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <!--  应用按钮  -->
+                            <Button
+                                Grid.Row="2"
+                                Margin="0,8,0,0"
+                                Padding="10,6"
+                                HorizontalAlignment="Left"
+                                Background="#2D7D46"
+                                Command="{Binding ApplyRecommendedConditionsCommand}"
+                                Content="✓ 应用推荐条件"
+                                FontSize="11"
+                                Style="{StaticResource ActionButton}" />
+                        </Grid>
+                    </Border>
+
+                    <!--  操作按钮  -->
+                    <StackPanel
+                        Grid.Row="3"
+                        Margin="0,10,0,0"
+                        Orientation="Horizontal"
+                        Visibility="{Binding HasSequenceSelection, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Button
+                            Padding="20,10"
+                            Command="{Binding ExecuteSequenceCommand}"
+                            Content="▶ 一键执行"
+                            FontSize="14"
+                            IsEnabled="{Binding CanExecuteSequence}"
+                            Style="{StaticResource PrimaryButton}" />
+                        <Button
+                            Command="{Binding CancelSequenceCommand}"
+                            Content="⏹ 取消"
+                            IsEnabled="{Binding CanCancelSequence}"
+                            Style="{StaticResource DangerButton}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!--  执行进度  -->
+            <Border
+                Grid.Row="2"
+                Style="{StaticResource CardBorder}"
+                Visibility="{Binding HasSequenceSelection, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="0,0,0,10"
+                        FontSize="13"
+                        FontWeight="SemiBold"
+                        Foreground="#CCC"
+                        Text="执行进度" />
+
+                    <!--  进度条  -->
+                    <Grid Grid.Row="1" Margin="0,0,0,10">
+                        <ProgressBar
+                            Height="20"
+                            Background="#3C3C3C"
+                            Foreground="#4CAF50"
+                            Maximum="100"
+                            Value="{Binding SeqProgressPercent}" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="11"
+                            Foreground="White"
+                            Text="{Binding SeqStatusText}" />
+                    </Grid>
+
+                    <!--  Handler进度列表  -->
+                    <ItemsControl Grid.Row="2" ItemsSource="{Binding ProgressItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Margin="0,2"
+                                    Padding="10,6"
+                                    Background="#383838"
+                                    CornerRadius="3">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!--  状态指示器  -->
+                                        <Ellipse
+                                            Grid.Column="0"
+                                            Width="10"
+                                            Height="10"
+                                            Margin="0,0,10,0">
+                                            <Ellipse.Fill>
+                                                <SolidColorBrush Color="{Binding StatusColor}" />
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+
+                                        <!--  Handler名称  -->
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            FontSize="12"
+                                            Foreground="White"
+                                            Text="{Binding HandlerId}" />
+
+                                        <!--  状态文本  -->
+                                        <TextBlock
+                                            Grid.Column="2"
+                                            Margin="10,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="11"
+                                            Foreground="#AAA"
+                                            Text="{Binding StatusText}" />
+
+                                        <!--  耗时  -->
+                                        <TextBlock
+                                            Grid.Column="3"
+                                            Width="60"
+                                            VerticalAlignment="Center"
+                                            FontSize="11"
+                                            Foreground="#888"
+                                            Text="{Binding DurationText}" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Border>
+
+            <!--  序列日志 ★ 修改：添加诊断按钮  -->
+            <Border Grid.Row="3" Style="{StaticResource CardBorder}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel
+                        Grid.Row="0"
+                        Margin="0,0,0,10"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            FontSize="13"
+                            FontWeight="SemiBold"
+                            Foreground="#CCC"
+                            Text="📋 执行日志" />
+                        <Button
+                            Margin="10,0,0,0"
+                            Padding="8,3"
+                            Command="{Binding ClearSeqLogsCommand}"
+                            Content="清空"
+                            FontSize="11"
+                            Style="{StaticResource ActionButton}" />
+
+                    </StackPanel>
+
+                    <ListBox
+                        Grid.Row="1"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        FontFamily="Consolas"
+                        FontSize="11"
+                        Foreground="#AAA"
+                        ItemsSource="{Binding SeqExecutionLogs}"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

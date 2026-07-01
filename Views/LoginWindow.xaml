@@ -1,0 +1,503 @@
+﻿<Window
+    x:Class="SeedCut.Views.LoginWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:SeedCut.Views.Converters"
+    xmlns:models="clr-namespace:SeedCut.Models"
+    xmlns:views="clr-namespace:SeedCut.Views"
+    Title="农高智造 - 登录"
+    Width="1400"
+    Height="800"
+    AllowsTransparency="True"
+    Background="Transparent"
+    ResizeMode="CanResize"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None">
+
+    <Window.Resources>
+        <!--  转换器定义  -->
+        <converters:UserTypeToVisibilityConverter x:Key="UserTypeToVisibilityConverter" />
+
+        <!--  用户类型卡片样式  -->
+        <Style x:Key="UserTypeCardStyle" TargetType="Border">
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="180" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#E0E0E0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect
+                                BlurRadius="10"
+                                Opacity="0.3"
+                                ShadowDepth="2" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  输入框样式  -->
+        <Style x:Key="InputBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="45" />
+            <Setter Property="Padding" Value="15,0" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#E0E0E0" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#2196F3" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PasswordBoxStyle" TargetType="PasswordBox">
+            <Setter Property="Height" Value="45" />
+            <Setter Property="Padding" Value="15,0" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#E0E0E0" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#2196F3" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  窗口控制按钮样式  -->
+        <Style x:Key="WindowButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="46" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#333333" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E0E0E0" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style
+            x:Key="CloseButtonStyle"
+            BasedOn="{StaticResource WindowButtonStyle}"
+            TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E81123" />
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="#E3F2FD" CornerRadius="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--  自定义标题栏  -->
+            <Border
+                Grid.Row="0"
+                Background="White"
+                CornerRadius="10,10,0,0"
+                MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid>
+                    <TextBlock
+                        Margin="15,0,0,0"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        Foreground="#666666"
+                        Text="农高智造 - 登录" />
+
+                    <!--  窗口控制按钮  -->
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button
+                            x:Name="MinimizeButton"
+                            Click="MinimizeButton_Click"
+                            Content="—"
+                            Style="{StaticResource WindowButtonStyle}" />
+                        <Button
+                            x:Name="MaximizeButton"
+                            Click="MaximizeButton_Click"
+                            Content="□"
+                            Style="{StaticResource WindowButtonStyle}" />
+                        <Button
+                            x:Name="CloseButton"
+                            Click="CloseButton_Click"
+                            Content="✕"
+                            Style="{StaticResource CloseButtonStyle}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!--  主内容区域  -->
+            <StackPanel
+                Grid.Row="1"
+                Margin="0,-50,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <!--  左侧：身份选择  -->
+                <StackPanel Margin="0,0,100,0">
+                    <!--  Logo和标题  -->
+                    <StackPanel Margin="0,0,0,40" HorizontalAlignment="Center">
+                        <Grid
+                            Width="60"
+                            Height="60"
+                            HorizontalAlignment="Center">
+                            <Ellipse Fill="#4CAF50" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="30"
+                                FontWeight="Bold"
+                                Foreground="White"
+                                Text="农" />
+                        </Grid>
+                        <TextBlock
+                            Margin="0,10,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="24"
+                            FontWeight="Bold"
+                            Text="农高智造" />
+                    </StackPanel>
+
+                    <!--  三个身份选择卡片  -->
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                        <!--  用户  -->
+                        <Border Margin="0,0,20,0">
+                            <Border.Style>
+                                <Style BasedOn="{StaticResource UserTypeCardStyle}" TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedUserType}" Value="User">
+                                            <Setter Property="BorderThickness" Value="3" />
+                                            <Setter Property="BorderBrush" Value="#2196F3" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Border.InputBindings>
+                                <MouseBinding
+                                    Command="{Binding SelectUserTypeCommand}"
+                                    CommandParameter="User"
+                                    MouseAction="LeftClick" />
+                            </Border.InputBindings>
+                            <Grid>
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid
+                                        Width="60"
+                                        Height="60"
+                                        HorizontalAlignment="Center">
+                                        <Ellipse Fill="#E3F2FD" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="30"
+                                            Text="👤" />
+                                    </Grid>
+                                    <TextBlock
+                                        Margin="0,15,0,0"
+                                        HorizontalAlignment="Center"
+                                        FontSize="16"
+                                        Text="我是用户" />
+                                </StackPanel>
+
+                                <!--  选中标记  -->
+                                <Border
+                                    Width="30"
+                                    Height="30"
+                                    Margin="0,0,10,10"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Background="#2196F3"
+                                    CornerRadius="15">
+                                    <Border.Visibility>
+                                        <Binding Converter="{StaticResource UserTypeToVisibilityConverter}" Path="SelectedUserType">
+                                            <Binding.ConverterParameter>
+                                                <models:UserType>User</models:UserType>
+                                            </Binding.ConverterParameter>
+                                        </Binding>
+                                    </Border.Visibility>
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="18"
+                                        FontWeight="Bold"
+                                        Foreground="White"
+                                        Text="✓" />
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!--  管理员  -->
+                        <Border Margin="0,0,20,0">
+                            <Border.Style>
+                                <Style BasedOn="{StaticResource UserTypeCardStyle}" TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedUserType}" Value="Admin">
+                                            <Setter Property="BorderThickness" Value="3" />
+                                            <Setter Property="BorderBrush" Value="#2196F3" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Border.InputBindings>
+                                <MouseBinding
+                                    Command="{Binding SelectUserTypeCommand}"
+                                    CommandParameter="Admin"
+                                    MouseAction="LeftClick" />
+                            </Border.InputBindings>
+                            <Grid>
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid
+                                        Width="60"
+                                        Height="60"
+                                        HorizontalAlignment="Center">
+                                        <Ellipse Fill="#E3F2FD" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="30"
+                                            Text="🛡" />
+                                    </Grid>
+                                    <TextBlock
+                                        Margin="0,15,0,0"
+                                        HorizontalAlignment="Center"
+                                        FontSize="16"
+                                        Text="我是管理员" />
+                                </StackPanel>
+
+                                <Border
+                                    Width="30"
+                                    Height="30"
+                                    Margin="0,0,10,10"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Background="#2196F3"
+                                    CornerRadius="15">
+                                    <Border.Visibility>
+                                        <Binding Converter="{StaticResource UserTypeToVisibilityConverter}" Path="SelectedUserType">
+                                            <Binding.ConverterParameter>
+                                                <models:UserType>Admin</models:UserType>
+                                            </Binding.ConverterParameter>
+                                        </Binding>
+                                    </Border.Visibility>
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="18"
+                                        FontWeight="Bold"
+                                        Foreground="White"
+                                        Text="✓" />
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!--  厂家  -->
+                        <Border>
+                            <Border.Style>
+                                <Style BasedOn="{StaticResource UserTypeCardStyle}" TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedUserType}" Value="Manufacturer">
+                                            <Setter Property="BorderThickness" Value="3" />
+                                            <Setter Property="BorderBrush" Value="#2196F3" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Border.InputBindings>
+                                <MouseBinding
+                                    Command="{Binding SelectUserTypeCommand}"
+                                    CommandParameter="Manufacturer"
+                                    MouseAction="LeftClick" />
+                            </Border.InputBindings>
+                            <Grid>
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid
+                                        Width="60"
+                                        Height="60"
+                                        HorizontalAlignment="Center">
+                                        <Ellipse Fill="#E3F2FD" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="30"
+                                            Text="🏭" />
+                                    </Grid>
+                                    <TextBlock
+                                        Margin="0,15,0,0"
+                                        HorizontalAlignment="Center"
+                                        FontSize="16"
+                                        Text="我是厂家" />
+                                </StackPanel>
+
+                                <Border
+                                    Width="30"
+                                    Height="30"
+                                    Margin="0,0,10,10"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Background="#2196F3"
+                                    CornerRadius="15">
+                                    <Border.Visibility>
+                                        <Binding Converter="{StaticResource UserTypeToVisibilityConverter}" Path="SelectedUserType">
+                                            <Binding.ConverterParameter>
+                                                <models:UserType>Manufacturer</models:UserType>
+                                            </Binding.ConverterParameter>
+                                        </Binding>
+                                    </Border.Visibility>
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="18"
+                                        FontWeight="Bold"
+                                        Foreground="White"
+                                        Text="✓" />
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+
+                <!--  右侧：登录表单  -->
+                <Border
+                    Width="480"
+                    Height="420"
+                    Background="White"
+                    CornerRadius="10">
+                    <Border.Effect>
+                        <DropShadowEffect
+                            BlurRadius="20"
+                            Opacity="0.1"
+                            ShadowDepth="0" />
+                    </Border.Effect>
+
+                    <StackPanel Margin="40" VerticalAlignment="Center">
+                        <!--  标题  -->
+                        <TextBlock
+                            Margin="0,0,0,40"
+                            HorizontalAlignment="Center"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Text="{Binding LoginTitle}" />
+
+                        <!--  账号输入  -->
+                        <StackPanel Margin="0,0,0,25">
+                            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,5,0"
+                                    FontSize="16"
+                                    Text="👤" />
+                                <TextBlock
+                                    FontSize="14"
+                                    Foreground="#666666"
+                                    Text="请输入账号" />
+                            </StackPanel>
+                            <TextBox Style="{StaticResource InputBoxStyle}" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+
+                        <!--  密码输入  -->
+                        <StackPanel Margin="0,0,0,30">
+                            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,5,0"
+                                    FontSize="16"
+                                    Text="🔒" />
+                                <TextBlock
+                                    FontSize="14"
+                                    Foreground="#666666"
+                                    Text="请输入密码" />
+                            </StackPanel>
+                            <PasswordBox
+                                views:PasswordBoxHelper.BindPassword="True"
+                                views:PasswordBoxHelper.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{StaticResource PasswordBoxStyle}" />
+                        </StackPanel>
+
+                        <!--  登录按钮  -->
+                        <Button
+                            Height="50"
+                            Background="#2196F3"
+                            BorderThickness="0"
+                            Command="{Binding LoginCommand}"
+                            Cursor="Hand">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#1976D2" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="#1565C0" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <TextBlock
+                                FontSize="18"
+                                FontWeight="Bold"
+                                Foreground="White"
+                                Text="登录" />
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
