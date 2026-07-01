@@ -424,6 +424,9 @@ namespace SeedCut.ViewModels
         public ICommand ResetCommand { get; }
         public ICommand InitializeCommand { get; }
         public ICommand ClearCommand { get; }
+
+        private readonly IPLCService _plcService;
+
         /// <summary>
         /// 连接所有设备命令
         /// </summary>
@@ -441,7 +444,7 @@ namespace SeedCut.ViewModels
             IServiceProvider serviceProvider,
             IDeviceManager deviceManager,
             DeviceInitializationService deviceInitService,
-            AlarmViewModel alarmViewModel)
+            AlarmViewModel alarmViewModel,IPLCService plcService)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _deviceManager = deviceManager ?? throw new ArgumentNullException(nameof(deviceManager));
@@ -458,8 +461,9 @@ namespace SeedCut.ViewModels
             PauseCommand = new RelayCommand(OnPause, CanPause);
             StopCommand = new RelayCommand(async () => await OnStopAsync(), CanStop);
             ResetCommand = new RelayCommand(OnReset);
-            InitializeCommand = new RelayCommand(OnInitialize);
+            InitializeCommand = new AsyncRelayCommand(OnInitialize);
             ClearCommand = new RelayCommand(OnClear);
+            this._plcService = plcService;
 
             // 设备连接命令
             // ✅ 新代码：
@@ -534,21 +538,25 @@ namespace SeedCut.ViewModels
 
         private async Task OnStopAsync()
         {
-            // 停止时断开所有设备
-            if (ConnectedDeviceCount > 0 && _deviceManager != null)
-            {
-                var result = MessageBox.Show(
-                    "是否同时断开所有设备连接？",
-                    "提示",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question);
+            //// 停止时断开所有设备
+            //if (ConnectedDeviceCount > 0 && _deviceManager != null)
+            //{
+            //    var result = MessageBox.Show(
+            //        "是否同时断开所有设备连接？",
+            //        "提示",
+            //        MessageBoxButton.YesNo,
+            //        MessageBoxImage.Question);
 
-                if (result == MessageBoxResult.Yes)
-                {
-                    await DisconnectAllDevicesAsync();
-                }
-            }
+            //    if (result == MessageBoxResult.Yes)
+            //    {
+            //        await DisconnectAllDevicesAsync();
+            //    }
+            //}
+            HandlerDebugViewModel handlerDebug = _serviceProvider.GetService<HandlerDebugViewModel>();
 
+            handlerDebug.CancelSequenceCommand?.Execute(this);
+            await Task.Delay(1000);
+           
             MessageBox.Show("系统停止", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -1135,19 +1143,35 @@ namespace SeedCut.ViewModels
 
         private void OnReset()
         {
+            //上位机 - 复位
+            PLCAddressItem addressItem = this._plcService.AddressRegistry.GetAddress("上位机-复位");
+
+            this._plcService?.WriteBit(addressItem.DBNumber, addressItem.StartAddress, addressItem.BitPosition, true);
+            //await Task.Delay(2000);
             // TODO: 实现复位逻辑
             MessageBox.Show("系统复位", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void OnInitialize()
+        private async Task OnInitialize()
         {
+            //环形导轨轴初始化
+            PLCAddressItem addressItem = this._plcService.AddressRegistry.GetAddress("环形导轨轴初始化");
+
+            this._plcService?.WriteBit(addressItem.DBNumber, addressItem.StartAddress, addressItem.BitPosition, false);
+            await Task.Delay(2000);
+            this._plcService?.WriteBit(addressItem.DBNumber, addressItem.StartAddress, addressItem.BitPosition, true);
+          
             // TODO: 实现初始化逻辑
             MessageBox.Show("系统初始化", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void OnClear()
         {
+            //上位机-周期性停机标志
             // TODO: 实现清料逻辑
+            PLCAddressItem addressItem = this._plcService.AddressRegistry.GetAddress("上位机-周期性停机标志");
+
+            this._plcService?.WriteBit(addressItem.DBNumber, addressItem.StartAddress, addressItem.BitPosition, true);
             MessageBox.Show("清料", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 

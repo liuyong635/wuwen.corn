@@ -342,7 +342,8 @@ namespace SeedCut
                 var deviceManager = sp.GetRequiredService<IDeviceManager>();
                 var deviceInitService = sp.GetRequiredService<DeviceInitializationService>();
                 var alarmViewModel = sp.GetRequiredService<AlarmViewModel>();
-                return new MainViewModel(sp, deviceManager, deviceInitService, alarmViewModel);
+                var plc = sp.GetRequiredService<IPLCService>();
+                return new MainViewModel(sp, deviceManager, deviceInitService, alarmViewModel, plc);
             });
 
             services.AddTransient<AdminViewModel>();

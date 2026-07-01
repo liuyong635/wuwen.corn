@@ -988,7 +988,7 @@
                         </StackPanel>
                     </Button>
 
-                    <!--  暂停  -->
+                    <!--  暂停  --><!--
                     <Button
                         Background="#FF9800"
                         Command="{Binding PauseCommand}"
@@ -1000,7 +1000,7 @@
                                 Text="⏸" />
                             <TextBlock FontSize="18" Text="暂停" />
                         </StackPanel>
-                    </Button>
+                    </Button>-->
 
                     <!--  停止  -->
                     <Button
