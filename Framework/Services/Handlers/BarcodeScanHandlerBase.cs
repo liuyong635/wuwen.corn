@@ -36,14 +36,14 @@ namespace SeedCut.Framework.Services.Handlers
     /// 3. 两个都就绪时，调用 ITraceService.CreatePairingAsync() 创建配对记录
     /// 4. 配对完成后清除就绪标志，准备下一组
     /// </summary>
-    public class BarcodeScanHandler : SignalHandlerBase
+    public abstract class BarcodeScanHandlerBase : SignalHandlerBase
     {
         #region 常量定义
 
         // PLC信号名称（需与SignalAliasConfig.cs中的别名匹配）
-        private const string SIG_SMALL_TRAY_SCAN_REQUEST = "SmallTray_ScanRequest";  // M3428.5 -> "小料盘请求扫码"
-        private const string SIG_LARGE_TRAY_SCAN_REQUEST = "LargeTray_ScanRequest";  // M3458.0 -> "大料盘请求扫码"
-        private const string FLAG_SMALL_SCAN_TIME = "SmallTray_ScanTime";
+        public abstract string SIG_TRAY_SCAN_REQUEST { get; }   // M3428.5 -> "小料盘请求扫码"
+
+        public abstract string BusyFlag { get; }
 
         // 扫码配置
         // C++: waitForBytesWritten(3000) - 单次扫码超时3秒
@@ -55,7 +55,7 @@ namespace SeedCut.Framework.Services.Handlers
         private static readonly TimeSpan RETRY_INTERVAL = TimeSpan.FromMilliseconds(500);
 
 
-
+        public abstract TrayType TrayType { get; }
         // 条码最小长度
         private const int MIN_BARCODE_LENGTH = 6;
 
@@ -63,9 +63,9 @@ namespace SeedCut.Framework.Services.Handlers
 
         #region Handler属性
 
-        public override string HandlerId => "BarcodeScan";
+        public override string HandlerId => "BarcodeScan" + TrayType;
 
-        public override string HandlerName => "条码扫描";
+        public override string HandlerName => TrayType + "条码扫描";
 
         public override int Priority => 72;
 
@@ -76,34 +76,24 @@ namespace SeedCut.Framework.Services.Handlers
         /// </summary>
         public override ITriggerCondition TriggerCondition => When.All(
             When.IsRunning(),
-
-            When.Any(
-                When.SignalOn(SIG_SMALL_TRAY_SCAN_REQUEST),
-                When.SignalOn(SIG_LARGE_TRAY_SCAN_REQUEST)
-            ),
-            When.FlagOff("BarcodeScan_Busy")
+            When.SignalOn(SIG_TRAY_SCAN_REQUEST),
+            When.FlagOff(BusyFlag)
         );
 
         #endregion
 
         #region 执行逻辑
-
-        private string smallTrayCode = "";
-        private string largeTrayCode = "";
-
-        private DateTime smallTrayCodeScanTime = DateTime.Now;
-        private DateTime largeTrayCodeScanTime = DateTime.Now;
         protected override async Task<ValueTuple<bool, string>> ExecuteAsync(
             IHandlerContext ctx,
             CancellationToken ct)
         {
             // 设置忙碌标志
             SetBusy(true);
-            FlagCondition.SetFlag("BarcodeScan_Busy", true);
+            FlagCondition.SetFlag(BusyFlag, true);
 
             try
             {
-                var scanner = ctx.GetScanner();
+                var scanner = ctx.GetScanner(this.DependentDevices[0]);
 
                 if (scanner == null)
                 {
@@ -115,22 +105,18 @@ namespace SeedCut.Framework.Services.Handlers
                     return Fail("扫码器设备未连接");
                 }
 
-                // 判断是哪种托盘的扫码请求
-                bool isSmallTray = ReadSignal(ctx, SIG_SMALL_TRAY_SCAN_REQUEST);
-                bool isLargeTray = !isSmallTray && ReadSignal(ctx, SIG_LARGE_TRAY_SCAN_REQUEST);
 
-                // 确定要监控的PLC信号
-                string signalToWatch = isSmallTray ? SIG_SMALL_TRAY_SCAN_REQUEST : SIG_LARGE_TRAY_SCAN_REQUEST;
-                string trayType = isSmallTray ? "小料盘" : "大料盘";
+                ITraceService traceService = ctx.GetService<ITraceService>();
 
-                LogInfo("开始执行{0}条码扫描", trayType);
-
-                // 清除之前的扫码结果
-                FlagCondition.SetFlag("BarcodeScan_Success", false);
-                FlagCondition.SetFlag("BarcodeScan_Failed", false);
-                ctx.SetFlag<string>("LastBarcode", null);
-                ctx.SetFlag<string>("LastBarcodeType", null);
-
+                LogInfo("开始执行{0}条码扫描", TrayType);
+                if (TrayType == TrayType.Small)
+                {
+                    traceService.SmallScanTrayCode = "";
+                }
+                else
+                {
+                    traceService.LagerScanTrayCode = "";
+                }
 
                 // 扫码循环
                 ScanResult scanResult = null;
@@ -144,9 +130,9 @@ namespace SeedCut.Framework.Services.Handlers
                     // ★★★ 关键：每次循环检查PLC请求信号是否仍然有效 ★★★
                     // 匹配C++: onReadTimerTimeout()中每100ms读取PLC信号
                     // 当PLC信号变为false时，bSmallScanning会被设为false，停止重试
-                    if (!ReadSignal(ctx, signalToWatch))
+                    if (!ReadSignal(ctx, this.SIG_TRAY_SCAN_REQUEST))
                     {
-                        LogInfo("PLC已撤销{0}扫码请求信号，停止扫描", trayType);
+                        LogInfo("PLC已撤销{0}扫码请求信号，停止扫描", TrayType);
                         // 不算失败，只是被PLC中断
                         return Fail("扫码请求已取消（PLC撤销）");
                     }
@@ -192,7 +178,7 @@ namespace SeedCut.Framework.Services.Handlers
                     }
 
                     // 验证条码格式
-                    if (!ValidateBarcode(barcode, isSmallTray ? TrayType.Small : TrayType.Large))
+                    if (!ValidateBarcode(barcode, this.TrayType))
                     {
                         LogWarning("条码格式无效: {0}，准备重试...", barcode);
                         await Task.Delay(RETRY_INTERVAL, ct);
@@ -217,46 +203,27 @@ namespace SeedCut.Framework.Services.Handlers
                 ctx.SetFlag("LastBarcodeTime", DateTime.Now);
 
                 // 根据托盘类型保存
-                if (isSmallTray)
+                if (TrayType == TrayType.Small)
                 {
-                    ctx.SetFlag("SmallTray_Barcode", barcode);
-                    ctx.SetFlag(FLAG_SMALL_SCAN_TIME, DateTime.Now);  // ★ 新增：记录扫码时间
-
+                    traceService.SmallScanTrayCode = barcode;
+                    traceService.SmallScanTrayTime = DateTime.Now;
                     FlagCondition.SetFlag("SmallTray_BarcodeReady", true);
                     LogInfo("小料盘扫码完成: {0}", barcode);
-                    smallTrayCode = barcode;
-                    smallTrayCodeScanTime=DateTime.Now;
-                }
-                else if (isLargeTray)
-                {
-                    ctx.SetFlag("LargeTray_Barcode", barcode);
-                    FlagCondition.SetFlag("LargeTray_BarcodeReady", true);
 
-                    ctx.SetFlag("LargeTray_ScanTime", DateTime.Now);
-                    FlagCondition.SetFlag("LargeTray_BarcodeReady", true);
-                    largeTrayCode = barcode;
-                    largeTrayCodeScanTime=DateTime.Now;
+                }
+                else
+                {
+                    traceService.LagerScanTrayCode = barcode;
+                    traceService.LagerScanTrayTime = DateTime.Now;
                     LogInfo("大料盘扫码完成: {0}", barcode);
                 }
 
-                if (FlagCondition.GetFlag("SmallTray_BarcodeReady") &&
-                    FlagCondition.GetFlag("LargeTray_BarcodeReady"))
+                if (!string.IsNullOrEmpty(traceService.SmallScanTrayCode) &&
+                    !string.IsNullOrEmpty(traceService.SmallScanTrayCode))
                 {
                     await CreateTracePairingAsync(ctx, ct);
                 }
 
-                // 设置成功标志
-                FlagCondition.SetFlag("BarcodeScan_Success", true);
-
-                // 推送到数据管道（供后续追溯使用）
-                var pipeline = ctx.DataFlow.GetOrCreate<BarcodeData>("BarcodeHistory");
-                pipeline.Push(new BarcodeData
-                {
-                    Barcode = barcode,
-                    CodeType = scanResult?.CodeType,
-                    TrayType = isSmallTray ? TrayType.Small : TrayType.Large,
-                    Timestamp = DateTime.Now
-                });
 
                 return Success(string.Format("扫码成功: {0}", barcode));
             }
@@ -281,7 +248,7 @@ namespace SeedCut.Framework.Services.Handlers
                 catch { }
                 // 清除忙碌标志
                 SetBusy(false);
-                FlagCondition.SetFlag("BarcodeScan_Busy", false);
+                FlagCondition.SetFlag(BusyFlag, false);
             }
         }
 
@@ -313,10 +280,10 @@ namespace SeedCut.Framework.Services.Handlers
             try
             {
                 // 获取两个料盘的信息
-                var smallBarcode = smallTrayCode;
-                var largeBarcode = largeTrayCode;
-                var smallScanTime = smallTrayCodeScanTime;
-                var largeScanTime = largeTrayCodeScanTime;
+                var smallBarcode = traceService.SmallScanTrayCode;
+                var largeBarcode = traceService.LagerScanTrayCode;
+                var smallScanTime = traceService.SmallScanTrayTime;
+                var largeScanTime = traceService.LagerScanTrayTime;
 
                 if (string.IsNullOrWhiteSpace(smallBarcode) || string.IsNullOrWhiteSpace(largeBarcode))
                 {

@@ -25,6 +25,11 @@ namespace SeedCut.Framework.Services.Traceability
         private DateTime _sequenceDate = DateTime.MinValue;
         private bool _disposed;
 
+        public DateTime LagerScanTrayTime { get; set; }
+        public DateTime SmallScanTrayTime { get; set; }
+        public string LagerScanTrayCode { get; set; }
+        public string SmallScanTrayCode { get; set; }
+
         #endregion
 
         #region 构造函数

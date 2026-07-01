@@ -161,7 +161,9 @@
     <Compile Include="Framework\Services\Execution\Exceptions.cs" />
     <Compile Include="Framework\Services\Execution\ExecutionController.cs" />
     <Compile Include="Framework\Services\Execution\ExecutionTypes.cs" />
-    <Compile Include="Framework\Services\Handlers\BarcodeScanHandler.cs" />
+    <Compile Include="Framework\Services\Handlers\BarcodeScanHandlerLarge.cs" />
+    <Compile Include="Framework\Services\Handlers\BarcodeScanHandlerSmall.cs" />
+    <Compile Include="Framework\Services\Handlers\BarcodeScanHandlerBase.cs" />
     <Compile Include="Framework\Services\Handlers\CircularAxisInitHandler.cs" />
     <Compile Include="Framework\Services\Handlers\Diskvibratehandler.cs" />
     <Compile Include="Framework\Services\Handlers\DiskVisionHandler.cs" />

@@ -122,12 +122,18 @@ namespace SeedCut.Framework.Services.Sequences
                 // ★ 4. 条码扫描（PLC信号触发 - 小托盘/大托盘扫码请求）
                 new ExpectedHandler
                 {
-                    HandlerId = "BarcodeScan",
+                    HandlerId = "BarcodeScan"+ TrayType.Small,
                     IsRequired = false,  // 可选，不是所有流程都需要扫码
                     TriggerConditionIds = new List<string> { },
                     MaxExecutions = -1
                 },
-
+                 new ExpectedHandler
+                {
+                    HandlerId = "BarcodeScan"+ TrayType.Large,
+                    IsRequired = false,  // 可选，不是所有流程都需要扫码
+                    TriggerConditionIds = new List<string> { },
+                    MaxExecutions = -1
+                },
                 // ★ 5. 小料盘视觉处理（PLC信号 SmallTray_PhotoRequest 触发）
                 new ExpectedHandler
                 {
@@ -196,7 +202,7 @@ namespace SeedCut.Framework.Services.Sequences
                  new ExpectedHandler
                 {
                     HandlerId = "StopWorkHander",
-                    IsRequired = false,  
+                    IsRequired = false,
                     TriggerConditionIds = new List<string> { },
                     MaxExecutions = -1
                 },
@@ -567,7 +573,7 @@ namespace SeedCut.Framework.Services.Sequences
                 FlagCondition.SetFlag("LaserCut_Busy", false);
                 FlagCondition.SetFlag("SystemShutdown_Busy", false);
                 FlagCondition.SetFlag("TurntableMonitor_Busy", false);  // ★ 新增
-                FlagCondition.SetFlag("WorkAbort",false);
+                FlagCondition.SetFlag("WorkAbort", false);
                 FlagCondition.SetFlag("WorkAborting", false);
                 LaserCutHandler.DropFailureCount = 0;
             },

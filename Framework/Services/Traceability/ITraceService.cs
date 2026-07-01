@@ -10,6 +10,11 @@ namespace SeedCut.Framework.Services.Traceability
     /// </summary>
     public interface ITraceService : IDisposable
     {
+        DateTime LagerScanTrayTime { get; set; }
+        DateTime SmallScanTrayTime { get; set; }
+
+        string LagerScanTrayCode { get; set; }
+        string SmallScanTrayCode { get; set; }
         #region 核心方法
 
         /// <summary>
