@@ -275,11 +275,11 @@ namespace SeedCut.Services.DeviceAdapter
             return ExecuteAsync(procedureName, null, ct);
         }
 
-        public async Task<VisionDeviceResult> ExecuteAsync(string procedureName, object parameters, CancellationToken ct = default)
+        public Task<VisionDeviceResult> ExecuteAsync(string procedureName, object parameters, CancellationToken ct = default)
         {
             if (!IsSolutionLoaded)
             {
-                return VisionDeviceResult.FromError("未加载方案");
+                return Task.FromResult(VisionDeviceResult.FromError("未加载方案"));
             }
 
             try
@@ -293,7 +293,7 @@ namespace SeedCut.Services.DeviceAdapter
                     var procedure = VmSolution.Instance[procedureName] as VmProcedure;
                     if (procedure == null)
                     {
-                        return VisionDeviceResult.Fail(-1, "流程不存在: " + procedureName);
+                        return Task.FromResult(VisionDeviceResult.Fail(-1, "流程不存在: " + procedureName));
                     }
 
                     // 设置输入参数
@@ -305,7 +305,7 @@ namespace SeedCut.Services.DeviceAdapter
                     sw.Stop();
 
                     // ★ 关键修改：构建结果时提取 Group 模块输出
-                    return BuildResult(procedure, procedureName, sw.Elapsed);
+                    return Task.FromResult(BuildResult(procedure, procedureName, sw.Elapsed));
                 }
                 else
                 {
@@ -313,21 +313,21 @@ namespace SeedCut.Services.DeviceAdapter
                     VmSolution.Instance.SyncRun();
                     sw.Stop();
 
-                    return VisionDeviceResult.Ok(new Dictionary<string, object>
+                    return Task.FromResult(VisionDeviceResult.Ok(new Dictionary<string, object>
                     {
                         ["ExecutionTime"] = sw.ElapsedMilliseconds
-                    });
+                    }));
                 }
             }
             catch (VmException vmEx)
             {
                 _lastError = string.Format("执行失败 (0x{0:X})", vmEx.errorCode);
-                return VisionDeviceResult.Fail(vmEx.errorCode, _lastError);
+                return Task.FromResult(VisionDeviceResult.Fail(vmEx.errorCode, _lastError));
             }
             catch (Exception ex)
             {
                 _lastError = ex.Message;
-                return VisionDeviceResult.FromError(ex.Message, ex);
+                return Task.FromResult(VisionDeviceResult.FromError(ex.Message, ex));
             }
             finally
             {
@@ -351,6 +351,10 @@ namespace SeedCut.Services.DeviceAdapter
                         if (kvp.Value is ImageBaseData img)
                         {
                             param.SetInputImage_V2(kvp.Key, img);
+                        }
+                        else if (kvp.Value is InputStringData str)
+                        {
+                            param.SetInputString(kvp.Key, new InputStringData[] { str });
                         }
                     }
                     catch { }
