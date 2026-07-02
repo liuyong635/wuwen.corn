@@ -506,10 +506,10 @@ namespace SeedCut.Services
                 return false;
             }
 
-            if (_isMarking)
+            while (IsMarking)
             {
-                RaiseError("正在打标中，请等待完成");
-                return false;
+                RaiseStatus("正在打标中，请等待完成");
+                await Task.Delay(10);
             }
 
             if (layerParams == null || layerParams.Length == 0)
@@ -574,7 +574,7 @@ namespace SeedCut.Services
                     return false;
                 }
 
-                _markTimer.Stop();
+                //_markTimer.Stop();
                 LogInfo(string.Format("多Pass打标任务完成: {0}个Pass, 总耗时: {1}ms",
                     layerParams.Length, _markTimer.ElapsedMilliseconds));
                 return true;
@@ -966,23 +966,27 @@ namespace SeedCut.Services
                     _isDownloading = false;
                     return false;
                 }
-
-                // 等待下载完成消息
-                using (ct.Register(() => _downloadTcs.TrySetCanceled()))
+                do
                 {
-                    var timeoutTask = Task.Delay(_config.DownloadTimeoutMs, ct);
-                    var completedTask = await Task.WhenAny(_downloadTcs.Task, timeoutTask);
+                    await Task.Delay(10);
+                } while (IsDownloading);
+                return true;
+                //// 等待下载完成消息
+                //using (ct.Register(() => _downloadTcs.TrySetCanceled()))
+                //{
+                //    var timeoutTask = Task.Delay(_config.DownloadTimeoutMs, ct);
+                //    var completedTask = await Task.WhenAny(_downloadTcs.Task, timeoutTask);
 
-                    _isDownloading = false;
+                //    _isDownloading = false;
 
-                    if (completedTask == timeoutTask)
-                    {
-                        LogError("下载超时");
-                        return false;
-                    }
+                //    if (completedTask == timeoutTask)
+                //    {
+                //        LogError("下载超时");
+                //        return false;
+                //    }
 
-                    return await _downloadTcs.Task;
-                }
+                //    return await _downloadTcs.Task;
+                //}
             }
             catch (OperationCanceledException)
             {
@@ -1020,26 +1024,31 @@ namespace SeedCut.Services
                 }
 
                 LogInfo("打标开始");
-
+                do
+                {
+                    await Task.Delay(100);
+                } while (IsMarking);
+                LogInfo("打标完成");
+                return true;
                 // 等待打标完成消息
-                using (ct.Register(() =>
-                {
-                    StopMark();
-                    _markTcs.TrySetCanceled();
-                }))
-                {
-                    var timeoutTask = Task.Delay(_config.MarkTimeoutMs, ct);
-                    var completedTask = await Task.WhenAny(_markTcs.Task, timeoutTask);
+                //using (ct.Register(() =>
+                //{
+                //    StopMark();
+                //    _markTcs.TrySetCanceled();
+                //}))
+                //{
+                //    var timeoutTask = Task.Delay(_config.MarkTimeoutMs, ct);
+                //    var completedTask = await Task.WhenAny(_markTcs.Task, timeoutTask);
 
-                    if (completedTask == timeoutTask)
-                    {
-                        LogError("打标超时");
-                        StopMark();
-                        return false;
-                    }
+                //    if (completedTask == timeoutTask)
+                //    {
+                //        LogError("打标超时");
+                //        StopMark();
+                //        return false;
+                //    }
 
-                    return await _markTcs.Task;
-                }
+                //    return await _markTcs.Task;
+                //}
             }
             catch (OperationCanceledException)
             {
