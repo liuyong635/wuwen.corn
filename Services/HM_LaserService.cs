@@ -4,6 +4,8 @@ using SeedCut.Services.HM;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -524,6 +526,7 @@ namespace SeedCut.Services
 
             try
             {
+                Set3dCorrectionPara();
                 LogInfo(string.Format("开始多Pass打标任务: {0}个Pass, 间隔{1}ms",
                     layerParams.Length, intervalMs));
                 _markTimer.Restart();
@@ -870,13 +873,35 @@ namespace SeedCut.Services
                     {
                         HM_UDM_DLL.UDM_Wait(intervalMs);
                     }
-
-                    // 将所有线段添加到当前图层
-                    foreach (var polyline in polylines)
+                    if (Config.Protocol == 1)
                     {
-                        HM_UDM_DLL.UDM_AddPolyline2D(polyline, polyline.Length, pass);
-                        totalPoints += polyline.Length;
+                        // 将所有线段添加到当前图层
+                        foreach (var polyline in polylines)
+                        {
+                            ///每次切割，变化Z轴
+                            for (int pIndex = 0; pIndex < polyline.Length; pIndex++)
+                            {
+                                var p = polyline[pIndex];
+                                float z = HM_UDM_DLL.UDM_GetZvalue(p.x, p.y, 0);
+                                p.z = z;
+                                polyline[pIndex] = p;
+                            }
+
+
+                            HM_UDM_DLL.UDM_AddPolyline3D(polyline, polyline.Length, pass);
+                            totalPoints += polyline.Length;
+                        }
                     }
+                    else
+                    {
+                        // 将所有线段添加到当前图层
+                        foreach (var polyline in polylines)
+                        {
+                            HM_UDM_DLL.UDM_AddPolyline2D(polyline, polyline.Length, pass);
+                            totalPoints += polyline.Length;
+                        }
+                    }
+                    
                 }
 
                 // 6. 回零（可选）
@@ -1348,6 +1373,28 @@ namespace SeedCut.Services
                 LogError(string.Format("区域填充异常: {0}", ex.Message));
                 RaiseError(string.Format("填充异常: {0}", ex.Message));
                 return false;
+            }
+        }
+
+
+        public void Set3dCorrectionPara()
+        {
+            float baseFocal = 296f;
+
+            if (File.Exists("./Config/ParaK3D.txt"))
+            {
+
+                string[] lines = File.ReadAllLines("./Config/ParaK3D.txt").Where(str => !string.IsNullOrEmpty(str.Trim())).ToArray();
+
+                double[] paramters = new double[lines.Length - 1];
+
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    paramters[i - 1] = double.Parse(lines[i].Split(':')[1].Replace(";", ""));
+                }
+                baseFocal = float.Parse(lines[0].Split(':')[1].Replace(";", ""));
+
+                HM_UDM_DLL.UDM_Set3dCorrectionPara(baseFocal, paramters, paramters.Length);
             }
         }
 
