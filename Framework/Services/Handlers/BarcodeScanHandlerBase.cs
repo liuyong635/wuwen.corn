@@ -52,7 +52,7 @@ namespace SeedCut.Framework.Services.Handlers
 
         // C++: readTimer->setInterval(100) - 但重试间隔约为Timer周期(1秒)
         // 这里使用500ms，比C++稍快但更合理
-        private static readonly TimeSpan RETRY_INTERVAL = TimeSpan.FromMilliseconds(500);
+        private static readonly TimeSpan RETRY_INTERVAL = TimeSpan.FromMilliseconds(100);
 
 
         public abstract TrayType TrayType { get; }

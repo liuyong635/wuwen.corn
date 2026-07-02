@@ -61,8 +61,6 @@ namespace SeedCut.Framework.Services.Handlers
                 {
                     Register(h);
                 }
-
-               
             }
 
             // ============================================================
