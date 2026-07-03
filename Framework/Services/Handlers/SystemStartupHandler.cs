@@ -201,7 +201,8 @@ namespace SeedCut.Framework.Services.Handlers
                 }
 
                 LogInfo("[步骤6] 机器人伺服已使能 ✓");
-
+                await robot.StopAsync(ct);
+                LogInfo("关闭机器人AR程序 ✓");
                 // ========== 步骤7: 运行AR程序 ==========
                 LogInfo("[步骤7] 启动机器人AR程序...");
 
