@@ -229,11 +229,11 @@ namespace SeedCut.Services
         /// <summary>
         /// 启动TCP服务器，用于接收AR程序的命令
         /// </summary>
-        public async Task<(bool success, string message)> StartTcpServerAsync(int port = 6000)
+        public Task<(bool success, string message)> StartTcpServerAsync(int port = 6000)
         {
             if (IsTcpServerRunning)
             {
-                return (false, "TCP服务器已在运行");
+                return Task.FromResult((false, "TCP服务器已在运行"));
             }
 
             try
@@ -255,12 +255,12 @@ namespace SeedCut.Services
                 // ★ 保存任务引用
                 _listenTask = Task.Run(() => ListenForClientAsync(_tcpServerCts.Token));
 
-                return (true, string.Format("TCP服务器已启动，监听端口: {0}", port));
+                return Task.FromResult((true, string.Format("TCP服务器已启动，监听端口: {0}", port)));
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("❌ TCP服务器启动失败: " + ex.Message);
-                return (false, "TCP服务器启动失败: " + ex.Message);
+                return Task.FromResult((false, "TCP服务器启动失败: " + ex.Message));
             }
         }
 

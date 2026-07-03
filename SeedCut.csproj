@@ -478,34 +478,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Config\DeviceConnectionConfig.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\HikCameraConfig.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\PLCAddresses.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\Recipes\1.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\Recipes\Default.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\Recipes\_settings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\Recipes\玉米.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\SignalAliases.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="Config\DeviceConnectionConfig.json" />
+    <None Include="Config\HikCameraConfig.json" />
+    <None Include="Config\PLCAddresses.csv" />
+    <None Include="Config\Recipes\1.json" />
+    <None Include="Config\Recipes\Default.json" />
+    <None Include="Config\Recipes\_settings.json" />
+    <None Include="Config\Recipes\玉米.json" />
+    <None Include="Config\SignalAliases.json" />
     <None Include="Config\system.ini" />
-    <None Include="Config\VisionDevice.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="Config\VisionDevice.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -519,21 +501,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Config\HM_LaserConfig.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Config\LaserConfig.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Config\PLCFeatureFlags.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Config\RobotConfig.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Config\VibratorConfig.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <None Include="Config\HM_LaserConfig.xml" />
+    <None Include="Config\LaserConfig.xml" />
+    <None Include="Config\PLCFeatureFlags.xml" />
+    <None Include="Config\RobotConfig.xml" />
+    <None Include="Config\VibratorConfig.xml" />
+    <None Include="Config\ParaK3D.txt" />
     <Content Include="Dlls\Apps.BaseData.dll" />
     <Content Include="Dlls\Apps.BaseLog.dll" />
     <Content Include="Dlls\Apps.ColorFun.dll" />
