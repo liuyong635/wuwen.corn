@@ -501,12 +501,26 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Config\HM_LaserConfig.xml" />
-    <None Include="Config\LaserConfig.xml" />
-    <None Include="Config\PLCFeatureFlags.xml" />
-    <None Include="Config\RobotConfig.xml" />
-    <None Include="Config\VibratorConfig.xml" />
-    <None Include="Config\ParaK3D.txt" />
+
+    <Resource Include="Config\HM_LaserConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Config\LaserConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Config\PLCFeatureFlags.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Config\RobotConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Config\VibratorConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Config\ParaK3D.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
     <Content Include="Dlls\Apps.BaseData.dll" />
     <Content Include="Dlls\Apps.BaseLog.dll" />
     <Content Include="Dlls\Apps.ColorFun.dll" />
