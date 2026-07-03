@@ -222,7 +222,8 @@ namespace SeedCut.Framework.Services.Sequences
                 FlagCondition.SetFlag("DiskVibrate_Busy", false);
                 FlagCondition.SetFlag("NeedVibrate", false);
                 FlagCondition.SetFlag("Vibrate_Complete", false);
-
+                FlagCondition.SetFlag($"{TrayType.Large}Busy", false);
+                FlagCondition.SetFlag($"{TrayType.Small}Busy", false);
                 FlagCondition.SetFlag("BarcodeScan_Busy", false);           // ★ 新增
                 FlagCondition.SetFlag("SmallTrayVision_Busy", false);       // ★ 新增
                 FlagCondition.SetFlag("SmallTrayDirection_Busy", false);    // ★ 新增
