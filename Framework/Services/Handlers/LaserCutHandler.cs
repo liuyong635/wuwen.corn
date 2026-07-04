@@ -61,8 +61,7 @@ namespace SeedCut.Framework.Services.Handlers
         public override ITriggerCondition TriggerCondition => When.All(
             When.IsRunning(),
             When.SignalOn(SIG_CUT_REQUEST),
-            When.FlagOff("LaserCut_Busy"),
-            When.FlagOff("WorkAbort")
+            When.FlagOff("LaserCut_Busy")
         );
 
         #endregion
