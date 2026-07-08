@@ -1,6 +1,8 @@
-﻿using SeedCut.Framework.Core.SlotSeedTracker;
+﻿using OpenCvSharp;
+using SeedCut.Framework.Core.SlotSeedTracker;
 using SeedCut.Framework.Services.Conditions;
 using SeedCut.Framework.Services.Interfaces;
+using SeedCut.OpenCV;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -72,7 +74,7 @@ namespace SeedCut.Framework.Services.Handlers
             IHandlerContext ctx,
             CancellationToken ct)
         {
-            if(SeedCutApp.Default.SkipLaserCut)
+            if (SeedCutApp.Default.SkipLaserCut)
             {
                 await SendCutCompleteAsync(ctx, 50, 50, ct);
                 return Success();
@@ -198,11 +200,11 @@ namespace SeedCut.Framework.Services.Handlers
                 // ========== ★ 执行多Pass激光切割 ========== 
                 LogInfo("开始执行多Pass激光切割: {0}个Pass, SeedId={1}",
                     passCount, command.SeedId);
-                await TakePhotoBeforLaserCut(vision, ctx);
+                Mat mat = await ImageDiff.GetImageFromVM(vision, ctx);
                 var cutResult = false;
                 await App.Current.Dispatcher.Invoke(async () =>
                    {
-                       cutResult = await LaserCut(ctx, vision, laser, command, passCount, passParams, cutIntervalMs, ct, CheckSeedCutDown);
+                       cutResult = await LaserCut(ctx, vision, mat, laser, command, passCount, passParams, cutIntervalMs, ct, CheckSeedCutDown);
                        await Task.Delay(500);
                    });
 
@@ -216,32 +218,27 @@ namespace SeedCut.Framework.Services.Handlers
                     tracker.AttachData(command.SeedId, "LaserCutPassCount", passCount);
                     tracker.AttachData(command.SeedId, "CutTurntableIndex", currentIndex);
                 }
-
+                if (mat != null)
+                {
+                    mat.Dispose();
+                }
                 if (!cutResult)
                 {
+                    DropFailureCount++;
                     LogWarning("多Pass激光切割执行失败");
                     await SendCutCompleteAsync(ctx, pulseDurationMs, completeDelayMs, ct);
+                    if (DropFailureCount >= 3)
+                    {
+                        FlagCondition.SetFlag("WorkAbort", true);
+                    }
                     return Fail("激光切割失败");
                 }
+                DropFailureCount = 0;
 
                 LogInfo("多Pass激光切割完成: {0}个Pass", passCount);
                 await SendCutCompleteAsync(ctx, pulseDurationMs, completeDelayMs, ct);
 
-                ///挑落检查
-                bool dropResult = await CheckSeedCutDown(vision, ctx, ct);
-                if (dropResult)
-                {
-                    DropFailureCount = 0;
-                }
-                else
-                {
-                    DropFailureCount++;
-                }
-                if (DropFailureCount >= 3)
-                {
-                    FlagCondition.SetFlag("WorkAbort", true);
-                }
-
+               
                 return Success(string.Format("激光切割完成({0}个Pass)", passCount));
             }
             catch (OperationCanceledException)
@@ -454,7 +451,7 @@ namespace SeedCut.Framework.Services.Handlers
             this.LogDebug("小切割前拍照");
         }
 
-        private async Task<bool> CheckSeedCutDown(IVisionDevice vision, IHandlerContext ctx, CancellationToken ct)
+        private async Task<bool> CheckSeedCutDown(IVisionDevice vision, Mat mat, IHandlerContext ctx, CancellationToken ct)
         {
             this.LogDebug("小料盘掉落");
             await Task.Delay(1000);
@@ -462,14 +459,16 @@ namespace SeedCut.Framework.Services.Handlers
             {
                 return true;
             }
+            Mat mat2 = await ImageDiff.GetImageFromVM(vision, ctx);
+            if (mat != null && mat2 != null)
+            {
+                bool state = ImageDiff.IsDiff(mat, mat2);
+                mat2.Dispose();
+                return state;
+            }
 
-            this.LogDebug("小料盘有无检测");
-            var visionResult = await vision.ExecuteAsync("小料盘有无检测", ctx);
-            if (visionResult == null || !visionResult.Success)
-                return false;
-            int valid = ReadGlobalVarInt("SmallDropState", 0);
-            this.LogDebug(valid == 1 ? "有掉落" : "无掉落");
-            return valid == 1;
+
+            return false;
         }
         /// <summary>
         /// 读取整型全局变量
@@ -492,7 +491,7 @@ namespace SeedCut.Framework.Services.Handlers
             }
             return defaultValue;
         }
-        private async Task<bool> LaserCut(IHandlerContext ctx, IVisionDevice vision, ILaserDevice laser, LaserCommand command, int passCount, LaserPassParam[] passParams, int cutIntervalMs, CancellationToken ct, Func<IVisionDevice, IHandlerContext, CancellationToken, Task<bool>> checkFun = null)
+        private async Task<bool> LaserCut(IHandlerContext ctx, IVisionDevice vision, Mat mat, ILaserDevice laser, LaserCommand command, int passCount, LaserPassParam[] passParams, int cutIntervalMs, CancellationToken ct, Func<IVisionDevice, Mat, IHandlerContext, CancellationToken, Task<bool>> checkFun = null)
         {
             for (int i = 0; i < passCount; i++)
             {
@@ -518,13 +517,16 @@ namespace SeedCut.Framework.Services.Handlers
             if (checkFun == null)
             {
                 this.LogDebug("第二次切割");
+                return false;
             }
-            if (checkFun != null && await checkFun.Invoke(vision, ctx, ct) == false)
+            if (checkFun != null && await checkFun.Invoke(vision, mat, ctx, ct) == false)
             {
                 this.LogDebug("没有检测到下落，切第二次");
-                return await LaserCut(ctx, vision, laser, command, passCount, passParams, cutIntervalMs, ct);
+                await LaserCut(ctx, vision, mat, laser, command, passCount, passParams, cutIntervalMs, ct);
+                ///切完之后再做一次检查
+                return await checkFun.Invoke(vision, mat, ctx, ct);
             }
-            return false;
+            return true;
         }
         #endregion
     }

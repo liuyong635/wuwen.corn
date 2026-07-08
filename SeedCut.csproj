@@ -199,6 +199,7 @@
     <Compile Include="Framework\Services\Traceability\TraceService.cs" />
     <Compile Include="Framework\Services\Traceability\TrayPairing.cs" />
     <Compile Include="Models\HM_LaserConfig.cs" />
+    <Compile Include="OpenCV\ImageDiff.cs" />
     <Compile Include="SeedCutApp.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -501,7 +502,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-
     <Resource Include="Config\HM_LaserConfig.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -520,7 +520,6 @@
     <None Include="Config\ParaK3D.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-
     <Content Include="Dlls\Apps.BaseData.dll" />
     <Content Include="Dlls\Apps.BaseLog.dll" />
     <Content Include="Dlls\Apps.ColorFun.dll" />

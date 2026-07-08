@@ -24,6 +24,7 @@ namespace SeedCut.Framework.Services.Handlers
 
         protected override async Task<(bool, string)> ExecuteAsync(IHandlerContext ctx, CancellationToken ct)
         {
+            FlagCondition.SetFlag("WorkAbort", false);
             FlagCondition.SetFlag("WorkAborting", true);
             WriteSignal(ctx, SIG_STOP_WORKFLOW, true);
             await Task.Delay(2500);
