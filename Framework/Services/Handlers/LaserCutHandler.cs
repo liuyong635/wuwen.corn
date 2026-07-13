@@ -204,8 +204,8 @@ namespace SeedCut.Framework.Services.Handlers
                 var cutResult = false;
                 await App.Current.Dispatcher.Invoke(async () =>
                    {
-                       cutResult = await LaserCut(ctx, vision, mat, laser, command, passCount, passParams, cutIntervalMs, ct, CheckSeedCutDown);
-                       await Task.Delay(500);
+                       cutResult = await LaserCut(ctx, vision, mat, laser, command, passCount, passParams, cutIntervalMs, ct,false, CheckSeedCutDown);
+               
                    });
 
 
@@ -238,7 +238,7 @@ namespace SeedCut.Framework.Services.Handlers
                 LogInfo("多Pass激光切割完成: {0}个Pass", passCount);
                 await SendCutCompleteAsync(ctx, pulseDurationMs, completeDelayMs, ct);
 
-               
+
                 return Success(string.Format("激光切割完成({0}个Pass)", passCount));
             }
             catch (OperationCanceledException)
@@ -451,10 +451,11 @@ namespace SeedCut.Framework.Services.Handlers
             this.LogDebug("小切割前拍照");
         }
 
-        private async Task<bool> CheckSeedCutDown(IVisionDevice vision, Mat mat, IHandlerContext ctx, CancellationToken ct)
+        private async Task<bool> CheckSeedCutDown(IVisionDevice vision, Mat mat, IHandlerContext ctx, CancellationToken ct, bool waitDrop = false)
         {
             this.LogDebug("小料盘掉落");
-            await Task.Delay(500);
+            if (waitDrop)
+                await Task.Delay(350);
             if (ct.IsCancellationRequested)
             {
                 return true;
@@ -491,7 +492,7 @@ namespace SeedCut.Framework.Services.Handlers
             }
             return defaultValue;
         }
-        private async Task<bool> LaserCut(IHandlerContext ctx, IVisionDevice vision, Mat mat, ILaserDevice laser, LaserCommand command, int passCount, LaserPassParam[] passParams, int cutIntervalMs, CancellationToken ct, Func<IVisionDevice, Mat, IHandlerContext, CancellationToken, Task<bool>> checkFun = null)
+        private async Task<bool> LaserCut(IHandlerContext ctx, IVisionDevice vision, Mat mat, ILaserDevice laser, LaserCommand command, int passCount, LaserPassParam[] passParams, int cutIntervalMs, CancellationToken ct, bool waitDrop, Func<IVisionDevice, Mat, IHandlerContext, CancellationToken,bool, Task<bool>> checkFun = null)
         {
             for (int i = 0; i < passCount; i++)
             {
@@ -519,12 +520,12 @@ namespace SeedCut.Framework.Services.Handlers
                 this.LogDebug("第二次切割");
                 return false;
             }
-            if (checkFun != null && await checkFun.Invoke(vision, mat, ctx, ct) == false)
+            if (checkFun != null && await checkFun.Invoke(vision, mat, ctx, ct,true) == false)
             {
                 this.LogDebug("没有检测到下落，切第二次");
-                await LaserCut(ctx, vision, mat, laser, command, passCount, passParams, cutIntervalMs, ct);
+                await LaserCut(ctx, vision, mat, laser, command, passCount, passParams, cutIntervalMs, ct,true);
                 ///切完之后再做一次检查
-                return await checkFun.Invoke(vision, mat, ctx, ct);
+                return await checkFun.Invoke(vision, mat, ctx, ct,true);
             }
             return true;
         }

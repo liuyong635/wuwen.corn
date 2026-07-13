@@ -1026,7 +1026,7 @@ namespace SeedCut.Services
                 LogInfo("打标开始");
                 do
                 {
-                    await Task.Delay(100);
+                    await Task.Delay(10);
                 } while (IsMarking);
                 LogInfo("打标完成");
                 return true;
