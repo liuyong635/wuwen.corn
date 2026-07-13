@@ -16,33 +16,36 @@ namespace SeedCut.OpenCV
         {
             DateTime now = DateTime.Now.ToLocalTime();
             var visionResult = await vision.ExecuteAsync(prod, ctx);
-
-            CancellationToken token = new CancellationTokenSource(2000).Token;
-            bool canRead = false;
-            do
+            if(visionResult.Success)
             {
-                FileInfo fileInfo = new FileInfo(path);
-
-                if (fileInfo.Exists && fileInfo.CreationTime > now)
+                CancellationToken token = new CancellationTokenSource(2000).Token;
+                bool canRead = false;
+                do
                 {
-                    
-                    FileStream fileStream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    if (fileStream.CanRead)
+                    FileInfo fileInfo = new FileInfo(path);
+
+                    if (fileInfo.Exists && fileInfo.CreationTime > now)
                     {
-                        canRead = true;
+
+                        FileStream fileStream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                        if (fileStream.CanRead)
+                        {
+                            canRead = true;
+                            fileStream.Dispose();
+                            break;
+                        }
+
                         fileStream.Dispose();
-                        break;
                     }
 
-                    fileStream.Dispose();
+                } while (!token.IsCancellationRequested);
+
+                if (canRead)
+                {
+                    return Cv2.ImRead(path, ImreadModes.Grayscale);
                 }
-
-            } while (!token.IsCancellationRequested);
-
-            if (canRead)
-            {
-                return Cv2.ImRead(path, ImreadModes.Grayscale);
             }
+           
 
 
             return null;
@@ -59,7 +62,7 @@ namespace SeedCut.OpenCV
             HierarchyIndex[] outputArray;
             Cv2.FindContours(imagThr, out cos, out outputArray, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
 
-            Mat test = new Mat(imag2.Width, imag2.Height, MatType.CV_32FC3);
+            //Mat test = new Mat(imag2.Width, imag2.Height, MatType.CV_32FC3);
             int largeShape = -1;
             double area = -1;
             if (cos.Length > 0)
@@ -84,11 +87,11 @@ namespace SeedCut.OpenCV
 
 
             }
-            Cv2.Resize(test, test, new OpenCvSharp.Size(640, test.Width / (float)test.Height * 640));
-            Cv2.ImShow("test", test);
+          //  Cv2.Resize(test, test, new OpenCvSharp.Size(640, test.Width / (float)test.Height * 640));
+          //  Cv2.ImShow("test", test);
 
          
-            test.Dispose();
+           // test.Dispose();
             imagThr.Dispose();
             return isDiff;
         }

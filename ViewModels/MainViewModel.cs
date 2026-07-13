@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Wuwen.Core.Services.Storage;
 
 namespace SeedCut.ViewModels
 {
@@ -545,7 +546,7 @@ namespace SeedCut.ViewModels
                 handlerDebug.ExecuteSequenceCommand?.Execute(this);
             }
 
-
+           
         }
         private bool CanPause() => !IsDeviceOperating;
 
