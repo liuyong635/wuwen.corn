@@ -27,6 +27,7 @@ using SeedCut.Views.PLCModule;
 using SeedCut.Views.Recipe;
 using System;
 using System.Windows;
+using Wuwen.Core.Services.Storage;
 
 namespace SeedCut
 {
@@ -39,7 +40,12 @@ namespace SeedCut
 
 
             base.OnStartup(e);
-
+            StorageTask.Current.AddMonitorFolder("D:\\CollectedData");
+            StorageTask.Current.AddMonitor("D:\\CollectedData\\linshi", MonitorInfoType.File);
+            StorageTask.Current.AddMonitor("D:\\CollectedData\\LaserVision", MonitorInfoType.File);
+            StorageTask.Current.AddMonitor("D:\\CollectedData\\FlyCapture", MonitorInfoType.File);
+            StorageTask.Current.AddMonitor("D:\\CollectedData\\DiskVision", MonitorInfoType.File);
+            StorageTask.Current.CheckDiskVolume();
             // 配置依赖注入
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);

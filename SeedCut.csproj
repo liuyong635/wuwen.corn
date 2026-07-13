@@ -158,6 +158,7 @@
     <Compile Include="Framework\Core\Enums.cs" />
     <Compile Include="Framework\Core\Events.cs" />
     <Compile Include="Framework\Core\ProductionContext.cs" />
+    <Compile Include="Framework\Services\Devices\StorageTask.cs" />
     <Compile Include="Framework\Services\Execution\Exceptions.cs" />
     <Compile Include="Framework\Services\Execution\ExecutionController.cs" />
     <Compile Include="Framework\Services\Execution\ExecutionTypes.cs" />
