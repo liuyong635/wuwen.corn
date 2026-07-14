@@ -48,7 +48,7 @@ namespace Wuwen.Core.Services.Storage
             do
             {
                 await Task.Delay(60 * 1000);
-                if (!isChecking && (DateTime.Now - lastCheckTime).TotalMinutes < 5)
+                if (!isChecking && (DateTime.Now - lastCheckTime).TotalMinutes >= 5)
                 {
                     CheckDiskVolume();
                 }
@@ -61,8 +61,9 @@ namespace Wuwen.Core.Services.Storage
         /// </summary>
         public async void CheckDiskVolume()
         {
+            Console.WriteLine("StartCheck");
             isChecking = true;
-            lastTime = DateTime.Now;
+            lastCheckTime = DateTime.Now;
             await Task.Run(() =>
             {
                 var keys = monitorfolders.Keys;
@@ -149,6 +150,7 @@ namespace Wuwen.Core.Services.Storage
                 }
             });
             isChecking = false;
+            Console.WriteLine("EndCheck");
         }
 
 
